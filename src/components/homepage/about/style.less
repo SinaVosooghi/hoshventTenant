@@ -1,0 +1,88 @@
+#home-about {
+  width: 100%;
+  margin: 150px 0 0 0;
+  background-color: #fff;
+  .about-container {
+    display: flex;
+    align-items: center;
+    min-height: 630px;
+    border-radius: 75px;
+    .about-image {
+      position: relative;
+      .video {
+        position: relative;
+        margin-top: -90px;
+        z-index: 999;
+      }
+      .video-dots {
+        position: absolute;
+        left: 50px;
+        bottom: 80px;
+      }
+      .circles {
+        top: -45px;
+        left: 0;
+        position: absolute;
+      }
+    }
+    .about-content {
+      padding: 60px;
+      .about-title {
+        h1 {
+          font-size: 30px;
+          font-weight: 100;
+          color: #0f295d;
+          strong {
+            font-weight: 900;
+          }
+        }
+      }
+      ul {
+        position: relative;
+        li {
+          padding-right: 27px;
+          margin-bottom: 12px;
+          position: relative;
+          color: #212341;
+        }
+        li:before {
+          content: "";
+          position: absolute;
+          right: 0;
+          top: 3px;
+          width: 16px;
+          height: 16px;
+          background: url("/assets/icons/bullet.png");
+          background-size: 16px 16px;
+        }
+      }
+      p {
+        color: #0f295d;
+      }
+      .about-meta {
+        margin-top: 25px;
+        width: 100%;
+        .shop-link {
+          display: flex;
+          text-align: center;
+          align-items: center;
+          gap: 20px;
+        }
+        .about-button {
+          background-color: #b3bbc7;
+          box-shadow: none;
+          display: flex;
+          margin-left: 30px;
+          gap: 30px;
+          height: 45px;
+          align-items: center;
+          padding: 0 25px;
+          border-radius: 55px;
+          span {
+            margin-top: 4px;
+          }
+        }
+      }
+    }
+  }
+}

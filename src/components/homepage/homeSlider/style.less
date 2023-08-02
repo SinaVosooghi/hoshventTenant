@@ -1,0 +1,133 @@
+@import url("../../../../styles/variables.less");
+#main-slider {
+  width: 100%;
+  min-height: 750px;
+  padding-bottom: 150px;
+  position: relative;
+
+  .slider-main-content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    h1 {
+      color: #fff;
+      font-size: 67px;
+      font-weight: 100;
+      margin-bottom: 20px;
+      line-height: 98px;
+      strong {
+        font-size: 98px;
+        font-weight: 900;
+      }
+    }
+    p {
+      width: 300px;
+      border-top: 1px dotted #ffffff79;
+      border-bottom: 1px dotted #ffffff79;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      font-size: 20px;
+      font-weight: 100;
+      color: #fff;
+    }
+    .slider-meta {
+      margin-top: 25px;
+      width: 100%;
+      justify-content: space-between;
+      min-height: 100px;
+      position: relative;
+      .shop-link {
+        display: flex;
+        text-align: center;
+      }
+      .slider-button {
+        display: flex;
+        gap: 30px;
+        height: 45px;
+        align-items: center;
+        padding: 0 25px;
+        span {
+          margin-top: 4px;
+        }
+      }
+    }
+    .slider-image {
+      position: absolute;
+      left: 0;
+      img {
+        position: relative;
+        z-index: 10;
+      }
+      .circle-1 {
+        z-index: 0;
+        position: absolute;
+        left: 90px;
+        top: 250px;
+        z-index: 9;
+      }
+      .circle-2 {
+        z-index: 0;
+        position: absolute;
+        left: 150px;
+        top: 190px;
+        z-index: 5;
+      }
+    }
+
+    .slider-action {
+      position: absolute;
+      .pattern {
+        position: absolute;
+        top: -30px;
+        left: 19px;
+      }
+      .slider-action-btn {
+        position: relative;
+        background: #fff;
+        width: 287px;
+        height: 85px;
+        border-radius: 85px;
+        box-shadow: 0 3px 75px rgba(45, 54, 93, 0.1);
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        padding-right: 100px;
+        .clock {
+          position: absolute;
+          right: -90px;
+        }
+        span {
+          color: @primary-color;
+          font-size: 35px;
+          display: block;
+          font-weight: 900;
+          line-height: 1;
+        }
+      }
+    }
+  }
+
+  .slide-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    align-self: center;
+    p {
+      color: #2d365d;
+      text-align: justify;
+    }
+
+    a {
+      display: flex;
+      align-content: center;
+      align-items: center;
+      gap: 20px;
+      color: #ff8a66;
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+}
