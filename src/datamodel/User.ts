@@ -11,6 +11,6 @@ export default interface User {
   username: string;
   userType: string;
   access_token: string;
-  type: "teacher" | "student";
+  type: "instructor" | "user";
   about: string;
 }

@@ -1,271 +1,251 @@
 import { useQuery } from "@apollo/client";
-import { Button, Card, Col, Row } from "antd";
-import moment from "moment";
-import Image from "next/image";
+import { Button, Card, Col, Row, Tooltip, notification } from "antd";
+import moment from "jalali-moment";
 import { useRouter } from "next/router";
 import parse from "html-react-parser";
 import MainBreadCrumb from "../../src/components/breadcrumb";
-import { siteGetEventApi } from "../../src/shared/apollo/graphql/queries/event/siteGetEventApi";
-import EventInfo from "./info";
-import Lesson from "../../src/datamodel/Lesson";
 import Link from "next/link";
-import { ClockCircleOutlined } from "@ant-design/icons";
-import EventSlider from "../../src/components/sections/featured/featured";
 import { NextSeo } from "next-seo";
-import { siteGetEventsApi } from "../../src/shared/apollo/graphql/queries/event/siteGetEventsApi";
-import { siteCheckAttend } from "../../src/shared/apollo/graphql/queries/attendees/siteCheckAttend";
 // @ts-ignore
-import { Fade } from "react-reveal";
-import Review from "../../src/components/review";
-import { checkLogin } from "../../src/util/utils";
-import Event from "../../src/datamodel/Event";
+import { Fade, Slide } from "react-reveal";
+import { checkLogin, getUserFromCookie } from "../../src/util/utils";
+import Service from "../../src/datamodel/Service";
+import currencyType from "../../src/components/currency";
+import HomeServices from "../../src/components/homepage/services";
+import ExternalServices from "../../src/components/externalServices";
+import ServicesSlider from "../../src/components/servicesSlider";
+import { siteGetEventApi } from "../../src/shared/apollo/graphql/queries/event/siteGetEventApi";
+
+import { useDispatch } from "react-redux";
+import { Dispatch } from "../../src/shared/store";
+import SeminarsSlider from "../../src/components/servicesSlider";
+import WorkshopSlider from "../../src/components/workshopSlider";
+import { useEffect, useState } from "react";
+import { User } from "../../src/datamodel";
 
 require("./style.less");
 
-const EventItem = ({}: // eventsApi,
-// eventApi,
-{
-  // eventsApi: [Event];
-  // eventApi: any;
-}) => {
+const PlanItem = () => {
   const router = useRouter();
   const { event } = router.query;
+  const dispatch = useDispatch<Dispatch>();
+  const [user, setUser] = useState<User | null>(null);
 
-  const { data, loading } = useQuery(siteGetEventsApi, {
+  const { data: eventApi } = useQuery(siteGetEventApi, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
     // @ts-ignore
     variables: { slug: event && event[0] },
   });
 
-  const { data: eventApi, loading: eventLoading } = useQuery(siteGetEventApi, {
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: "network-only",
-    // @ts-ignore
-    variables: { slug: event && event[0] },
-  });
-
-  const { data: checkData, loading: checkUserLoading } = useQuery(
-    siteCheckAttend,
-    {
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: "network-only",
-      variables: {
-        id: eventApi?.eventApi?.id,
-      },
-    }
-  );
-
-  const renderButton = (lesson: Lesson) => {
-    if (!checkLogin()) {
-      if (!lesson?.public) {
-        return (
-          <Link href={"/login"} target="_blank">
-            <Button> وارد حساب کاربری شوید </Button>
-          </Link>
-        );
-      }
-    }
-
-    if (!checkData?.checkEventApi.alreadyBought) {
-      if (!lesson?.public) {
-        return <Button disabled> خرید دوره</Button>;
-      }
-    }
-
-    switch (lesson?.type) {
-      case "conference": {
-        const isBefore = moment().isBefore(lesson.conferenceoptions?.startdate); // true
-        if (!isBefore) {
-          return <Button disabled>برگزار شده</Button>;
-        }
-        return (
-          <Link
-            href={lesson?.conferenceoptions?.joinlink ?? "#"}
-            target="_blank"
-          >
-            <Button>شرکت در کلاس آنلاین</Button>
-          </Link>
-        );
-      }
-      case "text":
-        return (
-          <Button
-            onClick={() => {
-              router.push(`/lesson/${lesson?.slug}`);
-            }}
-          >
-            مشاهده کلاس
-          </Button>
-        );
-      case "video": {
-        if (lesson.videooptions.type === "video") {
-          return (
-            <Button
-              onClick={() => {
-                router.push(`/lesson/${lesson?.slug}`);
-              }}
-            >
-              مشاهده کلاس
-            </Button>
-          );
-        } else {
-          return (
-            <Link href={lesson?.videooptions?.link ?? "#"} target="_blank">
-              <Button>مشاهده ویدئو</Button>
-            </Link>
-          );
-        }
-      }
-      default:
-        return (
-          <Button
-            onClick={() => {
-              router.push(`/lesson/${lesson.slug}`);
-            }}
-          >
-            مشاهده کلاس
-          </Button>
-        );
-    }
+  const addToCart = () => {
+    notification.success({
+      message: `محصول اضافه شد`,
+      description: (
+        <>محصول {eventApi?.eventApi?.title} به سبد خرید شما اضافه شد.</>
+      ),
+    });
+    dispatch.cart.addItem(eventApi?.eventApi);
   };
 
-  const renderCapacity = () => {
-    if (checkData?.checkeventApi?.eventApi?.outOfCapacity) {
-      return <span> تکمیل ظرفیت </span>;
+  useEffect(() => {
+    if (getUserFromCookie()) {
+      setUser(getUserFromCookie());
     }
-
-    return eventApi?.eventApi?.capacity ? (
-      <span>{eventApi?.eventApi?.capacity} نفر</span>
-    ) : (
-      <span> نا محدود</span>
-    );
-  };
+  }, []);
 
   return (
     <>
       <NextSeo
-        title={eventApi?.eventApi?.title}
+        title={eventApi?.title}
         description={eventApi?.eventApi?.seobody}
       />
       <div id="event">
         <MainBreadCrumb
-          secondItem="رویداد ها"
+          secondItem="پکیج ها"
           activeItem={eventApi?.eventApi?.title}
         />
+        <Fade>
+          <img
+            src="/assets/about/circles.png"
+            alt="event"
+            className="circles"
+          />
+        </Fade>
         <Row justify="center">
           <Col md={20} xs={24} id="event-container">
             <Fade>
-              <div>
+              <div id="event-card">
                 <Row>
-                  <Col md={7} xs={24} order={1}>
-                    <EventInfo
-                      event={eventApi?.eventApi?.event}
-                      checkData={checkData}
-                      loading={checkUserLoading}
-                    />
-                  </Col>
-                  <Col md={17} xs={24} className="event-content">
+                  <Col md={10} xs={24} className="event-content">
                     <div className="event-title">
-                      <span>دوره</span>
                       <h1>{eventApi?.eventApi?.title}</h1>
-                    </div>
-                    <div className="event-image">
-                      {eventApi?.eventApi?.image && (
-                        <Image
-                          alt={eventApi?.eventApi?.seotitle}
-                          src={
-                            process.env.NEXT_PUBLIC_SITE_URL +
-                            "/" +
-                            eventApi?.eventApi?.image
-                          }
-                          fill
-                          sizes="100vw"
-                        />
+                      <p>{eventApi?.eventApi?.subtitle}</p>
+                      <span className="type-pill">امکانات پایه</span>
+                      {eventApi?.eventApi?.halls?.length ? (
+                        <ul>
+                          {eventApi?.eventApi?.halls?.map(
+                            (service: Service) => {
+                              return (
+                                <li key={service.id}>
+                                  {service.title}
+                                  <ul>
+                                    {service.workshops?.map(
+                                      (service: Service) => {
+                                        return (
+                                          <li key={service.id}>
+                                            {service.title}
+                                          </li>
+                                        );
+                                      }
+                                    )}
+                                  </ul>
+                                  <ul>
+                                    {service.seminars?.map(
+                                      (service: Service) => {
+                                        return (
+                                          <li key={service.id}>
+                                            {service.title}
+                                          </li>
+                                        );
+                                      }
+                                    )}
+                                  </ul>
+                                </li>
+                              );
+                            }
+                          )}
+                        </ul>
+                      ) : (
+                        <></>
+                      )}
+
+                      {eventApi?.eventApi?.price ? (
+                        <div className="item-button">
+                          <Tooltip
+                            title={
+                              !user ? "جهت خرید وارد حساب کاربری شوید" : ""
+                            }
+                          >
+                            <Button
+                              onClick={() => addToCart()}
+                              disabled={!user}
+                            >
+                              افزودن به سبد خرید
+                              <img
+                                src="/assets/icons/cart.png"
+                                width={18}
+                                alt="arrow"
+                              />
+                            </Button>
+                          </Tooltip>
+
+                          <div className="item-price">
+                            {eventApi?.eventApi?.price && (
+                              <p className="item-regular-price">
+                                {eventApi?.eventApi?.price?.toLocaleString()}
+                              </p>
+                            )}
+                            <span className="item-currency">
+                              {eventApi?.eventApi?.price
+                                ? currencyType()
+                                : "رایگان"}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="item-button">
+                          <div className="item-price">
+                            <p className="item-regular-price">رایگان</p>
+                          </div>
+                          <Link href={`/event/${eventApi?.eventApi.slug}`}>
+                            <Button>اطلاعات بیشتر</Button>
+                          </Link>
+                        </div>
                       )}
                     </div>
-                    <div className="event-status">
-                      <div className="status-item">
-                        ظرفیت دوره
-                        {renderCapacity()}
-                      </div>
-                      <div className="status-item">
-                        آخرین به روزرسانی
-                        <span>
-                          {moment(eventApi?.eventApi?.updated).format(
-                            "YYYY/M/D"
-                          )}
-                        </span>
-                      </div>
-                    </div>
-                    {eventApi?.eventApi?.body && (
-                      <div className="event-body">
-                        {parse(eventApi?.eventApi?.body)}
-                      </div>
-                    )}
+                  </Col>
+                  <Col md={14} xs={24}>
+                    <div
+                      className="event-image"
+                      style={{
+                        backgroundImage: `url('${
+                          process.env.NEXT_PUBLIC_SITE_URL +
+                          "/" +
+                          eventApi?.eventApi?.image
+                        }')`,
+                      }}
+                    ></div>
                   </Col>
                 </Row>
               </div>
             </Fade>
+            <Slide bottom>
+              <HomeServices
+                services={eventApi?.eventApi?.halls}
+                title={
+                  <>
+                    سالن <strong> ها</strong>
+                  </>
+                }
+                subtitle="سالن های یک همایش"
+              />
+            </Slide>
+
+            <Fade>
+              <img
+                src="/assets/shadow.png"
+                alt="event"
+                className="shadow-seperator"
+              />
+            </Fade>
+          </Col>
+
+          <Col span={24}>
+            <Slide bottom>
+              <WorkshopSlider
+                title="لیست"
+                subTitle="ورکشاپ ها"
+                seminars={eventApi?.eventApi?.halls}
+              />
+            </Slide>
+          </Col>
+
+          <Col span={24}>
+            <Fade>
+              <SeminarsSlider
+                title="لیست"
+                subTitle="سیمنار ها"
+                seminars={eventApi?.eventApi?.halls}
+              />
+            </Fade>
+          </Col>
+
+          <Col span={20}>
+            <Fade>
+              <div className="event-status">
+                <div className="status-item">
+                  آخرین به روزرسانی
+                  <span>
+                    {moment(eventApi?.eventApi?.updated)
+                      .locale("fa")
+                      .format("YYYY MMM D")}
+                  </span>
+                </div>
+              </div>
+              <div className="event-body">
+                {eventApi?.eventApi?.body ? (
+                  parse(eventApi?.eventApi?.body)
+                ) : (
+                  <></>
+                )}
+              </div>
+            </Fade>
           </Col>
         </Row>
-        {/* <EventSlider
-          items={eventsApi}
-          title="دوره های"
-          subTitle="مرتبط"
-          hideShowMore
-        /> */}
-
-        {eventApi?.eventApi?.id && (
-          <Review
-            type="event"
-            itemTitle={eventApi?.eventApi?.title}
-            itemId={eventApi?.eventApi?.id}
-            overall={eventApi?.eventApi?.overall}
-            answers={eventApi?.eventApi?.answers}
-          />
-        )}
       </div>
     </>
   );
 };
 
-// export async function getStaticProps({ params }: { params: any }) {
-//   const {
-//     data: { eventApi },
-//   } = await client.query({
-//     query: siteGetEventApi,
-//     variables: { slug: params.event[0] },
-//   });
-
-//   const {
-//     data: { eventsApi },
-//   } = await client.query({
-//     query: siteGetEventsApi,
-//     variables: { input: { skip: 0, limit: 135 } },
-//   });
-
-//   return {
-//     props: {
-//       eventApi: eventApi,
-//       eventsApi: eventsApi.events,
-//     },
-//     revalidate: 180,
-//   };
-// }
-
-// export async function getStaticPaths() {
-//   const {
-//     data: { eventsApi },
-//   } = await client.query({
-//     query: siteGetEventsApi,
-//     variables: { input: { skip: 0, limit: 135 } },
-//   });
-
-//   return {
-//     paths: eventsApi.events.map((blog: any) => `/event/${blog.slug}`),
-//     fallback: "blocking",
-//   };
-// }
-
-export default EventItem;
+export default PlanItem;

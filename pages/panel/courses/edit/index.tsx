@@ -99,7 +99,7 @@ const EditCourse = () => {
 
   return (
     <Card
-      title="افزودن دوره جدید"
+      title="افزودن رویداد جدید"
       extra={<PlusOutlined />}
       loading={fetchLoading}
     >

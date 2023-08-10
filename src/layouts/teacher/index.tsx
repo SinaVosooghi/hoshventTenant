@@ -77,28 +77,11 @@ const TeacherLaout = ({ children }: any) => {
 
   const items: MenuItem[] = [
     getItem("داشبورد", "/dashboard", <DashboardOutlined rev={undefined} />),
-    getItem("کلاس ها", "lessons", <BookOutlined rev={undefined} />, [
+    getItem("رویداد ها", "events", <ReadOutlined rev={undefined} />, [
       getItem(
-        "لیست کلاس ها ",
-        "/dashboard/lessons",
+        "لیست رویداد ها",
+        "/dashboard/events",
         <UnorderedListOutlined rev={undefined} />
-      ),
-      getItem(
-        "افزودن کلاس جدید",
-        "/dashboard/lessons/add",
-        <PlusOutlined rev={undefined} />
-      ),
-    ]),
-    getItem("دوره ها", "courses", <ReadOutlined rev={undefined} />, [
-      getItem(
-        "لیست دوره ها",
-        "/dashboard/courses",
-        <UnorderedListOutlined rev={undefined} />
-      ),
-      getItem(
-        "افزودن دوره جدید",
-        "/dashboard/courses/add",
-        <PlusOutlined rev={undefined} />
       ),
     ]),
 
@@ -162,7 +145,7 @@ const TeacherLaout = ({ children }: any) => {
         <>
           <MainHeader />
           <MainBreadCrumb />
-          {user?.type === "teacher" ? (
+          {user?.type === "instructor" ? (
             <Content>
               <Drawer
                 placement="right"
@@ -200,7 +183,9 @@ const TeacherLaout = ({ children }: any) => {
                         triggerSubMenuAction="click"
                       />
                     </Col>
-                    <Col md={19}>{children}</Col>
+                    <Col md={19} xs={24}>
+                      {children}
+                    </Col>
                   </Row>
                 </Col>
               </Row>

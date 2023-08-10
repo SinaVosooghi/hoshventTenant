@@ -30,7 +30,7 @@ const Cart = () => {
     <>
       <NextSeo title="سبد خرید" noindex />
       <div id="buy-product">
-        <MainBreadCrumb activeItem="ثبت نام در دوره" />
+        <MainBreadCrumb activeItem="ثبت نام در رویداد" />
         {!items.length ? (
           <Empty
             image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"

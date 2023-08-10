@@ -13,8 +13,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { User } from "../../datamodel";
 import { getUserFromCookie } from "../../util/utils";
-import StudentDropdown from "./studentDropdown";
-import TeacherDropdown from "./teacherDropdown";
 
 const { Text } = Typography;
 

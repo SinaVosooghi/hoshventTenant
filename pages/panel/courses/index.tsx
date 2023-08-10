@@ -29,7 +29,7 @@ const Courses = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "عنوان دوره",
+      title: "عنوان رویداد",
       key: "title",
       render: (row) => (
         <Link passHref href={`/course/${row.course?.slug}`} target="_blank">
@@ -78,14 +78,14 @@ const Courses = () => {
       render: (_, record: any) => (
         <Space size="middle">
           <Link passHref href={`/panel/courses/view?id=${record.course?.id}`}>
-            <Button>جزییات دوره</Button>
+            <Button>جزییات رویداد</Button>
           </Link>
           <Link
             passHref
             href={`/course/${record?.course?.slug}`}
             target="_blank"
           >
-            <Tooltip title="مشاهده دوره">
+            <Tooltip title="مشاهده رویداد">
               <Button>
                 <EyeOutlined />
               </Button>
@@ -118,7 +118,7 @@ const Courses = () => {
   }, []);
 
   return (
-    <Card title={<h3>لیست دوره ها</h3>} loading={loading}>
+    <Card title={<h3>لیست رویداد ها</h3>} loading={loading}>
       <Row gutter={[16, 16]}>
         <Col md={24}>
           <Table

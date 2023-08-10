@@ -91,7 +91,7 @@ const CourseInfo = ({
     <Row gutter={[16, 16]}>
       <Col md={16}>
         <Form.Item name="title" label="عنوان" rules={[{ required: true }]}>
-          <Input placeholder="عنوان دوره" />
+          <Input placeholder="عنوان رویداد" />
         </Form.Item>
       </Col>
       <Col md={8}>
@@ -125,10 +125,10 @@ const CourseInfo = ({
         </Form.Item>
       </Col>
 
-      <Divider orientation="left">جزییات دوره</Divider>
+      <Divider orientation="left">جزییات رویداد</Divider>
 
       <Col md={12}>
-        <Form.Item name="video" label="لینک ویدئو" tooltip="در این قسمت می توانید لینک ویدئوی معرفی دوره را در صورت تمایل اضافه کنید.">
+        <Form.Item name="video" label="لینک ویدئو" tooltip="در این قسمت می توانید لینک ویدئوی معرفی رویداد را در صورت تمایل اضافه کنید.">
           <Input placeholder="لینک ویدئو به youtube یا aparat" />
         </Form.Item>
       </Col>
@@ -141,7 +141,7 @@ const CourseInfo = ({
       <Col md={6}>
         <Form.Item
           name="duration"
-          label="طول دوره"
+          label="طول رویداد"
           rules={[{ required: true }]}
           extra=" *مثال: ۵ ساعت"
         >
@@ -154,7 +154,7 @@ const CourseInfo = ({
         </Form.Item>
       </Col>
       <Col md={6}>
-        <Form.Item name="price" label="قیمت دوره">
+        <Form.Item name="price" label="قیمت رویداد">
           <Input type="number" placeholder="200,0000" />
         </Form.Item>
       </Col>

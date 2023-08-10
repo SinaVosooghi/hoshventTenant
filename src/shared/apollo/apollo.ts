@@ -5,7 +5,6 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
-import { useMemo } from "react";
 import { setContext } from "@apollo/client/link/context";
 import { getCookie } from "cookies-next";
 import { User } from "../../datamodel";

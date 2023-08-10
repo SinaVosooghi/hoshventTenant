@@ -1,6 +1,7 @@
 import {
   BookOutlined,
   PlusOutlined,
+  QrcodeOutlined,
   ReadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -13,28 +14,34 @@ import { siteGetAttendees } from "../../src/shared/apollo/graphql/queries/attend
 import { siteGetCourses } from "../../src/shared/apollo/graphql/queries/event/siteGetEvents";
 import { siteGetLessons } from "../../src/shared/apollo/graphql/queries/lesson/siteGetLessons";
 import Lessons from "./lessons";
-import Courses from "./courses";
+import Events from "./events";
 
 import { NextSeo } from "next-seo";
 import moment from "moment";
+import { siteGetEventsApi } from "../../src/shared/apollo/graphql/queries/event/siteGetEventsApi";
 
 const TeachersDashboard = () => {
   const router = useRouter();
 
   const [lastConference, setLastConference] = useState<Lesson | null>(null);
-  const { data: courses, loading: courseLoading } = useQuery(siteGetCourses, {
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: "network-only",
-    variables: {
-      input: {
-        skip: 0,
+  const { data: eventsApi, loading: courseLoading } = useQuery(
+    siteGetEventsApi,
+    {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: "network-only",
+      variables: {
+        input: {
+          skip: 0,
+          // @ts-ignore
+          siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
+        },
       },
-    },
-  });
+    }
+  );
 
   useMemo(() => {
-    if (courses?.courses) {
-      courses.courses?.courses?.map((attend: any) => {
+    if (eventsApi?.eventsApi) {
+      eventsApi.eventsApi?.events?.map((attend: any) => {
         attend.sections?.map((section: any) => {
           section?.lessons?.map(({ lesson }: { lesson: Lesson }) => {
             if (lesson?.type === "conference") {
@@ -44,7 +51,7 @@ const TeachersDashboard = () => {
         });
       });
     }
-  }, [courses]);
+  }, [eventsApi]);
 
   const { data: lessons, loading } = useQuery(siteGetLessons, {
     notifyOnNetworkStatusChange: true,
@@ -109,15 +116,7 @@ const TeachersDashboard = () => {
                   icon={<PlusOutlined rev={undefined} />}
                   ghost
                 >
-                  افزودن کلاس
-                </Button>
-                <Button
-                  onClick={() => router.push("/dashboard/courses/add")}
-                  type="primary"
-                  icon={<PlusOutlined rev={undefined} />}
-                  ghost
-                >
-                  افزودن دوره
+                  افزودن تیکت پشتیبانی{" "}
                 </Button>
               </Space>
             }
@@ -125,18 +124,10 @@ const TeachersDashboard = () => {
             <Row gutter={16}>
               <Col span={5}>
                 <Statistic
-                  title="تعداد دوره ها"
+                  title="تعداد رویداد ها"
                   loading={loading}
-                  value={courses?.courses?.count}
+                  value={eventsApi?.eventsApi?.count}
                   prefix={<ReadOutlined rev={undefined} />}
-                />
-              </Col>
-              <Col span={5}>
-                <Statistic
-                  title="تعداد کلاس ها "
-                  loading={courseLoading}
-                  value={lessons?.lessons?.count}
-                  prefix={<BookOutlined rev={undefined} />}
                 />
               </Col>
               <Col span={5}>
@@ -147,20 +138,28 @@ const TeachersDashboard = () => {
                   prefix={<UserOutlined rev={undefined} />}
                 />
               </Col>
-              {lastConference && (
-                <Col span={9}>
-                  <Statistic title="آخرین کلاس" value={lastConference.title} />
-                  {joinButton(lastConference)}
-                </Col>
-              )}
+              <Col span={5}>
+                <Statistic
+                  loading={attendLoading}
+                  title="اسکن QR CODE"
+                  value=" "
+                  suffix={
+                    <Button
+                      size="large"
+                      type="primary"
+                      onClick={() => router.push("/dashboard/scanner")}
+                    >
+                      اسکن QR Code
+                    </Button>
+                  }
+                  prefix={<QrcodeOutlined rev={undefined} />}
+                />
+              </Col>
             </Row>
           </Card>
         </Col>
         <Col span={24}>
-          <Courses hideCount />
-        </Col>
-        <Col span={24}>
-          <Lessons hideCount />
+          <Events />
         </Col>
       </Row>
     </>

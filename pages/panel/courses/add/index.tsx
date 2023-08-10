@@ -49,7 +49,7 @@ const AddCourse = () => {
   };
 
   return (
-    <Card title="افزودن دوره جدید" extra={<PlusOutlined />}>
+    <Card title="افزودن رویداد جدید" extra={<PlusOutlined />}>
       <>
         <Form
           name="validate_other"

@@ -6,7 +6,6 @@ import HomeMainSlider from "../src/components/homepage/homeSlider";
 import LatestProducts from "../src/components/sections/products/products";
 import { NextSeo } from "next-seo";
 import { siteGetEventsApi } from "../src/shared/apollo/graphql/queries/event/siteGetEventsApi";
-import LatestWorkShops from "../src/components/sections/latest/latest";
 import { siteGetProductsApi } from "../src/shared/apollo/graphql/queries/product/siteGetProductsApi";
 import useGetSetting from "../src/hooks/useGetSetting";
 import Setting from "../src/datamodel/Setting";
@@ -15,6 +14,7 @@ import HomeServices from "../src/components/homepage/services";
 import { siteGetServices } from "../src/shared/apollo/graphql/queries/services/siteGetServices";
 import EventSlider from "../src/components/sections/featured/featured";
 import PlanSlider from "../src/components/plans/plans";
+import { siteGetWorkshops } from "../src/shared/apollo/graphql/queries/workshop/siteGetWorkshops";
 
 export default function Home() {
   const { data }: { data: Setting } = useGetSetting();
@@ -27,6 +27,8 @@ export default function Home() {
         limit: 9,
         skip: 0,
         featured: true,
+        // @ts-ignore
+        siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       },
     },
   });
@@ -38,23 +40,11 @@ export default function Home() {
         limit: 6,
         skip: 0,
         status: true,
+        // @ts-ignore
+        siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       },
     },
   });
-
-  const { data: productsApi, loading: ProductsLoading } = useQuery(
-    siteGetProductsApi,
-    {
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: "network-only",
-      variables: {
-        input: {
-          limit: 9,
-          skip: 0,
-        },
-      },
-    }
-  );
 
   return (
     <>
@@ -74,7 +64,11 @@ export default function Home() {
       {/* Service components */}
       <HomeServices services={services?.servicesApi?.services} />
 
-      <PlanSlider loading={loading} title="پکیج ها" subTitle="با قیمت گذاری" />
+      <PlanSlider
+        loading={loading}
+        title="ورکشاپ ها"
+        subTitle="با قیمت گذاری"
+      />
 
       <CategoriesSlider />
     </>

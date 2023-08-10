@@ -13,20 +13,24 @@ import { siteGetPlans } from "../../shared/apollo/graphql/queries/plans/siteGetP
 import { siteGetServices } from "../../shared/apollo/graphql/queries/services/siteGetServices";
 import Service from "../../datamodel/Service";
 import ServiecItem from "./serviceItem";
+import Workshop from "../../datamodel/Workshop";
+import SeminarItem from "./serviceItem";
 require("./style.less");
 
-const ServicesSlider = ({
+const SeminarsSlider = ({
   loading,
   title,
   subTitle,
   type,
   hideShowMore,
+  seminars,
 }: {
   loading?: boolean;
   title: string;
   subTitle: string;
   type?: "blue" | "orange";
   hideShowMore?: boolean;
+  seminars: [any];
 }) => {
   const params = {
     autoplay: {
@@ -86,11 +90,13 @@ const ServicesSlider = ({
           <div className="swiper-container">
             <Fade>
               <Row gutter={[24, 24]}>
-                {services?.servicesApi?.services?.map((service: Service) => (
-                  <Col md={6} xs={12} key={service.id}>
-                    <ServiecItem service={service} />
-                  </Col>
-                ))}
+                {seminars?.map((hall: Workshop) => {
+                  return hall.seminars?.map((seminar) => (
+                    <Col md={6} xs={12} key={seminar.id}>
+                      <SeminarItem workshop={seminar} />
+                    </Col>
+                  ));
+                })}
               </Row>
             </Fade>
           </div>
@@ -100,4 +106,4 @@ const ServicesSlider = ({
   );
 };
 
-export default ServicesSlider;
+export default SeminarsSlider;

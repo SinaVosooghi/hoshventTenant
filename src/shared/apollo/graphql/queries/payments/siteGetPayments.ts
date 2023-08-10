@@ -21,7 +21,7 @@ export const siteGetPayments = gql`
           title
           qty
         }
-        course {
+        event {
           id
           slug
           title

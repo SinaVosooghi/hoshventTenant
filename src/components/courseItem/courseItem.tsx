@@ -3,9 +3,10 @@ import { Button } from "antd";
 import Course from "../../datamodel/Course";
 import { percentCalculate } from "../../util/utils";
 import currencyType from "../currency";
+import Event from "../../datamodel/Event";
 require("./style.less");
 
-const CourseItem = ({ item }: { item: Course }) => {
+const CourseItem = ({ item }: { item: Event }) => {
   return (
     <div className="course-item">
       <div
@@ -22,25 +23,12 @@ const CourseItem = ({ item }: { item: Course }) => {
             {item.duration}
           </div>
         )}
-
-        {item.reviews.length ? (
-          <div className="item-rate">
-            {item.reviews.length}
-            <StarFilled rev={undefined} />
-          </div>
-        ) : (
-          ""
-        )}
       </div>
       <div className="item-content">
         <p className="item-title">{item.title}</p>
-        <span className="divider">
-          <div>
-            <img src="/assets/icons/music-note.png" alt="rasta" />
-          </div>
-        </span>
+        <span className="divider"></span>
         <span className="item-author">
-          {item.organizer?.firstName} {item.organizer?.lastName}
+          {item?.user?.firstName} {item?.user?.lastName}
         </span>
       </div>
       <div className="item-button">

@@ -52,8 +52,8 @@ const AddCourse = () => {
 
   return (
     <>
-      <NextSeo title="افزودن دوره" noindex />
-      <Card title="افزودن دوره جدید" extra={<PlusOutlined rev={undefined} />}>
+      <NextSeo title="افزودن رویداد" noindex />
+      <Card title="افزودن رویداد جدید" extra={<PlusOutlined rev={undefined} />}>
         <>
           <Form
             name="validate_other"

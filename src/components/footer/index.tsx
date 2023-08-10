@@ -49,6 +49,7 @@ const MainFooter = () => {
                         src={`${
                           process.env.NEXT_PUBLIC_SITE_URL + "/" + data?.logo
                         }`}
+                        width={200}
                       />
                       <img
                         src="/assets/up.png"

@@ -3,23 +3,24 @@ import currencyType from "../currency";
 import parse from "html-react-parser";
 import Link from "next/link";
 import Service from "../../datamodel/Service";
+import Workshop from "../../datamodel/Workshop";
 
-const ServiecItem = ({ service }: { service: Service }) => {
+const SeminarItem = ({ workshop }: { workshop: Workshop }) => {
   return (
     <div className="featured-slider-item">
       <div className="item-content">
-        <p className="item-title">{service?.title}</p>
+        <p className="item-title">{workshop?.title}</p>
       </div>
-      {service?.price ? (
+      {workshop?.price ? (
         <div className="item-button">
           <div className="item-price">
-            {service?.price && (
+            {workshop?.price && (
               <p className="item-regular-price">
-                {service?.price?.toLocaleString()}
+                {workshop?.price?.toLocaleString()}
               </p>
             )}
             <span className="item-currency">
-              {service?.price ? currencyType() : "رایگان"}
+              {workshop?.price ? currencyType() : "رایگان"}
             </span>
           </div>
         </div>
@@ -34,4 +35,4 @@ const ServiecItem = ({ service }: { service: Service }) => {
   );
 };
 
-export default ServiecItem;
+export default SeminarItem;

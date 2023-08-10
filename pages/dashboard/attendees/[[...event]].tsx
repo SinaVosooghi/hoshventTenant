@@ -9,12 +9,16 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { User } from "../../../src/datamodel";
 import { siteGetAttendees } from "../../../src/shared/apollo/graphql/queries/attendees/siteGetAttendees";
+import { useRouter } from "next/router";
 
 const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [value, setValue] = useState("");
   const [statusValue, setStatusValue] = useState(null);
+
+  const router = useRouter();
+  const { event } = router.query;
 
   interface DataType {
     key: string;
@@ -26,9 +30,9 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "دوره",
+      title: "رویداد",
       key: "name",
-      render: (row) => <span>{row.course?.title}</span>,
+      render: (row) => <span>{row.event?.title}</span>,
     },
     {
       title: "شرکت کننده",
@@ -70,18 +74,11 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
     {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: "network-only",
-      onCompleted: (d) => {
-      },
+      onCompleted: (d) => {},
     }
   );
 
   useEffect(() => {
-    let userCookie: User | null = null;
-    if (getCookie("user")) {
-      // @ts-ignore
-      userCookie = JSON.parse(getCookie("user"));
-    }
-
     getAttendees({
       variables: {
         input: {
@@ -89,6 +86,25 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
           skip: (currentPage - 1) * rowsPerPage,
           searchTerm: value,
           status: statusValue ?? null,
+          event: event && parseInt(event[0]),
+          // @ts-ignore
+          siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
+        },
+      },
+    });
+  }, [event]);
+
+  useEffect(() => {
+    getAttendees({
+      variables: {
+        input: {
+          limit: 10,
+          skip: (currentPage - 1) * rowsPerPage,
+          searchTerm: value,
+          status: statusValue ?? null,
+          event: event && parseInt(event[0]),
+          // @ts-ignore
+          siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
         },
       },
     });
@@ -103,7 +119,7 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
               loading={loading}
               title="تعداد کل شرکت کنندگان"
               value={attendeesApi?.attendeesApi?.count}
-              prefix={<UserOutlined rev={undefined}/>}
+              prefix={<UserOutlined rev={undefined} />}
             />
           </Col>
         )}

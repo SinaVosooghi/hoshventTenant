@@ -30,9 +30,11 @@ const cartModel = createModel<RootState>()({
   reducers: {
     addItem(state, action) {
       const index = state.items.findIndex(
-        (product) => product.id === action.id
+        (event) => event.id === event.id
       );
       let data = [...state.items];
+
+   
       if (index >= 0) {
         data[index].qty += 1;
       } else {

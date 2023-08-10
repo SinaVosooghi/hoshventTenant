@@ -189,7 +189,7 @@ const Blogs = () => {
                     </div>
                     <Input
                       size="large"
-                      placeholder="برای مثال :  دوره سه تار"
+                      placeholder="برای مثال :  رویداد سه تار"
                       suffix={<Button>جستجو</Button>}
                       onChange={onSearchChange}
                       prefix={

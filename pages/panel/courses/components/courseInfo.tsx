@@ -125,7 +125,7 @@ const CourseInfo = ({
         </Form.Item>
       </Col>
 
-      <Divider orientation="left">جزییات دوره</Divider>
+      <Divider orientation="left">جزییات رویداد</Divider>
 
       <Col md={12}>
         <Form.Item name="video" label="لینک ویدئو">
@@ -141,7 +141,7 @@ const CourseInfo = ({
       <Col md={6}>
         <Form.Item
           name="duration"
-          label="طول دوره"
+          label="طول رویداد"
           rules={[{ required: true }]}
         >
           <Input />
@@ -153,7 +153,7 @@ const CourseInfo = ({
         </Form.Item>
       </Col>
       <Col md={6}>
-        <Form.Item name="price" label="قیمت دوره">
+        <Form.Item name="price" label="قیمت رویداد">
           <Input type="number" />
         </Form.Item>
       </Col>

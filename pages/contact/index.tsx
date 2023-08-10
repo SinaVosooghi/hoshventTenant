@@ -74,7 +74,7 @@ const Contact = () => {
                   <div>
                     <h1>تماس با ما</h1>
                     <p>
-                      راه های ارتباط با <span>موسسه رستا</span>
+                      راه های ارتباط با <span>{data.company}</span>
                     </p>
                   </div>
                   <div className="about-socials">
@@ -155,7 +155,7 @@ const Contact = () => {
                       />
                       <div>
                         <span>پشتیبانی</span>
-                        <h2>{data?.phoneNumber}</h2>
+                        <h2>{data?.phonenumber}</h2>
                       </div>
                     </div>
                   </div>

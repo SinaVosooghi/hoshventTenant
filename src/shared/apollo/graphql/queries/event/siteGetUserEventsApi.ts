@@ -1,15 +1,15 @@
 import gql from "graphql-tag";
 import { graphql } from "@apollo/client/react/hoc";
 
-export const siteGetUserCoursesApi = gql`
-  query userCoursesApi($input: GetCoursesArgs!) {
-    userCoursesApi(input: $input) {
+export const siteGetUserEventsApi = gql`
+  query userEventsApi($input: GetEventsArgs!) {
+    userEventsApi(input: $input) {
       attends {
         id
         created
         updated
         status
-        course {
+        event {
           id
           title
           duration
@@ -18,61 +18,11 @@ export const siteGetUserCoursesApi = gql`
           price
           offprice
           image
-          sections {
-            title
-            lessons {
-              order
-              lesson {
-                id
-                title
-                duration
-                excerpt
-                type
-                public
-                order
-                body
-                seotitle
-                seobody
-                conferenceoptions {
-                  startdate
-                  enddate
-                  password
-                  joinanytime
-                  host
-                  requireauth
-                  joinlink
-                }
-                videooptions {
-                  type
-                  video
-                  link
-                  width
-                }
-                user {
-                  id
-                  firstName
-                  lastName
-                }
-                course {
-                  id
-                  title
-                }
-                slug
-                featured
-                status
-                created
-                updated
-              }
-            }
-          }
-          organizer {
-            firstName
-            lastName
-          }
           slug
           category {
             title
           }
+          start_date
           featured
           status
           created
@@ -84,4 +34,4 @@ export const siteGetUserCoursesApi = gql`
   }
 `;
 
-export default graphql(siteGetUserCoursesApi);
+export default graphql(siteGetUserEventsApi);

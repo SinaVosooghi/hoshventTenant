@@ -101,10 +101,10 @@ const EditCourse = () => {
 
   return (
     <>
-      <NextSeo title="ویرایش دوره" noindex />
+      <NextSeo title="ویرایش رویداد" noindex />
 
       <Card
-        title="افزودن دوره جدید"
+        title="افزودن رویداد جدید"
         extra={<PlusOutlined rev={undefined} />}
         loading={fetchLoading}
       >

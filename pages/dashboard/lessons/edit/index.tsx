@@ -196,7 +196,7 @@ const EditLesson = () => {
             <Col md={5}>
               <Form.Item
                 name="duration"
-                label="طول دوره(دقیقه)"
+                label="طول رویداد(دقیقه)"
                 rules={[{ required: true }]}
               >
                 <Input type="number" />

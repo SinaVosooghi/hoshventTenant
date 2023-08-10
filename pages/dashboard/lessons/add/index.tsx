@@ -107,7 +107,7 @@ const AddLesson = () => {
 
   return (
     <>
-      <NextSeo title="افزودن دوره" />
+      <NextSeo title="افزودن رویداد" />
       <Card title="افزودن کلاس جدید" extra={<PlusOutlined rev={undefined} />}>
         <Form
           name="validate_other"
@@ -134,7 +134,7 @@ const AddLesson = () => {
             <Col md={5}>
               <Form.Item
                 name="duration"
-                label="طول دوره(دقیقه)"
+                label="طول رویداد(دقیقه)"
                 rules={[{ required: true }]}
               >
                 <Input type="number" placeholder="3" />

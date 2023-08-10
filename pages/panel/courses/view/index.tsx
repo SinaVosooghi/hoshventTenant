@@ -131,7 +131,7 @@ const Edit = () => {
                                   {item.lesson?.type}
                                 </Descriptions.Item>
                                 {item.lesson.duration && (
-                                  <Descriptions.Item label="طول دوره">
+                                  <Descriptions.Item label="طول رویداد">
                                     {item.lesson.duration ?? "-"}
                                   </Descriptions.Item>
                                 )}
@@ -164,7 +164,7 @@ const Edit = () => {
           }
         </Row>
       ) : (
-        <p>این دوره جزییاتی ندارد</p>
+        <p>این رویداد جزییاتی ندارد</p>
       )}
     </>
   );

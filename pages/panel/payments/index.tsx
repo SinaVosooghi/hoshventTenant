@@ -7,7 +7,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useEffect } from "react";
-import { siteGetUserCoursesApi } from "../../../src/shared/apollo/graphql/queries/event/siteGetUserEventsApi";
 import currencyType from "../../../src/components/currency";
 import { siteGetPayments } from "../../../src/shared/apollo/graphql/queries/payments/siteGetPayments";
 
@@ -37,15 +36,14 @@ const Courses = () => {
     {
       title: "نوع",
       key: "price",
-      render: (row) => <>{row.type === "course" ? "دوره" : "محصول"}</>,
+      render: (row) => <>{row.type === "event" ? "رویداد" : "محصول"}</>,
     },
     {
       title: "مبلغ",
       key: "duration",
       render: (row) => (
         <span>
-          {currencyType()}
-          {row.amount.toLocaleString()}
+          {row.amount.toLocaleString()} {currencyType()}
         </span>
       ),
     },
@@ -72,7 +70,11 @@ const Courses = () => {
       dataIndex: "status",
       width: 100,
       render: (status) => {
-        return <Tag>{status}</Tag>;
+        return status ? (
+          <Tag color="green">پرداخت شده</Tag>
+        ) : (
+          <Tag color="red">پرداخت نشده</Tag>
+        );
       },
     },
   ];

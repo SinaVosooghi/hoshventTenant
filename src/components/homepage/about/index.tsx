@@ -2,9 +2,13 @@ import { Button, Col, Row, Space } from "antd";
 import Image from "next/dist/client/image";
 // @ts-ignore
 import { Fade, Slide } from "react-reveal";
+import parse from "html-react-parser";
+import useGetSetting from "../../../hooks/useGetSetting";
+import Link from "next/link";
 
 require("./style.less");
 const HomeAbout = () => {
+  const { data } = useGetSetting();
   return (
     <div id="home-about">
       <Row justify="center">
@@ -14,34 +18,24 @@ const HomeAbout = () => {
               <div className="about-content">
                 <div className="about-title">
                   <h1>
-                    معرفی <strong> محصول</strong>
+                    معرفی <strong> سایت</strong>
                   </h1>
                 </div>
-                <ul>
-                  <li> سامانه نرم افزاری مدیریت الکترونیک مبتنی بر بارکد و</li>
-                  <li> راه‌اندازی بخش ارائه مقالات پوستری به صورت الکترونیک</li>
-                  <li> سامانه جامع مسابقات علمی و فرهنگی (عکس، فیلم و …)</li>
-                  <li> سامانه برگزاری انتخابات انجمن‌ها و سازمان‌ها</li>
-                  <li>
-                    سیستم مدیریت متمرکز ارئه سخنرانی‌های در محل رویداد (چک
-                    اسلاید)
-                  </li>
-                  <li>
-                    ضبط نرم افزاری سخنرانی و تهیه لوح فشرده کل سخنرانی‌های
-                    رویداد
-                  </li>
-                </ul>
+                {data?.body && parse(data?.body)}
+
                 <Space align="center" className="about-meta">
-                  <Button type="primary" size="large" className="about-button">
-                    شروع کنید
-                    <Image
-                      src="/assets/icons/arrow-left.png"
-                      height={12}
-                      width={18}
-                      alt="arrow"
-                    />
-                  </Button>
-                  <span className="shop-link">خدمات رستا</span>
+                  <Link href="/about">
+                    <Button type="primary" size="large" className="about-button">
+                      بیشتر بدانید
+                      <Image
+                        src="/assets/icons/arrow-left.png"
+                        height={12}
+                        width={18}
+                        alt="arrow"
+                      />
+                    </Button>
+                  </Link>
+                  <span className="shop-link">خدمات {data?.title}</span>
                 </Space>
               </div>
             </Col>

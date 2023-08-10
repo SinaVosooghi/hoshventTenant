@@ -40,16 +40,16 @@ export default function Register() {
     firstName,
     lastName,
   }: any) => {
-    return false;
-    setLoading(true);
     axios
-      .post(process.env.NEXT_PUBLIC_SITE + "/auth/register", {
+      .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/register", {
         email,
         password,
         remember,
         mobilenumber,
         lastName,
         firstName,
+        // @ts-ignore
+        siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       })
       .then(({ data }) => {
         setLoading(false);
@@ -70,9 +70,9 @@ export default function Register() {
             message: firstName + " " + lastName,
             description: "شما وارد حساب کاربریتان شدید",
           });
-          if (type === "teacher") {
+          if (type === "instructor") {
             router.push("/dashboard");
-          } else if (type === "student") {
+          } else if (type === "user") {
             router.push("/panel");
           }
         }
@@ -116,6 +116,7 @@ export default function Register() {
                     <Form.Item
                       label="نام"
                       name="firstName"
+                      hasFeedback
                       rules={[{ required: true, min: 4 }]}
                     >
                       <Input size="large" />
@@ -124,6 +125,7 @@ export default function Register() {
                     <Form.Item
                       label="نام خانوادگی"
                       name="lastName"
+                      hasFeedback
                       rules={[{ required: true, min: 4 }]}
                     >
                       <Input size="large" />
@@ -131,6 +133,7 @@ export default function Register() {
                     <Form.Item
                       label="ایمیل"
                       name="email"
+                      hasFeedback
                       rules={[{ required: true, type: "email" }]}
                     >
                       <Input size="large" placeholder="john@doe.com" />
@@ -139,6 +142,7 @@ export default function Register() {
                     <Form.Item
                       label="شماره موبایل"
                       name="mobilenumber"
+                      hasFeedback
                       rules={[
                         {
                           required: true,
@@ -149,6 +153,7 @@ export default function Register() {
                       <InputNumber
                         style={{ width: "100%" }}
                         size="large"
+                        
                         maxLength={11}
                         placeholder="09121232323"
                       />
@@ -157,6 +162,7 @@ export default function Register() {
                     <Form.Item
                       label="رمزعبور"
                       name="password"
+                      hasFeedback
                       rules={[
                         {
                           required: true,
@@ -165,6 +171,29 @@ export default function Register() {
                       ]}
                     >
                       <Input.Password size="large" />
+                    </Form.Item>
+
+                    <Form.Item
+                      name="confirm"
+                      label="تایید رمزعبور"
+                      dependencies={['password']}
+                      hasFeedback
+                      rules={[
+                        {
+                          required: true,
+                          message: 'لطفا رمز عبور خود را تایید کنید!',
+                        },
+                        ({ getFieldValue }) => ({
+                          validator(_, value) {
+                            if (!value || getFieldValue('password') === value) {
+                              return Promise.resolve();
+                            }
+                            return Promise.reject(new Error('رمز جدیدی که وارد کردید مطابقت ندارد!'));
+                          },
+                        }),
+                      ]}
+                    >
+                      <Input.Password />
                     </Form.Item>
 
                     <Form.Item name="remember" valuePropName="checked">

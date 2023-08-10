@@ -10,10 +10,12 @@ import Plan from "../../datamodel/Plan";
 import PlanItem from "./planItem";
 import { useQuery } from "@apollo/client";
 import { siteGetPlans } from "../../shared/apollo/graphql/queries/plans/siteGetPlans";
+import { siteGetWorkshops } from "../../shared/apollo/graphql/queries/workshop/siteGetWorkshops";
+import Workshop from "../../datamodel/Workshop";
+import WorkshopItem from "./workshopItem";
 require("./style.less");
 
-const 
-PlanSlider = ({
+const PlanSlider = ({
   loading,
   title,
   subTitle,
@@ -51,13 +53,15 @@ PlanSlider = ({
     },
   };
 
-  const { data: plans } = useQuery(siteGetPlans, {
+  const { data: workshopsApi } = useQuery(siteGetWorkshops, {
     notifyOnNetworkStatusChange: true,
     variables: {
       input: {
         limit: 6,
         skip: 0,
         status: true,
+        // @ts-ignore
+        siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       },
     },
   });
@@ -89,13 +93,15 @@ PlanSlider = ({
                 navigation={true}
                 modules={[Autoplay, Navigation]}
               >
-                {plans?.plansApi?.plans?.map((plan: Plan) => (
-                  <SwiperSlide key={plan?.id}>
-                    <Link href={`/plan/${plan?.slug}`}>
-                      <PlanItem plan={plan} />
-                    </Link>
-                  </SwiperSlide>
-                ))}
+                {workshopsApi?.workshopsApi?.workshops?.map(
+                  (workshop: Workshop) => (
+                    <SwiperSlide key={workshop?.id}>
+                      <Link href={`/plan/${workshop?.slug}`}>
+                        <WorkshopItem workshop={workshop} />
+                      </Link>
+                    </SwiperSlide>
+                  )
+                )}
               </Swiper>
             </Fade>
           </div>

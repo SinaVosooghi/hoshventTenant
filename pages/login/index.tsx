@@ -30,10 +30,9 @@ export default function Login() {
   const router = useRouter();
 
   const onFinish = ({ password, email, remember }: any) => {
-    return false;
     setLoading(true);
     axios
-      .post(process.env.NEXT_PUBLIC_SITE + "/auth/login", {
+      .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/login", {
         email,
         password,
         remember,
@@ -57,11 +56,11 @@ export default function Login() {
             message: firstName + " " + lastName,
             description: "شما وارد حساب کاربریتان شدید",
           });
-          if (type === "teacher") {
+          if (type === "instructor") {
             router.push("/dashboard");
-          } else if (type === "student") {
-            router.push("/panel");
           } else if (type === "user") {
+            router.push("/panel");
+          } else {
             router.push("/panel");
           }
         }

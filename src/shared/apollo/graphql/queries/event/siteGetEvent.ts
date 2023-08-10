@@ -13,24 +13,33 @@ export const siteGetEvent = gql`
       video
       price
       offprice
-      classlink
-      prerequisite {
-        title
-      }
-      organizer {
-        id
-        firstName
-        lastName
-      }
-      attendees {
-        id
-      }
       slug
       body
       seobody
       category {
         id
         title
+      }
+      halls{
+        id
+        title
+        body
+        workshops {
+          id
+          title
+          slug
+          price
+          body
+          start_date
+        }
+        seminars {
+          id
+          title
+          slug
+          price
+          body
+          start_date
+        }
       }
       featured
       status

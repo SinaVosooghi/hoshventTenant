@@ -61,7 +61,7 @@ const ProductsOffers = () => {
                   <CheckOutlined />
                 </span>
                 <h2>
-                  دوره های <br /> <strong>ویـژه</strong>
+                  رویداد های <br /> <strong>ویـژه</strong>
                 </h2>
               </div>
             </Col>

@@ -109,16 +109,7 @@ const PanelLayout = ({ children }: any) => {
 
   const items: MenuItem[] = [
     getItem("داشبورد", "/panel", <DashboardOutlined rev={undefined} />),
-    getItem("دوره های من", "/panel/courses", <BookOutlined rev={undefined} />),
-    getItem(
-      "علاقمندی ها",
-      "/panel/favorites",
-      <HeartOutlined rev={undefined} />,
-      undefined,
-      undefined,
-      false
-    ),
-
+    getItem("رویداد های من", "/panel/events", <BookOutlined rev={undefined} />),
     getItem(
       "پیام ها",
       "/panel/chats",
@@ -136,16 +127,6 @@ const PanelLayout = ({ children }: any) => {
       false,
       false
     ),
-    getItem(
-      "مدارک",
-      "/panel/certificates",
-      <TrophyOutlined rev={undefined} />,
-      undefined,
-      undefined,
-      false,
-      true
-    ),
-
     getItem(
       "تنظیمات",
       "/panel/settings",
@@ -181,7 +162,7 @@ const PanelLayout = ({ children }: any) => {
           <NextSeo title="پنل کاربری" noindex />
           <MainHeader />
           <MainBreadCrumb />
-          {user?.type === "student" ? (
+          {user?.type === "user" ? (
             <Content>
               <Drawer
                 placement="right"
@@ -213,7 +194,7 @@ const PanelLayout = ({ children }: any) => {
                       <Menu
                         className="dashboard-menu"
                         onClick={onClick}
-                        style={{ width: 256 }}
+                        style={{ width: 265 }}
                         mode="inline"
                         items={items}
                         triggerSubMenuAction="click"

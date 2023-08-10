@@ -45,7 +45,7 @@ const Courses = ({ hideCount = false }: { hideCount?: Boolean }) => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "عنوان دوره",
+      title: "عنوان رویداد",
       key: "title",
       render: (row) => (
         <Link passHref href={`/dashboard/courses/edit?id=${row.id}`}>
@@ -134,9 +134,9 @@ const Courses = ({ hideCount = false }: { hideCount?: Boolean }) => {
 
   return (
     <>
-      <NextSeo title="دوره ها" noindex />
+      <NextSeo title="رویداد ها" noindex />
       <Card
-        title={<h3>لیست دوره ها</h3>}
+        title={<h3>لیست رویداد ها</h3>}
         loading={loading}
         extra={
           <Button
@@ -144,7 +144,7 @@ const Courses = ({ hideCount = false }: { hideCount?: Boolean }) => {
             type="primary"
             icon={<PlusOutlined rev={undefined} />}
           >
-            افزودن دوره
+            افزودن رویداد
           </Button>
         }
       >
@@ -153,7 +153,7 @@ const Courses = ({ hideCount = false }: { hideCount?: Boolean }) => {
             <Col span={24}>
               <Statistic
                 loading={loading}
-                title="تعداد کل دوره ها"
+                title="تعداد کل رویداد ها"
                 value={courses?.courses?.count}
                 prefix={<ReadOutlined rev={undefined} />}
               />

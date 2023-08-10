@@ -18,13 +18,13 @@ const CourseCheckoutInfo = ({ course }: { course: Course | null }) => {
   return (
     <div className="course-checkout-info">
       <div className="course-checkout-title">
-        <span>دوره</span>
+        <span>رویداد</span>
         <h1>{course?.title}</h1>
       </div>
       <div className="organizer-detail">
         <Avatar size={64} icon={<UserOutlined rev={undefined} />} />
         <div>
-          <span>مکلاس دوره</span>
+          <span>مکلاس رویداد</span>
           <p>
             {course?.organizer?.firstName} {course?.organizer?.lastName}
           </p>
@@ -69,7 +69,7 @@ const CourseCheckoutInfo = ({ course }: { course: Course | null }) => {
       </div>
       {course?.body && (
         <div className="course-excerpt">
-          <span>معرفی کوتاه دوره</span>
+          <span>معرفی کوتاه رویداد</span>
           {course?.body && parse(course?.body)}
         </div>
       )}

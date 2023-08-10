@@ -20,6 +20,25 @@ export const siteGetEventApi = gql`
         id
         title
       }
+      halls{
+        id
+        title
+        body
+        workshops {
+          id
+          title
+          slug
+          price
+          body
+        }
+        seminars {
+          id
+          title
+          slug
+          price
+          body
+        }
+      }
       featured
       status
       created

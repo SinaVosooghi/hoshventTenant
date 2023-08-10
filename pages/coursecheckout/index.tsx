@@ -42,9 +42,9 @@ const CourseCheckout = () => {
 
   return (
     <>
-      <NextSeo title={`خرید دوره ${selectedCourse?.title}`} />
+      <NextSeo title={`خرید رویداد ${selectedCourse?.title}`} />
       <div id="buy-course">
-        <MainBreadCrumb activeItem="ثبت نام در دوره" />
+        <MainBreadCrumb activeItem="ثبت نام در رویداد" />
         {!selectedCourse ? (
           <Empty
             image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
@@ -53,7 +53,7 @@ const CourseCheckout = () => {
             description={<span>سبد خرید خالیست</span>}
           >
             <Button onClick={() => router.push("/courses")}>
-              مشاهده دوره ها
+              مشاهده رویداد ها
             </Button>
           </Empty>
         ) : (
@@ -65,7 +65,7 @@ const CourseCheckout = () => {
                     <div className="course-content-title">
                       <img src="/assets/course/user.png" alt="slide" />
                       <div className="text-content">
-                        <h1>ثبت نام در دوره</h1>
+                        <h1>ثبت نام در رویداد</h1>
                         <p>
                           کالاهای موجود در سبد شما ثبت و رزرو نشده‌اند، برای ثبت
                           سفارش مراحل بعدی را تکمیل کنید

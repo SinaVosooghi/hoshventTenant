@@ -61,7 +61,7 @@ const Review = ({
         title = "مقاله";
         break;
       case "course":
-        title = "دوره";
+        title = "رویداد";
         break;
       case "product":
         title = "محصول";

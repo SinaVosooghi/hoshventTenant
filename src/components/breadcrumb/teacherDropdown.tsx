@@ -15,11 +15,11 @@ const TeacherDropdown = ({ user }: { user: User | null }) => {
     },
     {
       key: "2",
-      label: <Link href="/dashboard/lessons">کلاس ها</Link>,
+      label: <Link href="/dashboard/events">رویداد ها</Link>,
     },
     {
       key: "3",
-      label: <Link href="/dashboard/courses">دوره ها</Link>,
+      label: <Link href="/dashboard/chats">پیام ها</Link>,
     },
     {
       key: "4",

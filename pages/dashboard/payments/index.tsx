@@ -84,7 +84,7 @@ const Courses = () => {
     {
       title: "نوع",
       key: "type",
-      render: (row) => <span>{row.type === "course" ? "دوره" : "محصول"}</span>,
+      render: (row) => <span>{row.type === "course" ? "رویداد" : "محصول"}</span>,
     },
 
     {
@@ -110,7 +110,7 @@ const Courses = () => {
     {
       title: "نوع",
       key: "price",
-      render: (row) => <>{row.type === "course" ? "دوره" : "محصول"}</>,
+      render: (row) => <>{row.type === "course" ? "رویداد" : "محصول"}</>,
     },
     {
       title: "ثبت شده",

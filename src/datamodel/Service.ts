@@ -7,4 +7,6 @@ export default interface Service {
   title: string;
   body: string;
   price: number;
+  workshops: any;
+  seminars: any
 }

@@ -46,6 +46,8 @@ const CategoriesSlider = () => {
         limit: 14,
         skip: 0,
         featured: true,
+        // @ts-ignore
+        siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       },
     },
   });

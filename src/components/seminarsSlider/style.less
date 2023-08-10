@@ -1,0 +1,184 @@
+#featured-plans {
+  min-height: 1030px;
+  width: 100%;
+  background: center top url("/assets/plans-slider.png") no-repeat;
+  background-size: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .arrow {
+    position: absolute;
+    top: -55px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
+  .featured-slider-item {
+    background: #fff;
+    width: 100%;
+    height: 200px;
+    border-radius: 35px;
+    padding: 37px;
+    overflow: visible;
+    cursor: pointer;
+    position: relative;
+    display: grid;
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.09);
+    &:hover {
+      button {
+        background-color: #0f295d !important;
+        color: #fff !important;
+      }
+      &::after {
+        background-color: #4a90e2;
+      }
+    }
+
+    .item-content {
+      .item-title {
+        font-size: 18px;
+        font-weight: 900;
+        margin: 20px 0 15px 0;
+        text-align: center;
+        margin-top: 0;
+        color: #2d365d;
+        transition: all 0.3s;
+      }
+    }
+    .item-button {
+      position: relative;
+      border-top: 1px dotted #c3cddc;
+      align-items: center;
+      justify-content: space-between;
+      align-self: center;
+      padding-top: 20px;
+
+      .item-price {
+        text-align: center;
+        .item-currency {
+          font-weight: 100;
+          font-size: 13px;
+          color: #2d365d;
+          margin: 0;
+        }
+        .item-regular-price {
+          color: #49be78;
+          font-weight: 800;
+          line-height: 13px;
+          font-size: 24px;
+          margin: 0;
+        }
+      }
+    }
+    &::after {
+      content: "";
+      background-color: rgba(221, 224, 231, 0.15);
+      border-radius: 35px;
+      z-index: -1;
+      width: 85%;
+      right: 0;
+      left: 0;
+      margin: 0 auto;
+      position: absolute;
+      height: 50px;
+      bottom: -4px;
+    }
+    &::before {
+      content: "";
+      transition: all 0.3s;
+      background-color: rgba(221, 224, 231, 0.15);
+      border-radius: 35px;
+      z-index: -1;
+      width: 85%;
+      right: 0;
+      left: 0;
+      margin: 0 auto;
+      position: absolute;
+      height: 40px;
+      top: -4px;
+    }
+  }
+  &.section {
+    &.featured {
+      .section-actions {
+        text-align: left;
+        .actions-btn {
+          position: relative;
+          button {
+            position: relative;
+            z-index: 5;
+            margin-left: 45px;
+            height: 43px;
+            padding: 0 30px;
+            border-radius: 15px;
+            color: #2d365d;
+            border: none;
+            background: rgb(255, 255, 255);
+            background: linear-gradient(
+              34deg,
+              rgba(255, 255, 255, 1) 0%,
+              rgba(182, 189, 199) 100%
+            );
+            &:hover {
+              color: #fff;
+            }
+          }
+          .actions-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            height: 43px;
+            padding: 0 20px;
+            padding-right: 50px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: rgb(255, 255, 255);
+            background: linear-gradient(
+              34deg,
+              rgba(255, 255, 255, 1) 0%,
+              rgba(182, 189, 199) 100%
+            );
+          }
+        }
+      }
+      .section-title {
+        display: flex;
+        gap: 60px;
+        h2 {
+          color: #fff;
+          font-size: 22px;
+          font-weight: 100;
+          strong {
+            font-size: 30px;
+            font-weight: 900;
+          }
+        }
+
+        .icon-btn {
+          width: 34px;
+          height: 34px;
+          background-color: #0a3ca0;
+          color: #0055ff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 12px;
+          &::after {
+            content: "";
+            width: 65px;
+            height: 65px;
+            border: 4px solid rgba(10, 60, 160, 0.3);
+            position: absolute;
+            border-radius: 25px;
+          }
+        }
+      }
+      .main-swiper {
+        padding: 30px 0;
+      }
+    }
+  }
+}

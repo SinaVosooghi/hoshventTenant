@@ -7,26 +7,22 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
 import {
   ArrowLeftOutlined,
-  BookOutlined,
   BookTwoTone,
-  HomeOutlined,
   HomeTwoTone,
   MenuOutlined,
-  PhoneOutlined,
   PhoneTwoTone,
-  ShoppingOutlined,
   ShoppingTwoTone,
   VideoCameraTwoTone,
 } from "@ant-design/icons";
 import CartItem from "./cartItem";
-import Product from "../../datamodel/Product";
 import currencyType from "../currency";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { User } from "../../datamodel";
 import { getUserFromCookie } from "../../util/utils";
 import StudentDropdown from "../breadcrumb/studentDropdown";
 import TeacherDropdown from "../breadcrumb/teacherDropdown";
 import useGetSetting from "../../hooks/useGetSetting";
+import Event from "../../datamodel/Event";
 
 const MainHeader = () => {
   const [open, setOpen] = useState(false);
@@ -44,7 +40,8 @@ const MainHeader = () => {
   const router = useRouter();
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
-  useCallback(() => {
+  useEffect(() => {
+    console.log(user)
     if (getUserFromCookie()) {
       setUser(getUserFromCookie());
     }
@@ -98,7 +95,7 @@ const MainHeader = () => {
           >
             <VideoCameraTwoTone twoToneColor="#F79826" rev={undefined} />
             <Link href={"/courses"} onClick={() => setOpen(false)}>
-              دوره ها
+              رویداد ها
             </Link>
           </li>
 
@@ -148,8 +145,8 @@ const MainHeader = () => {
             )}
           </Button>
 
-          {user?.type === "student" && <StudentDropdown user={user} />}
-          {user?.type === "teacher" && <TeacherDropdown user={user} />}
+          {user?.type === "user" && <StudentDropdown user={user} />}
+          {user?.type === "instructor" && <TeacherDropdown user={user} />}
 
           {!user && (
             <Link href={"/login"} onClick={() => setOpen(false)}>
@@ -179,17 +176,17 @@ const MainHeader = () => {
                       }`}
                       className="compare-thumbnail"
                       height={55}
-                      alt={"LOgo"}
+                      alt={"Logo"}
                     />
                   </div>
                 </Link>
 
                 <div id="account">
                   <div className="header-phone">
-                    {data?.support && (
+                    {data?.phonenumber && (
                       <div className="button-content">
                         <p>
-                          <strong>{data?.support}</strong>
+                          <strong>{data?.phonenumber}</strong>
                         </p>
                         پشتیبانی سریع{" "}
                       </div>
@@ -202,7 +199,7 @@ const MainHeader = () => {
                       alt="search"
                     />
                   </div>
-{/* 
+
                   <Button className="header-search">
                     <Image
                       src="/assets/icons/search.png"
@@ -210,10 +207,12 @@ const MainHeader = () => {
                       width={20}
                       alt="search"
                     />
-                  </Button> */}
+                  </Button>
 
-                  {/* {user?.type === "student" && <StudentDropdown user={user} />}
-                  {user?.type === "teacher" && <TeacherDropdown user={user} />}
+                  {user?.type === "user" && <StudentDropdown user={user} />}
+                  {user?.type === "instructor" && (
+                    <TeacherDropdown user={user} />
+                  )}
 
                   {!user && (
                     <Link href={"/login"}>
@@ -229,10 +228,10 @@ const MainHeader = () => {
                         ثبت نام / ورود
                       </Button>
                     </Link>
-                  )} */}
+                  )}
                 </div>
               </div>
-{/* 
+
               <Dropdown
                 trigger={["hover"]}
                 placement="bottomLeft"
@@ -251,9 +250,9 @@ const MainHeader = () => {
                           </Link>
                         </div>
 
-                        {cartItems.map((item: Product) => (
+                        {cartItems.map((item: Event) => (
                           <span key={item.id}>
-                            <CartItem product={item} />
+                            <CartItem event={item} />
                           </span>
                         ))}
 
@@ -287,7 +286,7 @@ const MainHeader = () => {
                   />
                   <span>{cartItems?.length ?? 0}</span>
                 </Link>
-              </Dropdown> */}
+              </Dropdown>
             </div>
             <div className="nav-items">
               <span className="nav-circle"></span>
@@ -297,20 +296,34 @@ const MainHeader = () => {
                 </li>
                 <li
                   className={
-                    router.asPath === "/plans/" ||
-                    router.route === "/plans/[[...event]]"
+                    router.asPath === "/events/" ||
+                    router.route === "/events/[[...event]]"
                       ? "active"
                       : ""
                   }
                 >
-                  <Link href={"/plans"}> نسخه ها و قیمت </Link>
+                  <Link href={"/events"}>رویدادها</Link>
                 </li>
 
-                <li className={router.asPath === "/google" ? "active" : ""}>
-                  <Link href={"/"}>مرکز همایش ها </Link>
+                <li
+                  className={
+                    router.asPath === "/workshops/" ||
+                    router.route === "/workshops/[[...workshop]]"
+                      ? "active"
+                      : ""
+                  }
+                >
+                  <Link href={"/workshops"}>ورکشاپ ها</Link>
                 </li>
-                <li className={router.asPath === "/products/" ? "active" : ""}>
-                  <Link href={"/products"}> سایر محصولات</Link>
+                <li
+                  className={
+                    router.asPath === "/seminars/" ||
+                    router.route === "/seminars/[[...seminar]]"
+                      ? "active"
+                      : ""
+                  }
+                >
+                  <Link href={"/seminars"}>سمینار ها</Link>
                 </li>
                 <li className={router.asPath === "/contact/" ? "active" : ""}>
                   <Link href={"/contact"}> تماس با ما</Link>

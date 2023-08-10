@@ -39,7 +39,7 @@ const Edit = () => {
                               <Descriptions.Item label="نوع">
                                 {item.lesson?.type}
                               </Descriptions.Item>
-                              <Descriptions.Item label="طول دوره">
+                              <Descriptions.Item label="طول رویداد">
                                 {item.lesson.duration ?? "-"}
                               </Descriptions.Item>
                               <Descriptions.Item label="عمومی">

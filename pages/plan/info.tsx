@@ -151,15 +151,15 @@ const EventInfo = ({
             "رایگان"
           )}
         </div>
-        {user?.type !== "student" ? (
-          <Tooltip title={"فقط کاربران هنرجو اجازه خرید دوره را دارند!"}>
+        {user?.type !== "user" ? (
+          <Tooltip title={"فقط کاربران هنرجو اجازه خرید رویداد را دارند!"}>
             <Button disabled block className="buy-disabled buy-btn">
-              خرید دوره
+              خرید رویداد
             </Button>
           </Tooltip>
         ) : //@ts-ignore
         checkData?.checkCourseApi.alreadyBought ? (
-          <Tooltip title={"شما این دوره را قبلا خریداری کرده اید"}>
+          <Tooltip title={"شما این رویداد را قبلا خریداری کرده اید"}>
             <Button
               disabled={!user}
               block
@@ -171,7 +171,7 @@ const EventInfo = ({
             </Button>
           </Tooltip>
         ) : (
-          <Tooltip title={!user ? "جهت خرید دوره وارد حساب کاربری شوید" : ""}>
+          <Tooltip title={!user ? "جهت خرید رویداد وارد حساب کاربری شوید" : ""}>
             <Button
               disabled={!user}
               block
@@ -179,7 +179,7 @@ const EventInfo = ({
               onClick={buyCourse}
               className={`${!user ? "buy-disabled" : ""} buy-btn`}
             >
-              خرید دوره
+              خرید رویداد
             </Button>
           </Tooltip>
         )}

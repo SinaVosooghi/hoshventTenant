@@ -60,7 +60,7 @@ const PlanItem = ({}: // plansApi,
 
     if (!checkData?.checkPlanApi.alreadyBought) {
       if (!lesson?.public) {
-        return <Button disabled> خرید دوره</Button>;
+        return <Button disabled> خرید رویداد</Button>;
       }
     }
 

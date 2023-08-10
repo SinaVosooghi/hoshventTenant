@@ -13,18 +13,16 @@ import Setting from "../../src/datamodel/Setting";
 import useGetSetting from "../../src/hooks/useGetSetting";
 import { renderCurrency } from "../../src/util/utils";
 import Product from "../../src/datamodel/Product";
+import Event from "../../src/datamodel/Event";
+import usePayment from "../../src/hooks/usePayment";
 
 require("./style.less");
-const stripePromise = loadStripe(
-  //@ts-ignore
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
 
 const CourseCheckout = () => {
   const { items, discount } = useSelector((state: RootState) => state.cart);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const { data }: { data: Setting } = useGetSetting();
 
   const total = () => {
@@ -80,15 +78,15 @@ const CourseCheckout = () => {
               </tr>
             </thead>
             <tbody>
-              {items?.map((product: Product) => {
+              {items?.map((event: Event) => {
                 return (
-                  <tr key={product.id}>
+                  <tr key={event.id}>
                     <td width={"10%"}>1</td>
-                    <td width={"50%"}>{product?.title}</td>
-                    <td width={"10%"}>{product?.qty}</td>
+                    <td width={"50%"}>{event?.title}</td>
+                    <td width={"10%"}>{event?.qty}</td>
                     <td width={"10%"} className="left-align">
                       <div className="currency-text">
-                        {(product?.price * product?.qty).toLocaleString()}
+                        {(event?.price * event?.qty).toLocaleString()}
                         <small>{renderCurrency(data?.currency)} </small>
                       </div>
                     </td>
@@ -160,11 +158,15 @@ const CourseCheckout = () => {
     }
   };
 
+  const payment = () => {
+    router.push("/coursepayment");
+  };
+
   return (
     <>
       <NextSeo title={`پرداخت`} />
       <div id="buy-course">
-        <MainBreadCrumb activeItem="ثبت نام در دوره" />
+        <MainBreadCrumb activeItem="ثبت نام در رویداد" />
         {!items ? (
           <Empty
             image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
@@ -173,7 +175,7 @@ const CourseCheckout = () => {
             description={<span>سبد خرید خالیست</span>}
           >
             <Button onClick={() => router.push("/courses")}>
-              مشاهده دوره ها
+              مشاهده رویداد ها
             </Button>
           </Empty>
         ) : (
@@ -185,7 +187,7 @@ const CourseCheckout = () => {
                     <div className="course-content-title">
                       <img src="/assets/course/user.png" alt="slide" />
                       <div className="text-content">
-                        <h1> اطلاعات پرداخت </h1>
+                        <h1> اطلاعات پرداخت</h1>
                         <p>
                           کالاهای موجود در سبد شما ثبت و رزرو نشده‌اند، برای ثبت
                           سفارش مراحل بعدی را تکمیل کنید
@@ -202,16 +204,13 @@ const CourseCheckout = () => {
                         {items ? <>{renderPrice()}</> : "رایگان"}{" "}
                       </div>
                     </div>
-
-                    <Elements stripe={stripePromise}>
-                      <PaymentForm
-                        setLoading={setLoading}
-                        loading={loading}
-                        items={items}
-                        total={Math.round(data?.tax * total()) / 100 + total()}
-                        type="shop"
-                      />
-                    </Elements>
+                    <PaymentForm
+                      setLoading={setLoading}
+                      loading={loading}
+                      items={items}
+                      total={Math.round(data?.tax * total()) / 100 + total()}
+                      type="event"
+                    />
                   </div>
                 </Col>
               </Row>

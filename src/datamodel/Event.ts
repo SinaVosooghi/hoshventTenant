@@ -27,4 +27,5 @@ export default interface Event {
   favorite: any[];
   like: any[];
   reviews: any[];
+  qty?: number
 }

@@ -35,7 +35,7 @@ const Courses = () => {
     {
       title: "نوع",
       key: "type",
-      render: (row) => <Tag>{row.course?.title ? "دوره" : "محصول"}</Tag>,
+      render: (row) => <Tag>{row.course?.title ? "رویداد" : "محصول"}</Tag>,
     },
 
     {

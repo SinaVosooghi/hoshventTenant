@@ -151,7 +151,7 @@ const Teacher = () => {
                   </p>
                   <p>
                     <span>{data?.getTeacher?.courses?.length}</span>
-                    دوره
+                    رویداد
                   </p>
                 </div>
               </div>
@@ -220,7 +220,7 @@ const Teacher = () => {
         <CourseSlider
           items={data?.getTeacher?.courses}
           loading={loading}
-          title="دوره های"
+          title="رویداد های"
           subTitle={
             data?.getTeacher?.firstName + " " + data?.getTeacher?.lastName ??
             "استاد"
