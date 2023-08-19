@@ -6,10 +6,13 @@ import MainHeader from "../../components/header";
 import { siteGetUser } from "../../shared/apollo/graphql/queries/user/siteGetUser";
 import { useEffect } from "react";
 import { User } from "../../datamodel";
+import { useRouter } from "next/router";
 
 const { Content, Footer } = Layout;
 
 const PublicLayout = ({ children }: any) => {
+  const router = useRouter();
+
   const [getUser] = useLazyQuery(siteGetUser, {
     fetchPolicy: "network-only",
     onError: (err) => {
@@ -37,13 +40,19 @@ const PublicLayout = ({ children }: any) => {
 
   return (
     <Layout>
-      <MainHeader />
+      {router.pathname !== "/kiosk" && router.pathname !== "/scanner" && (
+        <MainHeader />
+      )}
       <Content>
         <Row justify="center">{children}</Row>
       </Content>
-      <Footer>
-        <MainFooter />
-      </Footer>
+      {router.pathname !== "/kiosk" && router.pathname !== "/scanner" && (
+        <>
+          <Footer>
+            <MainFooter />
+          </Footer>
+        </>
+      )}
     </Layout>
   );
 };

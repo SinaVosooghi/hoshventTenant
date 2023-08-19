@@ -2,12 +2,12 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { Button, Card, message, notification } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { QrReader } from "react-qr-reader";
-import { siteGetTimeline } from "../../../src/shared/apollo/graphql/queries/timeline/siteGetTimeline";
 import moment from "jalali-moment";
 import { ReactQrCode } from "@devmehq/react-qr-code";
-import { siteCheckin } from "../../../src/shared/apollo/graphql/mutations/timeline/siteChekin";
-import { siteCheckout } from "../../../src/shared/apollo/graphql/mutations/timeline/siteCheckout";
 import ReactToPrint from "react-to-print";
+import { siteGetTimeline } from "../../src/shared/apollo/graphql/queries/timeline/siteGetTimeline";
+import { siteCheckin } from "../../src/shared/apollo/graphql/mutations/timeline/siteChekin";
+import { siteCheckout } from "../../src/shared/apollo/graphql/mutations/timeline/siteCheckout";
 
 require("./style.less");
 
@@ -115,13 +115,12 @@ const Scanner = () => {
   };
 
   return (
-    <Card>
+    <Card id="scanner" style={{ margin: "50px 0" }}>
       <div className="camera">
         <QrReader
           constraints={{ facingMode: "user" }}
           onResult={(result, error) => {
             if (!!result) {
-              console.log(result?.text);
               setData(result?.text);
             }
 
@@ -129,8 +128,8 @@ const Scanner = () => {
               console.info(error);
             }
           }}
-          videoStyle={{ borderRadius: "250px" }}
-          containerStyle={{ width: "100%" }}
+          videoStyle={{ borderRadius: "20px" }}
+          containerStyle={{ width: "100%", borderRadius: "20px" }}
         />
       </div>
       {attendee && (
