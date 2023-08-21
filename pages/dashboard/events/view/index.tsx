@@ -2,20 +2,15 @@
 import { useQuery } from "@apollo/client";
 import {
   Alert,
-  Badge,
   Button,
   Col,
   Descriptions,
-  Divider,
   List,
   Row,
-  Tag,
+  Card,
 } from "antd";
-import Card from "antd/es/card/Card";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import Lesson from "../../../../src/datamodel/Lesson";
 import moment from "jalali-moment";
 import parse from "html-react-parser";
 import { siteGetEvent } from "../../../../src/shared/apollo/graphql/queries/event/siteGetEvent";
@@ -28,73 +23,6 @@ const Edit = () => {
     // @ts-ignore
     variables: { id: parseFloat(id) },
   });
-
-  const renderButton = (lesson: Lesson) => {
-    switch (lesson?.type) {
-      case "conference": {
-        const isBefore = moment().isBefore(
-          lesson?.conferenceoptions?.startdate
-        );
-        if (!isBefore && lesson.type === "conference") {
-          return <Button disabled>برگزار شده</Button>;
-        }
-
-        return (
-          <a
-            href={"/panel/conference/" + lesson?.slug}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Button type="dashed" target="_blank">
-              شرکت در کلاس آنلاین
-            </Button>
-          </a>
-        );
-      }
-
-      case "text":
-        return (
-          <Button
-            type="primary"
-            onClick={() => {
-              router.push(`/lesson/${lesson.slug}`);
-            }}
-          >
-            مشاهده کلاس
-          </Button>
-        );
-      case "video": {
-        if (lesson.videooptions.type === "video") {
-          return (
-            <Button
-              type="primary"
-              onClick={() => {
-                router.push(`/lesson/${lesson.slug}`);
-              }}
-            >
-              مشاهده کلاس
-            </Button>
-          );
-        } else {
-          return (
-            <Link href={lesson?.videooptions?.link ?? "#"} target="_blank">
-              <Button type="primary">مشاهده ویدئو</Button>
-            </Link>
-          );
-        }
-      }
-      default:
-        return (
-          <Button
-            onClick={() => {
-              router.push(`/lesson/${lesson.slug}`);
-            }}
-          >
-            مشاهده کلاس
-          </Button>
-        );
-    }
-  };
 
   return (
     <>
