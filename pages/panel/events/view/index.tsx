@@ -10,10 +10,9 @@ import {
   List,
   Row,
   Space,
-  Tag,
+  Card,
   Typography,
 } from "antd";
-import Card from "antd/es/card/Card";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import Link from "next/link";
