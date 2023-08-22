@@ -121,7 +121,6 @@ const Scanner = () => {
           constraints={{ facingMode: "user" }}
           onResult={(result, error) => {
             if (!!result) {
-              console.log(result?.text);
               setData(result?.text);
             }
 

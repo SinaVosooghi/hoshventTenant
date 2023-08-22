@@ -117,7 +117,7 @@ export default function Register() {
                       label="نام"
                       name="firstName"
                       hasFeedback
-                      rules={[{ required: true, min: 4 }]}
+                      rules={[{ required: true, min: 3 }]}
                     >
                       <Input size="large" />
                     </Form.Item>

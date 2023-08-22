@@ -5,6 +5,7 @@ import { notification } from "antd";
 import { useRouter } from "next/dist/client/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "../shared/store";
+import { useLocation } from 'react-router-dom';
 
 function usePayment({
   itemId,
@@ -25,13 +26,12 @@ function usePayment({
 
   const [pay] = useMutation(siteCreatePayment, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: ({ createPayment }) => {
+    onCompleted: ({ doPayment }) => {
       setLoading(false);
-      if (createPayment) {
-        notification.success({ message: "پرداخت با موفقیت انجام شد" });
+      if (doPayment) {
         dispatch.cart.emptyCart();
         dispatch.cart.removeDiscount();
-        router.push(`/panel/`);
+        location.replace(doPayment);
       } else {
         notification.error({ message: "خطا هنگام خرید رویداد" });
       }
@@ -44,8 +44,9 @@ function usePayment({
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    var host = window.location.protocol + "//" + window.location.host;
     setLoading(true);
-
+ 
     const amountToCharge = total;
 
     pay({
@@ -61,6 +62,7 @@ function usePayment({
           coupon: discount?.id,
           amount: amountToCharge,
           paymentmethod: "Zarinpal",
+          host,
           type,
           // @ts-ignore
           site: parseInt(process.env.NEXT_PUBLIC_SITE),
