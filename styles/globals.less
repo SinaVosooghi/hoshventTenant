@@ -1,50 +1,52 @@
 @font-face {
-  font-family: Bakh;
-  src: url("/fonts/Yekan-Bakh-FaNum-02-Thin.ttf");
-  font-weight: normal;
+  font-family: "peyda";
+  src: url("/fonts/woff/PeydaWebFaNum-ExtraLight.woff");
+  font-weight: 100;
 }
 
 @font-face {
-  font-family: Bakh;
-  src: url("/fonts/Yekan-Bakh-FaNum-03-Light.ttf");
+  font-family: "peyda";
+  src: url("/fonts/woff/PeydaWebFaNum-Thin.woff");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "peyda";
+  src: url("/fonts/woff/DanaFaNum-UltraLight.woff");
   font-weight: 300;
 }
 
 @font-face {
-  font-family: Bakh;
-  src: url("/fonts/Yekan-Bakh-FaNum-04-Regular.ttf");
+  font-family: "peyda";
+  src: url("/fonts/woff/PeydaWebFaNum-Regular.woff");
   font-weight: 400;
 }
 
 @font-face {
-  font-family: Bakh;
-  src: url("/fonts/Yekan-Bakh-FaNum-05-Medium.ttf");
+  font-family: "peyda";
+  src: url("/fonts/woff/PeydaWebFaNum-Regular.woff");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "peyda";
+  src: url("/fonts/woff/PeydaWebFaNum-Medium.woff");
   font-weight: 600;
 }
 
 @font-face {
-  font-family: Bakh;
-  src: url("/fonts/Yekan-Bakh-FaNum-06-Bold.ttf");
+  font-family: "peyda";
+  src: url("/fonts/woff/PeydaWebFaNum-SemiBold.woff");
   font-weight: 700;
 }
 
-@font-face {
-  font-family: Bakh;
-  src: url("/fonts/Yekan-Bakh-FaNum-07-Heavy.ttf");
-  font-weight: 800;
-}
-
-@font-face {
-  font-family: Bakh;
-  src: url("/fonts/Yekan-Bakh-FaNum-08-Fat.ttf");
-  font-weight: 900;
-}
 
 html,
 body {
   direction: rtl;
   padding: 0;
   margin: 0;
+  font-family: 'peyda';
 }
 
 main {
@@ -63,7 +65,7 @@ main {
 }
 
 .ant-message-custom-content {
-  font-family: Bakh;
+  font-family: peyda;
 }
 
 .ant-layout {
@@ -71,7 +73,7 @@ main {
 }
 
 .ant-notification-notice .ant-notification-notice-with-icon .ant-notification-notice-message {
-  font-family: Bakh;
+  font-family: peyda;
 }
 
 .ant-layout-content {
@@ -150,9 +152,18 @@ main {
   }
 }
 
+.ant-result-title {
+  font-weight: 800;
+}
+
+.text-right * {
+  text-align: right !important;
+}
+
 
 .qrcode {
   width: 200px;
+
   svg {
     border: 10px solid #fff
   }
@@ -173,7 +184,7 @@ main {
 }
 
 .ant-notification-notice-description {
-  font-family: Bakh;
+  font-family: peyda;
 
   a {
     font-weight: 800 !important;
@@ -700,7 +711,7 @@ a {
     border: none;
     background-color: #fafafa;
     min-height: 250px;
-    font-family: bakh;
+    font-family: peyda;
   }
 }
 

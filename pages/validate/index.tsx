@@ -69,12 +69,17 @@ const Validate = () => {
   }, [Authority, user, verify]);
 
   return (
-    <CSSTransition in={inProp} timeout={300} classNames="intro">
-      <Row align="middle" justify="center" style={{ height: "60vh" }}>
-        <Col span={24} xs={24} md={24}>
+    <CSSTransition in={inProp} timeout={300}>
+      <Row
+        align="top"
+        justify="center"
+        style={{ height: "60vh", width: "100%" }}
+      >
+        <Col xs={24} md={20}>
           {loading && (
-            <Card>
+            <Card style={{ textAlign: "right" }}>
               <Result
+                className="text-right"
                 status="warning"
                 title="درحال پردازش"
                 subTitle="شما به صورت خودکار به صفحه دیگری منتقل میشوید، لطفا شکیبا باشد"
@@ -86,6 +91,7 @@ const Validate = () => {
           {!status && !loading && (
             <Card>
               <Result
+                className="text-right"
                 status="error"
                 title="تراکنش ناموفق"
                 subTitle="مبلغ پرداختی به حساب شما باز میگردد"

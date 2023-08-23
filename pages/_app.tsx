@@ -65,7 +65,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           theme={{
             token: {
               colorPrimary: "#0F295D",
-              fontFamily: "Bakh",
+              fontFamily: "peyda",
               colorBgLayout: "#fff",
               borderRadius: 55,
               colorTextBase: "#0f295d",
