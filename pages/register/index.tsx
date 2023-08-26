@@ -79,8 +79,17 @@ export default function Register() {
       })
       .catch((errors) => {
         setLoading(false);
+        console.log(errors);
         if (errors?.response?.data.statusCode === 401) {
           notification.error({ message: "دسترسی غیر مجاز" });
+        } else if (errors?.response?.data.message === "Already exist, User with this email!") {
+          notification.error({
+            message: "ایمیل وارد شده قبلا در سیستم موجود است!",
+          });
+        } else if (errors?.response?.data.message === "Already exist, User with this mobile!") {
+          notification.error({
+            message: "موبایل وارد شده قبلا در سیستم موجود است!",
+          });
         } else {
           notification.error({ message: "اطلاعات ورود اشتباه است" });
         }
@@ -153,7 +162,6 @@ export default function Register() {
                       <InputNumber
                         style={{ width: "100%" }}
                         size="large"
-                        
                         maxLength={11}
                         placeholder="09121232323"
                       />
@@ -176,19 +184,21 @@ export default function Register() {
                     <Form.Item
                       name="confirm"
                       label="تایید رمزعبور"
-                      dependencies={['password']}
+                      dependencies={["password"]}
                       hasFeedback
                       rules={[
                         {
                           required: true,
-                          message: 'لطفا رمز عبور خود را تایید کنید!',
+                          message: "لطفا رمز عبور خود را تایید کنید!",
                         },
                         ({ getFieldValue }) => ({
                           validator(_, value) {
-                            if (!value || getFieldValue('password') === value) {
+                            if (!value || getFieldValue("password") === value) {
                               return Promise.resolve();
                             }
-                            return Promise.reject(new Error('رمز جدیدی که وارد کردید مطابقت ندارد!'));
+                            return Promise.reject(
+                              new Error("رمز جدیدی که وارد کردید مطابقت ندارد!")
+                            );
                           },
                         }),
                       ]}
