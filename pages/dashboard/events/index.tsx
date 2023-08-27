@@ -70,7 +70,7 @@ const Courses = () => {
       ),
     },
     {
-      title: "تاریخ شورع",
+      title: "تاریخ شروع",
       width: 100,
       render: (row) => (
         <span>
@@ -84,7 +84,7 @@ const Courses = () => {
       ),
     },
     {
-      title: "ساعت شورع",
+      title: "ساعت شروع",
       width: 100,
       render: (row) => (
         <span>
