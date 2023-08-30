@@ -154,6 +154,8 @@ const Courses = () => {
           subject: values.subject,
           to: 1,
           type: "info",
+          // @ts-ignore
+          site: parseInt(process.env.NEXT_PUBLIC_SITE),
         },
       },
     });

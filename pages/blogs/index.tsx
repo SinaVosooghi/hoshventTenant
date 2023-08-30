@@ -95,6 +95,8 @@ const Blogs = () => {
           limit: 14,
           skip: 0,
           type: "blog",
+          // @ts-ignore
+          siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
         },
       },
     }
@@ -116,6 +118,8 @@ const Blogs = () => {
           sort: value,
           category: category,
           ...(featured !== "all" && { featured: featured }),
+          // @ts-ignore
+          siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
         },
       },
     });

@@ -10,7 +10,6 @@ import parse from "html-react-parser";
 import { NextSeo } from "next-seo";
 // @ts-ignore
 import { Fade } from "react-reveal";
-import Review from "../../src/components/review";
 import { siteCreateLike } from "../../src/shared/apollo/graphql/mutations/like/create";
 
 require("./style.less");
@@ -150,11 +149,11 @@ const Blog = () => {
                       data?.blogApi?.likes?.filter((i: any) => i.like === false)
                         .length
                     }
-                    <DislikeFilled  />
+                    <DislikeFilled />
                   </span>
                   <span className="like" onClick={onLikePressed}>
                     {data?.blogApi?.likes?.filter((i: any) => i.like).length}
-                    <LikeFilled  />
+                    <LikeFilled />
                   </span>
                 </div>
               </div>
@@ -167,13 +166,7 @@ const Blog = () => {
             </Fade>
           </Col>
         </Row>
-        {/* <CourseSlider /> */}
-        <Review
-          type="blog"
-          itemTitle={data?.blogApi?.title}
-          itemId={data?.blogApi?.id}
-          hideRating
-        />
+
         <CategoriesSlider />
       </div>
     </>

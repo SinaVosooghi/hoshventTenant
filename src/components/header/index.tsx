@@ -16,13 +16,27 @@ import {
 } from "@ant-design/icons";
 import CartItem from "./cartItem";
 import currencyType from "../currency";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactFragment,
+  ReactPortal,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { User } from "../../datamodel";
 import { getUserFromCookie } from "../../util/utils";
 import StudentDropdown from "../breadcrumb/studentDropdown";
 import TeacherDropdown from "../breadcrumb/teacherDropdown";
 import useGetSetting from "../../hooks/useGetSetting";
 import Event from "../../datamodel/Event";
+import { siteGetMenus } from "../../shared/apollo/graphql/queries/menu/siteGetMenus";
+import { useQuery } from "@apollo/client";
+import { UrlObject } from "url";
 
 const MainHeader = () => {
   const [open, setOpen] = useState(false);
@@ -40,8 +54,22 @@ const MainHeader = () => {
   const router = useRouter();
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
+  const { data: menus, loading } = useQuery(siteGetMenus, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "network-only",
+    variables: {
+      input: {
+        limit: 14,
+        skip: 0,
+        status: true,
+        // @ts-ignore
+        siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
+      },
+    },
+  });
+
   useEffect(() => {
-    console.log(user)
+    console.log(user);
     if (getUserFromCookie()) {
       setUser(getUserFromCookie());
     }
@@ -118,6 +146,31 @@ const MainHeader = () => {
               مقاله ها
             </Link>
           </li>
+          {menus &&
+            menus.menusApi?.menus?.map(
+              (m: {
+                id: Key | null | undefined;
+                link: string | UrlObject;
+                title: string;
+              }) => {
+                return (
+                  <li
+                    key={m.id}
+                    className={
+                      router.asPath === "/blogs/" ||
+                      router.route === "/blog/[[...slug]]"
+                        ? "active"
+                        : ""
+                    }
+                  >
+                    <BookTwoTone twoToneColor="#F79826" rev={undefined} />
+                    <Link href={m.link} onClick={() => setOpen(false)}>
+                      {m.title}
+                    </Link>
+                  </li>
+                );
+              }
+            )}
           <li className={router.asPath === "/contact/" ? "active" : ""}>
             <PhoneTwoTone twoToneColor="#F79826" rev={undefined} />
             <Link href={"/contact"} onClick={() => setOpen(false)}>
@@ -325,6 +378,24 @@ const MainHeader = () => {
                 >
                   <Link href={"/seminars"}>سمینار ها</Link>
                 </li>
+
+                {menus &&
+                  menus.menusApi?.menus?.map(
+                    (m: {
+                      id: Key | null | undefined;
+                      link: string | UrlObject;
+                      title: string;
+                    }) => {
+                      return (
+                        <li
+                          key={m.id}
+                          className={router.asPath === m.link ? "active" : ""}
+                        >
+                          <Link href={m.link}>{m.title}</Link>
+                        </li>
+                      );
+                    }
+                  )}
                 <li className={router.asPath === "/contact/" ? "active" : ""}>
                   <Link href={"/contact"}> تماس با ما</Link>
                 </li>

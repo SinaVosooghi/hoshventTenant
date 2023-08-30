@@ -47,6 +47,8 @@ const Contact = () => {
           body: values.body,
           email: values.email,
           subject: values.subject,
+          // @ts-ignore
+          siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
         },
       },
     });

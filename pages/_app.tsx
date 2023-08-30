@@ -64,7 +64,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <ConfigProvider
           theme={{
             token: {
-              colorPrimary: "#0F295D",
+              colorPrimary: "#00abb6",
               fontFamily: "peyda",
               colorBgLayout: "#fff",
               borderRadius: 55,

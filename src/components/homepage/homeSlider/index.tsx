@@ -9,6 +9,7 @@ import { Autoplay, Navigation } from "swiper";
 import "swiper/css";
 import { siteGetSliders } from "../../../shared/apollo/graphql/queries/slider/siteGetSliders";
 import { useQuery } from "@apollo/client";
+import parse from "html-react-parser";
 
 const params = {
   autoplay: {
@@ -73,7 +74,9 @@ const HomeMainSlider = () => {
                         }')`,
                       }}
                     >
-                      <div className="blogs-slider-content">{slide.title}</div>
+                      <div className="blogs-slider-content">
+                        {slide.body && parse(slide.body)}
+                      </div>
                     </div>
                   </Link>
                 </SwiperSlide>

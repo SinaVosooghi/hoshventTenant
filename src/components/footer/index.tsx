@@ -142,16 +142,16 @@ const MainFooter = () => {
                     <div id="footer-navigation">
                       <ul>
                         <li>
-                          <Link href={"/"}>نسخه ها و قیمت</Link>
+                          <Link href={"/events"}>رویداد ها</Link>
                         </li>
                         <li>
-                          <Link href={"/blogs"}>مقاله ها</Link>
+                          <Link href={"/seminars"}>سمینار ها</Link>
                         </li>
                         <li>
-                          <Link href={"/"}>خدمات رستا</Link>
+                          <Link href={"/workshops"}>ورکشاپ ها</Link>
                         </li>
                         <li>
-                          <Link href={"/gallery"}>گالری تصاویر</Link>
+                          <Link href={"/register"}>ثبت نام</Link>
                         </li>
                       </ul>
                       <ul>
@@ -161,28 +161,16 @@ const MainFooter = () => {
                         <li>
                           <Link href={"/about"}> درباره ما </Link>
                         </li>
-                        <li>سوالات متداول</li>
+                        <li>
+                          <Link href={"/login"}> ورود مراجعین </Link>
+                        </li>
+                        <li>
+                          <Link href={"/login"}> پنل کاربری </Link>
+                        </li>
                       </ul>
                     </div>
                   </Col>
-                  <Col md={9} xs={24}>
-                    <div className="footer-newsletter">
-                      <div className="newsletter-title">
-                        <img
-                          src="/assets/newsletter.png"
-                          width={30}
-                          height={27}
-                        />
-                        <p>
-                          از <strong>تخفیف ها و جدیدترین ها</strong> با خبر شوید{" "}
-                        </p>
-                      </div>
-                      <Input placeholder="ایمیل شما" />
-                      <Button type="primary" size="large">
-                        مشترک شوید
-                      </Button>
-                    </div>
-                  </Col>
+                  <Col md={9} xs={24}></Col>
                 </Row>
               </Col>
             </Row>
@@ -212,8 +200,8 @@ const MainFooter = () => {
             <Row align="middle">
               <Col span={8}>
                 <Space size={16} className="copyright-links">
-                  <Link href={"/"}>قوانین و مقررات سایت </Link>
-                  <Link href={"/"}> ثبت شکایت</Link>
+                  <Link href={"/about"}>قوانین و مقررات سایت </Link>
+                  <Link href={"/contact"}> ثبت شکایت</Link>
                 </Space>
               </Col>
               <Col span={16}>

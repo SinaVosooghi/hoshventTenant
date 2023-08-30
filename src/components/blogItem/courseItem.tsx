@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "jalali-moment";
 import Blog from "../../datamodel/Blog";
 require("./style.less");
 
@@ -13,9 +13,6 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
           }')`,
         }}
       >
-        <span className="top-arrow">
-          <img src="/assets/latest/musical-note-sharp.png" alt="rasta" />
-        </span>
         <div className="item-content">
           <p className="item-title">{blog.title}</p>
           <span className="item-author">
@@ -25,7 +22,7 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
       </div>
 
       <div className="item-info">
-        {moment(blog.created).format("YYYY MMMM dddd D")}
+        {moment(blog.created).locale("fa").format("D  MMMM  YYYY")}
       </div>
     </div>
   );
