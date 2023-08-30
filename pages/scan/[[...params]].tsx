@@ -21,18 +21,20 @@ const Scan = () => {
         title="کد ورود به رویداد"
         style={{ width: "335px" }}
       >
-        <ReactQrCode
-          value={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${params[0]}&e=${params[1]}`}
-          size={285}
-          viewBox={`0 0 285 285`}
-          style={{
-            width: "285px",
-            height: "285px",
-            backgroundColor: "#fff",
-          }}
-          renderAs="canvas"
-          id="qr"
-        />
+        {params && (
+          <ReactQrCode
+            value={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${params[0]}&e=${params[1]}`}
+            size={285}
+            viewBox={`0 0 285 285`}
+            style={{
+              width: "285px",
+              height: "285px",
+              backgroundColor: "#fff",
+            }}
+            renderAs="canvas"
+            id="qr"
+          />
+        )}
 
         <Button size="large" onClick={qrDownloader} block>
           دانلود QR Code
