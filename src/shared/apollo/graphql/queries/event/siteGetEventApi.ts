@@ -16,6 +16,8 @@ export const siteGetEventApi = gql`
       slug
       body
       seobody
+      start_date
+      end_date
       category {
         id
         title

@@ -2,14 +2,17 @@
   width: 100%;
   position: relative;
   z-index: 100;
+
   .shadow-seperator {
     margin-top: -100px;
   }
+
   #home-services {
     margin-top: 20px !important;
     margin-bottom: 20px !important;
     background-color: transparent;
   }
+
   #event-card {
     background-color: #fff;
     box-shadow: 0 5px 45px rgba(0, 0, 0, 0.1);
@@ -20,18 +23,20 @@
   .ant-card-bordered {
     border: none;
   }
+
   .circles {
     top: 120px;
     left: 120px;
     position: absolute;
   }
 
-  .event-status{
+  .event-status {
     margin-top: 100px;
   }
 
   #event-container {
     margin-top: 100px;
+
     .event-title {
       h1 {
         font-weight: 900;
@@ -40,11 +45,13 @@
         margin: 0;
         line-height: 36px;
       }
+
       p {
         font-size: 14px;
         color: #2d365d;
         margin-top: 10px;
       }
+
       .type-pill {
         background-color: #edfdfe;
         text-align: center;
@@ -55,14 +62,17 @@
         padding: 4px 15px;
         color: #00abb6;
       }
+
       ul {
         margin-top: 35px;
+
         li {
           padding-right: 27px;
           margin-bottom: 12px;
           position: relative;
           color: #212341;
         }
+
         li:before {
           content: "";
           position: absolute;
@@ -82,6 +92,7 @@
         width: 100%;
         flex: 1 1;
         margin-top: 40px;
+
         button {
           background-color: #00abb6;
           box-shadow: 0 10px 25px rgba(7, 124, 168, 0.25);
@@ -99,6 +110,7 @@
           align-items: center;
           justify-content: center;
           gap: 15px;
+
           &:disabled {
             background-color: #ccc;
             box-shadow: none;
@@ -107,12 +119,14 @@
 
         .item-price {
           align-self: center;
+
           .item-currency {
             font-weight: 100;
             font-size: 18px;
             color: #2d365d;
             margin: 0;
           }
+
           .item-regular-price {
             color: #49be78;
             font-weight: 800;
@@ -131,6 +145,7 @@
       background-size: cover;
       background-position: center center;
       border-radius: 50px;
+
       img {
         overflow: hidden;
         border-radius: 25px;
@@ -139,6 +154,7 @@
       }
     }
   }
+
   .status-item {
     color: #0f295d;
     font-size: 14px;
@@ -148,6 +164,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 6px;
+
     span {
       background-color: #f5f3fc;
       color: #514eb6;
@@ -165,6 +182,7 @@
     margin-top: 50px;
     position: relative;
     padding-right: 40px;
+
     &::before {
       content: "";
       width: 10px;
@@ -174,5 +192,16 @@
       right: 0;
       border-radius: 10px;
     }
+  }
+}
+
+.event-dates {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding-left: 40px;
+  .event-status {
+    margin: 0 !important;
   }
 }

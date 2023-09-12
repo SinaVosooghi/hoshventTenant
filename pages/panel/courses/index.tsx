@@ -122,6 +122,7 @@ const Courses = () => {
       <Row gutter={[16, 16]}>
         <Col md={24}>
           <Table
+            scroll={{ x: true }}
             columns={columns}
             dataSource={userCoursesApi?.userCoursesApi?.attends}
             pagination={{ hideOnSinglePage: true }}

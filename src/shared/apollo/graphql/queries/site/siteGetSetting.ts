@@ -16,6 +16,11 @@ export const siteGetSite = gql`
       body
       logo
       tax
+      registerFields {
+        order
+        title
+        type
+      }
     }
   }
 `;

@@ -16,6 +16,14 @@ export const siteGetUser = gql`
       status
       about
       avatar
+      seminars {
+        id
+        title
+      }
+      workshops {
+        id
+        title
+      }
       role {
         id
         title

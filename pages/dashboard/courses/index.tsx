@@ -160,7 +160,11 @@ const Courses = ({ hideCount = false }: { hideCount?: Boolean }) => {
             </Col>
           )}
           <Col md={24}>
-            <Table columns={columns} dataSource={courses?.courses?.courses} />
+            <Table
+              columns={columns}
+              scroll={{ x: true }}
+              dataSource={courses?.courses?.courses}
+            />
           </Col>
         </Row>
       </Card>

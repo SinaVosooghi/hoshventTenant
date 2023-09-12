@@ -54,15 +54,34 @@ const PlanItem = () => {
     }
   }, []);
 
+  const renderButton = () => {
+    var pastDate = moment(eventApi?.eventApi.end_date);
+
+    const isPassed = moment().diff(pastDate, "days");
+
+    if (isPassed > 1) {
+      return <Button disabled>این رویداد پایان یافته</Button>;
+    } else {
+      return (
+        <Tooltip title={!user ? "جهت خرید وارد حساب کاربری شوید" : ""}>
+          <Button onClick={() => addToCart()} disabled={!user}>
+            افزودن به سبد خرید
+            <img src="/assets/icons/cart.png" width={18} alt="arrow" />
+          </Button>
+        </Tooltip>
+      );
+    }
+  };
+
   return (
     <>
       <NextSeo
-        title={eventApi?.title}
+        title={eventApi?.eventApi?.title}
         description={eventApi?.eventApi?.seobody}
       />
       <div id="event">
         <MainBreadCrumb
-          secondItem="پکیج ها"
+          secondItem="رویداد ها"
           activeItem={eventApi?.eventApi?.title}
         />
         <Fade>
@@ -81,7 +100,41 @@ const PlanItem = () => {
                     <div className="event-title">
                       <h1>{eventApi?.eventApi?.title}</h1>
                       <p>{eventApi?.eventApi?.subtitle}</p>
-                      <span className="type-pill">امکانات پایه</span>
+
+                      <div className="event-dates">
+                        {eventApi?.eventApi?.start_date && (
+                          <div className="event-status">
+                            <div className="status-item">
+                              تاریخ شروع
+                              <span>
+                                {moment(eventApi?.eventApi?.start_date)
+                                  .locale("fa")
+                                  .format("YYYY MMM D")}{" "}
+                                ساعت
+                                {moment(eventApi?.eventApi?.start_date)
+                                  .locale("fa")
+                                  .format("H:mm")}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                        {eventApi?.eventApi?.end_date && (
+                          <div className="event-status">
+                            <div className="status-item">
+                              تاریخ پایان
+                              <span>
+                                {moment(eventApi?.eventApi?.end_date)
+                                  .locale("fa")
+                                  .format("YYYY MMM D")}{" "}
+                                ساعت
+                                {moment(eventApi?.eventApi?.end_date)
+                                  .locale("fa")
+                                  .format("H:mm")}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                       {eventApi?.eventApi?.halls?.length ? (
                         <ul>
                           {eventApi?.eventApi?.halls?.map(
@@ -122,23 +175,7 @@ const PlanItem = () => {
 
                       {eventApi?.eventApi?.price ? (
                         <div className="item-button">
-                          <Tooltip
-                            title={
-                              !user ? "جهت خرید وارد حساب کاربری شوید" : ""
-                            }
-                          >
-                            <Button
-                              onClick={() => addToCart()}
-                              disabled={!user}
-                            >
-                              افزودن به سبد خرید
-                              <img
-                                src="/assets/icons/cart.png"
-                                width={18}
-                                alt="arrow"
-                              />
-                            </Button>
-                          </Tooltip>
+                          {renderButton()}
 
                           <div className="item-price">
                             {eventApi?.eventApi?.price && (

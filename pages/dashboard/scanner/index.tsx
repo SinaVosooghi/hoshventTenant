@@ -1,5 +1,15 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Button, Card, message, notification } from "antd";
+import {
+  Alert,
+  Button,
+  Card,
+  Form,
+  Radio,
+  Select,
+  Spin,
+  message,
+  notification,
+} from "antd";
 import { useEffect, useRef, useState } from "react";
 import { QrReader } from "react-qr-reader";
 import { siteGetTimeline } from "../../../src/shared/apollo/graphql/queries/timeline/siteGetTimeline";
@@ -8,6 +18,9 @@ import { ReactQrCode } from "@devmehq/react-qr-code";
 import { siteCheckin } from "../../../src/shared/apollo/graphql/mutations/timeline/siteChekin";
 import { siteCheckout } from "../../../src/shared/apollo/graphql/mutations/timeline/siteCheckout";
 import ReactToPrint from "react-to-print";
+import { siteGetUser } from "../../../src/shared/apollo/graphql/queries/user/siteGetUser";
+import { User } from "../../../src/datamodel";
+import { getCookie, getCookies } from "cookies-next";
 
 require("./style.less");
 
@@ -15,6 +28,11 @@ const Scanner = () => {
   const [data, setData] = useState("No result");
   const [attendee, setAttendee] = useState();
   const componentRef = useRef();
+  const [selectedSeminar, setSelectedSeminar] = useState(null);
+  const [selectedWorkshop, setSelectedWorkshop] = useState(null);
+  const [isWorkshop, setIsWorkshop] = useState(true);
+  const [form] = Form.useForm();
+  const [isCheckin, setIsCheckin] = useState(true);
 
   const [getUserInfo] = useLazyQuery(siteGetTimeline, {
     notifyOnNetworkStatusChange: true,
@@ -26,6 +44,26 @@ const Scanner = () => {
       notification.warning({ message: "موردی یافت نشد!" });
     },
   });
+
+  const [getUser, { data: user, loading }] = useLazyQuery(siteGetUser, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "network-only",
+  });
+
+  useEffect(() => {
+    let userCookie: User | null = null;
+    if (getCookie("user")) {
+      // @ts-ignore
+      userCookie = JSON.parse(getCookie("user"));
+    }
+
+    getUser({
+      variables: {
+        // @ts-ignore
+        id: parseInt(userCookie?.uid),
+      },
+    });
+  }, []);
 
   const [checkin, { loading: checkinLoading }] = useMutation(siteCheckin, {
     notifyOnNetworkStatusChange: true,
@@ -65,7 +103,12 @@ const Scanner = () => {
     if (data) {
       getUserInfo({
         variables: {
-          url: data,
+          input: {
+            url: data,
+            ...(isWorkshop && { workshop: selectedWorkshop?.toString() }),
+            ...(!isWorkshop && { seminar: selectedSeminar?.toString() }),
+            checkin: isCheckin,
+          },
         },
       });
     }
@@ -114,11 +157,11 @@ const Scanner = () => {
     return t;
   };
 
-  return (
-    <Card>
-      <div className="camera">
+  const renderCamera = () => {
+    if (selectedSeminar || selectedWorkshop) {
+      return (
         <QrReader
-          constraints={{ facingMode: "user" }}
+          constraints={{ facingMode: "environment" }}
           onResult={(result, error) => {
             if (!!result) {
               setData(result?.text);
@@ -128,9 +171,105 @@ const Scanner = () => {
               console.info(error);
             }
           }}
-          videoStyle={{ borderRadius: "250px" }}
-          containerStyle={{ width: "100%" }}
         />
+      );
+    }
+  };
+
+  return (
+    <Card>
+      <div className="scanner-alert">
+        <Alert
+          message="برای اسکن کردن یک ورکشاپ یا یک رویداد جانبی را انتخاب کنید!"
+          showIcon
+        />
+        <div className="select-items">
+          <Form form={form} name="control-hooks" style={{ maxWidth: 600 }}>
+            <Form.Item label="نوع" name="type">
+              <Radio.Group defaultValue="checkin">
+                <Radio.Button
+                  value="checkin"
+                  onChange={() => {
+                    setIsCheckin(true);
+                    form.setFieldsValue({
+                      type: "checkin",
+                    });
+                  }}
+                >
+                  ورود
+                </Radio.Button>
+                <Radio.Button
+                  value="checkout"
+                  onChange={() => {
+                    setIsCheckin(false);
+                    form.setFieldsValue({
+                      type: "checkout",
+                    });
+                  }}
+                >
+                  خروج
+                </Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+            {user?.user?.workshops?.length ? (
+              <Form.Item name="workshop" label="انتخاب ورکشاپ">
+                <Select
+                  placeholder="انتخاب ورکشاپ"
+                  style={{ minWidth: 280 }}
+                  value={selectedWorkshop}
+                  onChange={(e) => {
+                    form.setFieldsValue({
+                      workshop: e,
+                      seminar: null,
+                    });
+                    setIsWorkshop(true);
+
+                    setSelectedSeminar(null);
+                    setSelectedWorkshop(e);
+                  }}
+                >
+                  {user?.user?.workshops?.map((workshop) => (
+                    <Select.Option value={workshop.id} key={workshop.id}>
+                      {workshop.title}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            ) : (
+              ""
+            )}
+
+            {user?.user?.seminars?.length ? (
+              <Form.Item name="seminar" label="انتخاب سمینار">
+                <Select
+                  placeholder="انتخاب سمینار"
+                  style={{ minWidth: 280 }}
+                  value={selectedSeminar}
+                  onChange={(e) => {
+                    setIsWorkshop(false);
+                    setSelectedWorkshop(null);
+                    setSelectedSeminar(e);
+                    form.setFieldsValue({
+                      workshop: null,
+                      seminar: e,
+                    });
+                  }}
+                >
+                  {user?.user?.seminars?.map((seminar) => (
+                    <Select.Option value={seminar.id} key={seminar.id}>
+                      {seminar.title}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            ) : (
+              ""
+            )}
+          </Form>
+        </div>
+      </div>
+      <div className="camera">
+        {loading ? <Spin spinning /> : renderCamera()}
       </div>
       {attendee && (
         <div id="user-profile">
@@ -173,54 +312,10 @@ const Scanner = () => {
                     <h6>{hall.title}</h6>
                     <ul>
                       {hall.seminars?.map((seminar) => (
-                        <li>
-                          {seminar.title}
-                          <div className="buttons">
-                            <Button
-                              className="primary"
-                              loading={checkinLoading}
-                              onClick={() => {
-                                checkinHandler(seminar.id, "seminar");
-                              }}
-                            >
-                              ثبت ورود
-                            </Button>
-                            <Button
-                              className="primary ghost"
-                              loading={checkoutLoading}
-                              onClick={() => {
-                                checkoutHandler(seminar.id, "seminar");
-                              }}
-                            >
-                              ثبت خروج
-                            </Button>
-                          </div>
-                        </li>
+                        <li>{seminar.title}</li>
                       ))}
                       {hall.workshops?.map((workshop) => (
-                        <li>
-                          {workshop.title}
-                          <div className="buttons">
-                            <Button
-                              className="primary"
-                              loading={checkinLoading}
-                              onClick={() => {
-                                checkinHandler(workshop.id, "workshop");
-                              }}
-                            >
-                              ثبت ورود
-                            </Button>
-                            <Button
-                              className="primary ghost"
-                              loading={checkoutLoading}
-                              onClick={() => {
-                                checkoutHandler(workshop.id, "workshop");
-                              }}
-                            >
-                              ثبت خروج
-                            </Button>
-                          </div>
-                        </li>
+                        <li>{workshop.title}</li>
                       ))}
                     </ul>
                   </>

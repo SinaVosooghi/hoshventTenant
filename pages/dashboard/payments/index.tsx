@@ -84,7 +84,9 @@ const Courses = () => {
     {
       title: "نوع",
       key: "type",
-      render: (row) => <span>{row.type === "course" ? "رویداد" : "محصول"}</span>,
+      render: (row) => (
+        <span>{row.type === "course" ? "رویداد" : "محصول"}</span>
+      ),
     },
 
     {
@@ -168,6 +170,7 @@ const Courses = () => {
       <Row gutter={[16, 16]}>
         <Col md={24}>
           <Table
+            scroll={{ x: true }}
             columns={columns}
             dataSource={payments?.teacherPaymentsApi?.payments}
             pagination={{ hideOnSinglePage: true }}

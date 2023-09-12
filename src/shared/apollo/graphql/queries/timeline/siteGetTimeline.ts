@@ -2,8 +2,8 @@ import gql from "graphql-tag";
 import { graphql } from "@apollo/client/react/hoc";
 
 export const siteGetTimeline = gql`
-  query timeline($url: String!) {
-    timeline(url: $url) {
+  query timeline($input: GetUserTimelineArgs!) {
+    timeline(input: $input) {
         id
         created
         updated

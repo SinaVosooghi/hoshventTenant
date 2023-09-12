@@ -259,7 +259,11 @@ const Courses = () => {
           />
         </Col>
         <Col md={24}>
-          <Table columns={columns} dataSource={chatsApi?.chatsApi?.chats} />
+          <Table
+            columns={columns}
+            scroll={{ x: true }}
+            dataSource={chatsApi?.chatsApi?.chats}
+          />
         </Col>
       </Row>
     </Card>

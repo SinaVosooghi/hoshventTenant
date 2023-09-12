@@ -36,11 +36,13 @@ const Courses = () => {
           {row.event?.title}
         </Link>
       ),
+      responsive: ["lg"],
     },
     {
       title: "مدت",
       key: "duration",
       render: (row) => <span>{row.event?.duration}</span>,
+      responsive: ["lg"],
     },
     {
       title: "قیمت",
@@ -50,6 +52,7 @@ const Courses = () => {
           {row.event?.price?.toLocaleString()} {currencyType()}
         </>
       ),
+      responsive: ["lg"],
     },
     {
       title: "ثبت شده",
@@ -57,6 +60,7 @@ const Courses = () => {
       dataIndex: "created",
       width: 100,
       render: (created) => <span>{moment(created).format("l")}</span>,
+      responsive: ["lg"],
     },
     {
       title: "وضعیت",
@@ -70,6 +74,7 @@ const Courses = () => {
           <Tag color="red">غیر فعال</Tag>
         );
       },
+      responsive: ["lg"],
     },
     {
       title: "اکشن",
@@ -80,11 +85,7 @@ const Courses = () => {
           <Link passHref href={`/panel/events/view?id=${record.event?.id}`}>
             <Button>جزییات رویداد</Button>
           </Link>
-          <Link
-            passHref
-            href={`/event/${record?.event?.slug}`}
-            target="_blank"
-          >
+          <Link passHref href={`/event/${record?.event?.slug}`} target="_blank">
             <Tooltip title="مشاهده رویداد">
               <Button>
                 <EyeOutlined rev={undefined} />
@@ -93,6 +94,7 @@ const Courses = () => {
           </Link>
         </Space>
       ),
+      responsive: ["lg"],
     },
   ];
 
@@ -122,6 +124,7 @@ const Courses = () => {
       <Row gutter={[16, 16]}>
         <Col md={24}>
           <Table
+            scroll={{ x: true }}
             columns={columns}
             dataSource={userEventsApi?.userEventsApi?.attends}
             pagination={{ hideOnSinglePage: true }}

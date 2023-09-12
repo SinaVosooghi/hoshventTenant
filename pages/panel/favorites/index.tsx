@@ -84,6 +84,7 @@ const Courses = () => {
   return (
     <Card title={<h3>لیست علاقمندی ها</h3>} loading={loading}>
       <Table
+        scroll={{ x: true }}
         columns={columns}
         dataSource={favorites?.favorites?.favorites}
         pagination={{ hideOnSinglePage: true }}

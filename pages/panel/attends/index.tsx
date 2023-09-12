@@ -87,6 +87,7 @@ const Courses = () => {
   return (
     <>
       <Table
+         scroll={{ x: true }}
         columns={columns}
         dataSource={user?.user?.attendees}
         pagination={{ hideOnSinglePage: true }}

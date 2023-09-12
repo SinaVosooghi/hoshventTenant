@@ -187,6 +187,7 @@ const Lessons = ({ hideCount = false }: { hideCount?: Boolean }) => {
 
           <Col md={24}>
             <Table
+              scroll={{ x: true }}
               columns={columns}
               dataSource={lessons?.lessons?.lessons}
               rowKey={lessons?.lessons?.lessons.id}

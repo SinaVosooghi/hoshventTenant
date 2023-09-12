@@ -1,14 +1,28 @@
 .camera {
     width: 200px;
-    height: 200px;
+    height: 100%;
     margin: 0 auto;
-    border-radius: 200px;
     overflow: hidden;
+    border-radius: 10px;
+    border: 4px solid #ddd;
 }
 
-#scanner{
-    margin:  200px 0;
+#scanner {
+    margin: 200px 0;
 }
+
+.scanner-alert {
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    display: flex;
+    gap: 20;
+
+    .select-items {
+        margin-top: 20px;
+    }
+}
+
 #user-profile {
     display: flex;
     flex-direction: column;

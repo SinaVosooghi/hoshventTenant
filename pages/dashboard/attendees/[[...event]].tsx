@@ -127,6 +127,7 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
         <Col span={24}>
           <Table
             columns={columns}
+            scroll={{ x: true }}
             bordered
             dataSource={attendeesApi?.attendeesApi?.attends}
           />

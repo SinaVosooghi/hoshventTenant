@@ -163,6 +163,7 @@ const Courses = () => {
       <Row gutter={[16, 16]}>
         <Col md={24}>
           <Table
+            scroll={{ x: true }}
             columns={columns}
             dataSource={data?.eventsApi?.events}
             pagination={{ hideOnSinglePage: true }}
