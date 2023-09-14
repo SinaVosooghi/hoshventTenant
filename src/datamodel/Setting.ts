@@ -21,4 +21,5 @@ export default interface Setting {
   blogQuestion: { questions: [{ title: string }] };
   productQuestion: { questions: [{ title: string }] };
   currency: string;
+  cardlayout: string
 }

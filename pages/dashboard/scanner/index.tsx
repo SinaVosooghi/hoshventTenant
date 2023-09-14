@@ -21,6 +21,9 @@ import ReactToPrint from "react-to-print";
 import { siteGetUser } from "../../../src/shared/apollo/graphql/queries/user/siteGetUser";
 import { User } from "../../../src/datamodel";
 import { getCookie, getCookies } from "cookies-next";
+import Setting from "../../../src/datamodel/Setting";
+import useGetSetting from "../../../src/hooks/useGetSetting";
+import PrintableCard from "../../../src/components/printCard";
 
 require("./style.less");
 
@@ -33,6 +36,7 @@ const Scanner = () => {
   const [isWorkshop, setIsWorkshop] = useState(true);
   const [form] = Form.useForm();
   const [isCheckin, setIsCheckin] = useState(true);
+  const { data: siteData }: { data: Setting } = useGetSetting();
 
   const [getUserInfo] = useLazyQuery(siteGetTimeline, {
     notifyOnNetworkStatusChange: true,
@@ -323,67 +327,14 @@ const Scanner = () => {
               })}
             </div>
           </div>
-          <div style={{ display: "none" }}>
-            <div ref={componentRef} style={{ padding: 20 }}>
-              <div
-                style={{ width: 200, textAlign: "center", margin: "0 auto" }}
-              >
-                <ReactQrCode
-                  value={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${attendee?.user.id}&e=${attendee?.event?.id}`}
-                  size={100}
-                  viewBox={`0 0 100 100`}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "#fff",
-                  }}
-                  renderAs="canvas"
-                  id="qr"
-                />
-              </div>
-              <h3 style={{ textAlign: "center" }}>
-                {attendee?.user?.firstName} {attendee?.user?.lastName}
-              </h3>
-              <h5 style={{ textAlign: "center" }}>
-                {attendee?.user?.mobilenumber}
-              </h5>
-              <p style={{ textAlign: "center" }}>
-                <b>
-                  {attendee?.user?.email} <br /> عضویت:{" "}
-                </b>
-                {moment(attendee?.user?.created)
-                  .locale("fa")
-                  .format("ddd D MMM, YYYY")}
-              </p>
-
-              <div style={{ textAlign: "center" }}>
-                <h1>{attendee?.event?.title}</h1>
-                {attendee?.event?.halls?.map((hall) => {
-                  return (
-                    <>
-                      <h6>{hall.title}</h6>
-                      <ul>
-                        {hall.seminars?.map((seminar) => (
-                          <li>{seminar.title}</li>
-                        ))}
-                        {hall.workshops?.map((workshop) => (
-                          <li>{workshop.title}</li>
-                        ))}
-                      </ul>
-                    </>
-                  );
-                })}
-              </div>
-            </div>
+          <div>
+            <PrintableCard
+              boxes={siteData}
+              name={`${attendee?.user?.firstName} ${attendee?.user?.lastName}`}
+              event={attendee?.event?.title}
+              url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${attendee?.user.id}&e=${attendee?.event?.id}`}
+            />
           </div>
-          <ReactToPrint
-            trigger={() => (
-              <Button size="large" type="primary">
-                پریت کارت ورود
-              </Button>
-            )}
-            content={() => componentRef.current}
-          />
         </div>
       )}
     </Card>

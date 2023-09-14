@@ -16,6 +16,7 @@ export const siteGetSite = gql`
       body
       logo
       tax
+      cardlayout
       registerFields {
         order
         title
