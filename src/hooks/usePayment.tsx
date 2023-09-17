@@ -5,7 +5,7 @@ import { notification } from "antd";
 import { useRouter } from "next/dist/client/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "../shared/store";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 function usePayment({
   itemId,
@@ -29,6 +29,8 @@ function usePayment({
     onCompleted: ({ doPayment }) => {
       setLoading(false);
       if (doPayment) {
+        notification.success({ message: "خرید با موفقیت انجام شد!" });
+
         dispatch.cart.emptyCart();
         dispatch.cart.removeDiscount();
         location.replace(doPayment);
@@ -38,7 +40,14 @@ function usePayment({
     },
     onError: (error) => {
       setLoading(false);
-      notification.error({ message: "Error", description: error.message });
+      if (error.message === "Already added") {
+        notification.error({
+          message: "Error",
+          description: "شما این رویداد را قبلا رزرو کرده اید",
+        });
+      } else {
+        notification.error({ message: "Error", description: error.message });
+      }
     },
   });
 
@@ -46,7 +55,7 @@ function usePayment({
     event.preventDefault();
     var host = window.location.protocol + "//" + window.location.host;
     setLoading(true);
- 
+
     const amountToCharge = total;
 
     pay({

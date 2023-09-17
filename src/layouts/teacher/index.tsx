@@ -102,16 +102,6 @@ const TeacherLaout = ({ children }: any) => {
       false
     ),
     getItem(
-      "مالی",
-      "/dashboard/payments",
-      <DollarOutlined rev={undefined} />,
-      undefined,
-      undefined,
-      false,
-      false
-    ),
-
-    getItem(
       "تنظیمات",
       "/dashboard/settings",
       <SettingOutlined rev={undefined} />,

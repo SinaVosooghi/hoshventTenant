@@ -9,6 +9,7 @@ import {
   InputNumber,
   message,
   notification,
+  Radio,
   Row,
   Space,
 } from "antd";
@@ -41,6 +42,7 @@ export default function Register() {
       firstName,
       lastName,
       registerField,
+      gender,
     } = data;
 
     axios
@@ -52,6 +54,7 @@ export default function Register() {
         lastName,
         firstName,
         registerFields: registerField,
+        gender,
         // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       })
@@ -83,7 +86,6 @@ export default function Register() {
       })
       .catch((errors) => {
         setLoading(false);
-        console.log(errors);
         if (errors?.response?.data.statusCode === 401) {
           notification.error({ message: "دسترسی غیر مجاز" });
         } else if (
@@ -132,6 +134,12 @@ export default function Register() {
                     autoComplete="off"
                     validateMessages={validateMessages}
                   >
+                    <Form.Item label="جنسیت" name="gender" initialValue="male">
+                      <Radio.Group value={"male"} defaultValue={"male"}>
+                        <Radio.Button value="male">مرد</Radio.Button>
+                        <Radio.Button value="female">زن</Radio.Button>
+                      </Radio.Group>
+                    </Form.Item>
                     <Form.Item
                       label="نام"
                       name="firstName"

@@ -11,16 +11,6 @@ const Settings = () => {
       label: `عمومی`,
       children: <GeneralSetting />,
     },
-    {
-      key: "security",
-      label: `امنیتی`,
-      children: <SecuritySetting />,
-    },
-    {
-      key: "socialmedia",
-      label: `شبکه های اجتماعی`,
-      children: <SocialSetting />,
-    },
   ];
 
   return (

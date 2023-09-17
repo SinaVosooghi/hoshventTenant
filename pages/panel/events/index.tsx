@@ -36,13 +36,11 @@ const Courses = () => {
           {row.event?.title}
         </Link>
       ),
-      responsive: ["lg"],
     },
     {
       title: "مدت",
       key: "duration",
       render: (row) => <span>{row.event?.duration}</span>,
-      responsive: ["lg"],
     },
     {
       title: "قیمت",
@@ -52,7 +50,6 @@ const Courses = () => {
           {row.event?.price?.toLocaleString()} {currencyType()}
         </>
       ),
-      responsive: ["lg"],
     },
     {
       title: "ثبت شده",
@@ -60,7 +57,6 @@ const Courses = () => {
       dataIndex: "created",
       width: 100,
       render: (created) => <span>{moment(created).format("l")}</span>,
-      responsive: ["lg"],
     },
     {
       title: "وضعیت",
@@ -74,7 +70,6 @@ const Courses = () => {
           <Tag color="red">غیر فعال</Tag>
         );
       },
-      responsive: ["lg"],
     },
     {
       title: "اکشن",
@@ -94,7 +89,6 @@ const Courses = () => {
           </Link>
         </Space>
       ),
-      responsive: ["lg"],
     },
   ];
 

@@ -15,7 +15,7 @@ const StudentDropdown = ({ user }: { user: User | null }) => {
     },
     {
       key: "2",
-      label: <Link href="/panel/events">رویدادها ها</Link>,
+      label: <Link href="/panel/events">رویدادها</Link>,
     },
     {
       key: "3",

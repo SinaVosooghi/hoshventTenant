@@ -1,23 +1,26 @@
 .course-item {
   background: #fff;
-  height: 388px;
   border-radius: 35px;
   overflow: visible;
   cursor: pointer;
   position: relative;
   box-shadow: 0 0 75px rgba(0, 0, 0, 0.09);
+
   &:hover {
     .item-title {
       color: #00abb6;
     }
+
     button {
       background-color: #0f295d !important;
       color: #fff !important;
     }
+
     &::after {
       background-color: #00abb6 !important;
     }
   }
+
   .item-image {
     height: 255px;
     background-repeat: no-repeat;
@@ -26,6 +29,7 @@
     border-radius: 35px;
     box-shadow: 0px 22px 73px -32px rgba(148, 148, 148, 1);
     position: relative;
+
     .item-duration {
       background-color: #212341;
       display: flex;
@@ -42,6 +46,7 @@
       font-weight: 800;
       line-height: 35px;
     }
+
     .item-rate {
       background-color: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
@@ -62,8 +67,10 @@
       line-height: 26px;
     }
   }
+
   .item-content {
     text-align: center;
+
     p {
       font-size: 18px;
       font-weight: 800;
@@ -71,11 +78,13 @@
       color: #2d365d;
       transition: all 0.3s;
     }
+
     .divider {
       display: block;
       position: relative;
       height: 20px;
       margin-top: 5px;
+
       div {
         width: 35px;
         background-color: #fff;
@@ -85,6 +94,7 @@
         z-index: 4;
         position: absolute;
       }
+
       &::after {
         content: "";
         width: 220px;
@@ -98,6 +108,7 @@
         z-index: 1;
       }
     }
+
     .item-author {
       margin-top: 5px;
       color: #939aa4;
@@ -105,15 +116,17 @@
       display: block;
     }
   }
+
   .item-button {
     position: relative;
+
     button {
       background-color: #b3bbc7;
       height: 41px;
       margin: 0 auto;
       left: 0;
       right: 0;
-      bottom: -10px;
+      bottom: -20px;
       padding: 0 30px;
       border: none;
       display: flex;
@@ -121,11 +134,13 @@
       justify-content: center;
       gap: 5px;
       border-radius: 50px;
+
       .item-currency {
         font-weight: 100;
         font-size: 13px;
         color: #fff;
       }
+
       .item-regular-price {
         color: #fff;
         font-weight: 800;
@@ -134,9 +149,11 @@
         align-items: center;
         gap: 2px;
       }
+
       .item-sale-price {
         text-decoration: line-through;
       }
+
       .item-percentage {
         position: absolute;
         right: -15px;
@@ -151,6 +168,7 @@
       }
     }
   }
+
   &::after {
     content: "";
     background-color: #DDE0E7;
@@ -164,6 +182,7 @@
     height: 50px;
     bottom: -4px;
   }
+
   &::before {
     content: "";
     transition: all 0.3s;

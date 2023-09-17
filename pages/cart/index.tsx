@@ -38,7 +38,7 @@ const Cart = () => {
             style={{ margin: 100 }}
             description={<span>سبد خرید خالیست</span>}
           >
-            <Button onClick={() => router.push("/shop")}>مشاهده کالاها </Button>
+            <Button onClick={() => router.push("/shop")}>مشاهده رویدادها </Button>
           </Empty>
         ) : (
           <Row justify="center">
@@ -56,7 +56,6 @@ const Cart = () => {
                         </p>
                       </div>
                     </div>
-                    <DiscountInput count={items.length} />
                     {items.map((product) => (
                       <ProductCheckoutInfo key={product.id} product={product} />
                     ))}

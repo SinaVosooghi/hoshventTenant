@@ -41,14 +41,6 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
       ),
     },
     {
-      title: "شماره موبایل",
-      render: (row) => <span>{row.user?.mobilenumber}</span>,
-    },
-    {
-      title: "ایمیل",
-      render: (row) => <span>{row.user?.email}</span>,
-    },
-    {
       title: "ثبت شده",
       key: "created",
       dataIndex: "created",

@@ -27,9 +27,6 @@ const CourseItem = ({ item }: { item: Event }) => {
       <div className="item-content">
         <p className="item-title">{item.title}</p>
         <span className="divider"></span>
-        <span className="item-author">
-          {item?.user?.firstName} {item?.user?.lastName}
-        </span>
       </div>
       <div className="item-button">
         <Button>

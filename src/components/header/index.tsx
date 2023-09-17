@@ -133,44 +133,6 @@ const MainHeader = () => {
               فروشگاه
             </Link>
           </li>
-          <li
-            className={
-              router.asPath === "/blogs/" ||
-              router.route === "/blog/[[...slug]]"
-                ? "active"
-                : ""
-            }
-          >
-            <BookTwoTone twoToneColor="#F79826" rev={undefined} />
-            <Link href={"/blogs"} onClick={() => setOpen(false)}>
-              مقاله ها
-            </Link>
-          </li>
-          {menus &&
-            menus.menusApi?.menus?.map(
-              (m: {
-                id: Key | null | undefined;
-                link: string | UrlObject;
-                title: string;
-              }) => {
-                return (
-                  <li
-                    key={m.id}
-                    className={
-                      router.asPath === "/blogs/" ||
-                      router.route === "/blog/[[...slug]]"
-                        ? "active"
-                        : ""
-                    }
-                  >
-                    <BookTwoTone twoToneColor="#F79826" rev={undefined} />
-                    <Link href={m.link} onClick={() => setOpen(false)}>
-                      {m.title}
-                    </Link>
-                  </li>
-                );
-              }
-            )}
           <li className={router.asPath === "/contact/" ? "active" : ""}>
             <PhoneTwoTone twoToneColor="#F79826" rev={undefined} />
             <Link href={"/contact"} onClick={() => setOpen(false)}>
@@ -295,7 +257,7 @@ const MainHeader = () => {
                       <>
                         <div className="cart-top-area">
                           <span className="cart-count">
-                            <strong>{cartItems?.length}</strong> کالا
+                            <strong>{cartItems?.length}</strong> رویداد
                           </span>
                           <Link href={"/cart"}>
                             مشاهده سبد خرید{" "}

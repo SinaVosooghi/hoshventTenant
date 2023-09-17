@@ -56,6 +56,8 @@ const CourseCheckout = () => {
         (withTax * selectedDiscount.percent) / 100;
       // @ts-ignore
       price = withTax - discountPrice;
+    } else {
+      price = withTax;
     }
 
     if (!data?.tax) {

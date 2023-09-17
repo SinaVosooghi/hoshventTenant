@@ -173,33 +173,22 @@ const PlanItem = () => {
                         <></>
                       )}
 
-                      {eventApi?.eventApi?.price ? (
-                        <div className="item-button">
-                          {renderButton()}
+                      <div className="item-button">
+                        {renderButton()}
 
-                          <div className="item-price">
-                            {eventApi?.eventApi?.price && (
-                              <p className="item-regular-price">
-                                {eventApi?.eventApi?.price?.toLocaleString()}
-                              </p>
-                            )}
-                            <span className="item-currency">
-                              {eventApi?.eventApi?.price
-                                ? currencyType()
-                                : "رایگان"}
-                            </span>
-                          </div>
+                        <div className="item-price">
+                          {eventApi?.eventApi?.price && (
+                            <p className="item-regular-price">
+                              {eventApi?.eventApi?.price?.toLocaleString()}
+                            </p>
+                          )}
+                          <span className="item-currency">
+                            {eventApi?.eventApi?.price
+                              ? currencyType()
+                              : "رایگان"}
+                          </span>
                         </div>
-                      ) : (
-                        <div className="item-button">
-                          <div className="item-price">
-                            <p className="item-regular-price">رایگان</p>
-                          </div>
-                          <Link href={`/event/${eventApi?.eventApi.slug}`}>
-                            <Button>اطلاعات بیشتر</Button>
-                          </Link>
-                        </div>
-                      )}
+                      </div>
                     </div>
                   </Col>
                   <Col md={14} xs={24}>
