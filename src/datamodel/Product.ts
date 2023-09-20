@@ -1,4 +1,5 @@
 import Category from "./Category";
+import Service from "./Service";
 
 export default interface Product {
   id: number;
@@ -18,4 +19,5 @@ export default interface Product {
   category: Category;
   created: Date;
   updated: Date;
+  services: [Service];
 }

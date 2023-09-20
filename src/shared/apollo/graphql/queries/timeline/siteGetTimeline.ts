@@ -8,6 +8,7 @@ export const siteGetTimeline = gql`
         created
         updated
         status
+        services
         user {
             id
             username
@@ -18,24 +19,7 @@ export const siteGetTimeline = gql`
             email
             created
         }
-        event {
-          id
-          title
-          duration
-          capacity
-          video
-          price
-          offprice
-          image
-          slug
-          category {
-            title
-          }
-          halls{
-        id
-        title
-        body
-        workshops {
+        workshop {
             id
             title
             slug
@@ -43,21 +27,18 @@ export const siteGetTimeline = gql`
             body
             start_date
             }
-            seminars {
+            seminar {
             id
             title
             slug
             price
             body
             start_date
+         
             }
-        }
-          start_date
-          featured
           status
           created
           updated
-        }
     }
   }
 `;

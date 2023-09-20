@@ -29,11 +29,25 @@ const CourseCheckout = () => {
     let total = 0;
     total = Math.ceil(
       items
-        ?.map((item: any) => item?.price * item.qty)
+        ?.map((item: any) => {
+          const servicesTotal = item.services?.reduce(
+            (prev: any, curr: any) => prev + curr.price,
+            0
+          );
+          return (item?.price + servicesTotal) * item?.qty;
+        })
         .reduce((prev: any, curr: any) => prev + curr, 0)
     );
 
     return total;
+  };
+
+  const renderEventPrice = (item) => {
+    const servicesTotal = item.services?.reduce(
+      (prev: any, curr: any) => prev + curr.price,
+      0
+    );
+    return item?.price + servicesTotal;
   };
 
   const renderPrice = () => {
@@ -88,7 +102,7 @@ const CourseCheckout = () => {
                     <td width={"10%"}>{event?.qty}</td>
                     <td width={"10%"} className="left-align">
                       <div className="currency-text">
-                        {(event?.price * event?.qty).toLocaleString()}
+                        {renderEventPrice(event).toLocaleString()}
                         <small>{renderCurrency(data?.currency)} </small>
                       </div>
                     </td>
@@ -158,10 +172,6 @@ const CourseCheckout = () => {
         </div>
       );
     }
-  };
-
-  const payment = () => {
-    router.push("/coursepayment");
   };
 
   return (

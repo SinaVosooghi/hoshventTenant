@@ -26,7 +26,7 @@ type MyType = Modify<
 const defaultStateWithType: MyType = DEFAULT_FILTER_STATE;
 
 const cartModel = createModel<RootState>()({
-  effects: {}, // initial state
+  effects: {},
   reducers: {
     addItem(state, action) {
       const index = state.items.findIndex(
@@ -34,9 +34,8 @@ const cartModel = createModel<RootState>()({
       );
       let data = [...state.items];
 
-   
       if (index >= 0) {
-        data[index].qty += 1;
+        data[index].qty = 1;
       } else {
         data = [...state.items, { ...action, qty: 1 }];
       }

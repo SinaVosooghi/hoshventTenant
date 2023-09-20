@@ -3,11 +3,12 @@ import Hall from "./Hall";
 import User from "./User";
 
 export default interface Workshop {
-  id: string;
+  id: number;
   slug: string;
   title: string;
   body: string;
   price: number;
+  offprice: number;
   lecturers: [User];
   seotitle: string;
   image: string;
@@ -19,5 +20,7 @@ export default interface Workshop {
   created: Date;
   updated: Date;
   hall: Hall;
-  capacity?: number
+  capacity?: number;
+  duration: string;
+  site: any
 }

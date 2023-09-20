@@ -25,6 +25,11 @@ export const siteGetWorkshopApi = gql`
         id
         firstName
       }
+      services {
+        id
+        title
+        price
+      }
       featured
       status
       created

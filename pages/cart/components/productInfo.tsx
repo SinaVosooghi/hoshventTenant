@@ -1,5 +1,5 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Button, Image, Tooltip } from "antd";
+import { Avatar, Badge, Button, Image, Tag, Tooltip } from "antd";
 import { percentCalculate } from "../../../src/util/utils";
 import parse from "html-react-parser";
 import Product from "../../../src/datamodel/Product";
@@ -28,8 +28,17 @@ const ProductCheckoutInfo = ({ product }: { product: Product | null }) => {
 
         <div className="organizer-detail">
           <div>
-            <span>دسته بندی </span>
-            <p>{product?.category?.title}</p>
+            <span>سرویس های انتخاب شده: </span>
+            {product?.services?.map((service) => {
+              return (
+                <Tag key={service.key}>
+                  {service.title}:{" "}
+                  {service.price
+                    ? service.price.toLocaleString() + " تومان"
+                    : "رایگان"}
+                </Tag>
+              );
+            })}
           </div>
         </div>
         <div className="product-details">

@@ -311,17 +311,6 @@ const MainHeader = () => {
                 </li>
                 <li
                   className={
-                    router.asPath === "/events/" ||
-                    router.route === "/events/[[...event]]"
-                      ? "active"
-                      : ""
-                  }
-                >
-                  <Link href={"/events"}>رویدادها</Link>
-                </li>
-
-                <li
-                  className={
                     router.asPath === "/workshops/" ||
                     router.route === "/workshops/[[...workshop]]"
                       ? "active"

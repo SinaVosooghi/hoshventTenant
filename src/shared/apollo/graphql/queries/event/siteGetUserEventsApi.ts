@@ -9,20 +9,29 @@ export const siteGetUserEventsApi = gql`
         created
         updated
         status
-        event {
+        workshop {
           id
           title
-          duration
           capacity
-          video
           price
-          offprice
           image
           slug
-          category {
-            title
-          }
           start_date
+          end_date
+          featured
+          status
+          created
+          updated
+        }
+        seminar {
+          id
+          title
+          capacity
+          price
+          image
+          slug
+          start_date
+          end_date
           featured
           status
           created

@@ -2,13 +2,13 @@ import { EditOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
 import { Space, Tag, Table, Tooltip, Row, Col, Button, Card } from "antd";
 import { ColumnsType } from "antd/es/table";
-import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useEffect } from "react";
 import { siteGetUserEventsApi } from "../../../src/shared/apollo/graphql/queries/event/siteGetUserEventsApi";
 import currencyType from "../../../src/components/currency";
+import moment from "jalali-moment";
 
 const Courses = () => {
   const router = useRouter();
@@ -31,23 +31,38 @@ const Courses = () => {
     {
       title: "عنوان رویداد",
       key: "title",
-      render: (row) => (
-        <Link passHref href={`/event/${row.event?.slug}`} target="_blank">
-          {row.event?.title}
-        </Link>
-      ),
+      render: (row) =>
+        row.workshop?.title ? (
+          <Link
+            passHref
+            href={`/workshop/${row.workshop?.slug}`}
+            target="_blank"
+          >
+            {row.workshop?.title ?? row.workshop?.title}
+          </Link>
+        ) : (
+          <Link passHref href={`/seminar/${row.seminar?.slug}`} target="_blank">
+            {row.seminar?.title ?? row.seminar?.title}
+          </Link>
+        ),
     },
     {
-      title: "مدت",
+      title: "تاریخ شروع",
       key: "duration",
-      render: (row) => <span>{row.event?.duration}</span>,
+      render: (row) => (
+        <span>
+          {moment(row?.start_date).locale("fa").format("YYYY MMM D")}{" "}
+        </span>
+      ),
     },
     {
       title: "قیمت",
       key: "price",
       render: (row) => (
         <>
-          {row.event?.price?.toLocaleString()} {currencyType()}
+          {row.workshop
+            ? row.workshop?.price?.toLocaleString() + " " + currencyType()
+            : "-"}
         </>
       ),
     },
@@ -56,7 +71,9 @@ const Courses = () => {
       key: "created",
       dataIndex: "created",
       width: 100,
-      render: (created) => <span>{moment(created).format("l")}</span>,
+      render: (created) => (
+        <span>{moment(created).locale("fa").format("l")}</span>
+      ),
     },
     {
       title: "وضعیت",
@@ -75,20 +92,48 @@ const Courses = () => {
       title: "اکشن",
       key: "action",
       width: 50,
-      render: (_, record: any) => (
-        <Space size="middle">
-          <Link passHref href={`/panel/events/view?id=${record.event?.id}`}>
-            <Button>جزییات رویداد</Button>
-          </Link>
-          <Link passHref href={`/event/${record?.event?.slug}`} target="_blank">
-            <Tooltip title="مشاهده رویداد">
-              <Button>
-                <EyeOutlined rev={undefined} />
-              </Button>
-            </Tooltip>
-          </Link>
-        </Space>
-      ),
+      render: (_, record: any) =>
+      record.workshop?.title ? (
+          <Space size="middle">
+            <Link
+              passHref
+              href={`/panel/workshop/view?id=${record.workshop?.slug}`}
+            >
+              <Button>جزییات رویداد</Button>
+            </Link>
+            <Link
+              passHref
+              href={`/workshop/${record?.workshop?.slug}`}
+              target="_blank"
+            >
+              <Tooltip title="مشاهده رویداد">
+                <Button>
+                  <EyeOutlined rev={undefined} />
+                </Button>
+              </Tooltip>
+            </Link>
+          </Space>
+        ) : (
+          <Space size="middle">
+            <Link
+              passHref
+              href={`/panel/seminar/view?id=${record.seminar?.slug}`}
+            >
+              <Button>جزییات رویداد</Button>
+            </Link>
+            <Link
+              passHref
+              href={`/seminar/${record?.seminar?.slug}`}
+              target="_blank"
+            >
+              <Tooltip title="مشاهده رویداد">
+                <Button>
+                  <EyeOutlined rev={undefined} />
+                </Button>
+              </Tooltip>
+            </Link>
+          </Space>
+        ),
     },
   ];
 

@@ -48,13 +48,6 @@ const CartItem = ({ event }: { event: Event }) => {
       />
       <div className="cart-item-content">
         <p className="event-title">{event.title}</p>
-        <div className="event-quantity">
-          <div>
-            <MinusOutlined onClick={decline} />
-            <Badge count={count}></Badge>
-            <PlusOutlined onClick={increase} />
-          </div>
-        </div>
 
         <div className="event-price">
           {event.offprice && (

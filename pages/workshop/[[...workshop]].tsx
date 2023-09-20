@@ -1,24 +1,39 @@
 import { useQuery } from "@apollo/client";
-import { Button, Card, Col, Row, Tooltip, notification } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Row,
+  Select,
+  SelectProps,
+  Tooltip,
+  notification,
+} from "antd";
 import moment from "jalali-moment";
 import { useRouter } from "next/router";
 import parse from "html-react-parser";
 import MainBreadCrumb from "../../src/components/breadcrumb";
-import Link from "next/link";
 import { NextSeo } from "next-seo";
 // @ts-ignore
-import { Fade, Slide } from "react-reveal";
-import HomeServices from "../../src/components/homepage/services";
-import SeminarsSlider from "../../src/components/servicesSlider";
-import WorkshopSlider from "../../src/components/workshopSlider";
-import { siteGetWorkshopApi } from "../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshopApi";
+import { Fade } from "react-reveal";
+import { getUserFromCookie } from "../../src/util/utils";
 import currencyType from "../../src/components/currency";
+
+import { useDispatch } from "react-redux";
+import { Dispatch } from "../../src/shared/store";
+import { useEffect, useState } from "react";
+import { User } from "../../src/datamodel";
+import { siteGetWorkshopApi } from "../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshopApi";
 
 require("./style.less");
 
-const PlanItem = () => {
+const Workshop = () => {
   const router = useRouter();
   const { workshop } = router.query;
+  const dispatch = useDispatch<Dispatch>();
+  const [user, setUser] = useState<User | null>(null);
+  const [options, setOptions] = useState<any>([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const { data: workshopApi } = useQuery(siteGetWorkshopApi, {
     notifyOnNetworkStatusChange: true,
@@ -27,13 +42,71 @@ const PlanItem = () => {
     variables: { slug: workshop && workshop[0] },
   });
 
+  const addToCart = () => {
+    notification.success({
+      message: `محصول اضافه شد`,
+      description: (
+        <>محصول {workshopApi?.workshopApi?.title} به سبد خرید شما اضافه شد.</>
+      ),
+    });
+    dispatch.cart.addItem({
+      ...workshopApi?.workshopApi,
+      selectedOptions,
+    });
+  };
+
+  useEffect(() => {
+    if (getUserFromCookie()) {
+      setUser(getUserFromCookie());
+    }
+  }, []);
+
+  const renderButton = () => {
+    var pastDate = moment(workshopApi?.workshopApi.end_date);
+
+    const isPassed = moment().diff(pastDate, "days");
+
+    if (isPassed > 1) {
+      return <Button disabled>این رویداد پایان یافته</Button>;
+    } else {
+      return (
+        <Tooltip title={!user ? "جهت خرید وارد حساب کاربری شوید" : ""}>
+          <Button onClick={() => addToCart()} disabled={!user}>
+            افزودن به سبد خرید
+            <img src="/assets/icons/cart.png" width={18} alt="arrow" />
+          </Button>
+        </Tooltip>
+      );
+    }
+  };
+
+  const handleChange = (value: string[]) => {
+    const find = options.find((o) => {
+      return o.value === value[0];
+    });
+    setSelectedOptions(find);
+  };
+
+  useEffect(() => {
+    if (workshopApi?.workshopApi.services.length) {
+      const services = [...workshopApi?.workshopApi.services];
+      const serviceOptions = services.map((service) => {
+        return {
+          label: service.title,
+          value: service.id,
+        };
+      });
+      setOptions(serviceOptions);
+    }
+  }, [workshopApi]);
+
   return (
     <>
       <NextSeo
-        title={workshopApi?.workshopApi.title}
+        title={workshopApi?.workshopApi?.title}
         description={workshopApi?.workshopApi?.seobody}
       />
-      <div id="event">
+      <div id="workshop">
         <MainBreadCrumb
           secondItem="رویداد ها"
           activeItem={workshopApi?.workshopApi?.title}
@@ -41,24 +114,70 @@ const PlanItem = () => {
         <Fade>
           <img
             src="/assets/about/circles.png"
-            alt="event"
+            alt="workshop"
             className="circles"
           />
         </Fade>
         <Row justify="center">
-          <Col md={20} xs={24} id="event-container">
+          <Col md={20} xs={24} id="workshop-container">
             <Fade>
-              <div id="event-card">
-                <Row gutter={[24, 24]}>
-                  <Col md={10} xs={24} className="event-content">
-                    <div className="event-title">
+              <div id="workshop-card">
+                <Row>
+                  <Col md={10} xs={24} className="workshop-content">
+                    <div className="workshop-title">
                       <h1>{workshopApi?.workshopApi?.title}</h1>
-                      <p>{workshopApi?.workshopApi?.subtitle}</p>
-                      <span className="type-pill">امکانات پایه</span>
-                      {workshopApi?.workshopApi.seobody &&
-                        parse(workshopApi?.workshopApi.seobody)}
+                      <p>{workshopApi?.workshopApi?.hall?.title}</p>
+
+                      <div className="workshop-dates">
+                        {workshopApi?.workshopApi?.start_date && (
+                          <div className="workshop-status">
+                            <div className="status-item">
+                              تاریخ شروع
+                              <span>
+                                {moment(workshopApi?.workshopApi?.start_date)
+                                  .locale("fa")
+                                  .format("YYYY MMM D")}{" "}
+                                ساعت
+                                {moment(workshopApi?.workshopApi?.start_date)
+                                  .locale("fa")
+                                  .format("H:mm")}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                        {workshopApi?.workshopApi?.end_date && (
+                          <div className="workshop-status">
+                            <div className="status-item">
+                              تاریخ پایان
+                              <span>
+                                {moment(workshopApi?.workshopApi?.end_date)
+                                  .locale("fa")
+                                  .format("YYYY MMM D")}{" "}
+                                ساعت
+                                {moment(workshopApi?.workshopApi?.end_date)
+                                  .locale("fa")
+                                  .format("H:mm")}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="workshop-services">
+                        <h4>انتخاب خدمات</h4>
+                        <Select
+                          mode="multiple"
+                          allowClear
+                          style={{ width: "100%" }}
+                          placeholder="انتخاب خدمات"
+                          onChange={handleChange}
+                          options={options}
+                        />
+                      </div>
 
                       <div className="item-button">
+                        {renderButton()}
+
                         <div className="item-price">
                           {workshopApi?.workshopApi?.price && (
                             <p className="item-regular-price">
@@ -71,17 +190,12 @@ const PlanItem = () => {
                               : "رایگان"}
                           </span>
                         </div>
-                        <Link
-                          href={`/event/${workshopApi?.workshopApi.hall?.event?.slug}`}
-                        >
-                          <Button>جزییات رویداد</Button>
-                        </Link>
                       </div>
                     </div>
                   </Col>
                   <Col md={14} xs={24}>
                     <div
-                      className="event-image"
+                      className="workshop-image"
                       style={{
                         backgroundImage: `url('${
                           process.env.NEXT_PUBLIC_SITE_URL +
@@ -98,7 +212,7 @@ const PlanItem = () => {
 
           <Col span={20}>
             <Fade>
-              <div className="event-status">
+              <div className="workshop-status">
                 <div className="status-item">
                   آخرین به روزرسانی
                   <span>
@@ -108,7 +222,7 @@ const PlanItem = () => {
                   </span>
                 </div>
               </div>
-              <div className="event-body">
+              <div className="workshop-body">
                 {workshopApi?.workshopApi?.body ? (
                   parse(workshopApi?.workshopApi?.body)
                 ) : (
@@ -123,4 +237,4 @@ const PlanItem = () => {
   );
 };
 
-export default PlanItem;
+export default Workshop;

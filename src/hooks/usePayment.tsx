@@ -42,8 +42,13 @@ function usePayment({
       setLoading(false);
       if (error.message === "Already added") {
         notification.error({
-          message: "Error",
+          message: "خطا",
           description: "شما این رویداد را قبلا رزرو کرده اید",
+        });
+      } else if (error.message === "Unauthorized") {
+        notification.error({
+          message: "خطا",
+          description: "شما از حساب کاربریتان خارج شدید، مجدد وارد شوید!",
         });
       } else {
         notification.error({ message: "Error", description: error.message });
@@ -66,6 +71,8 @@ function usePayment({
               id: product.id,
               title: product.title,
               qty: product.qty,
+              services: product.services,
+              type: product.__typename,
             };
           }),
           coupon: discount?.id,

@@ -19,7 +19,13 @@ const Cart = () => {
     let total = 0;
     total = Math.ceil(
       items
-        ?.map((item: any) => item?.price * item?.qty)
+        ?.map((item: any) => {
+          const servicesTotal = item.services?.reduce(
+            (prev: any, curr: any) => prev + curr.price,
+            0
+          );
+          return (item?.price + servicesTotal) * item?.qty;
+        })
         .reduce((prev: any, curr: any) => prev + curr, 0)
     );
 
@@ -38,7 +44,9 @@ const Cart = () => {
             style={{ margin: 100 }}
             description={<span>سبد خرید خالیست</span>}
           >
-            <Button onClick={() => router.push("/shop")}>مشاهده رویدادها </Button>
+            <Button onClick={() => router.push("/shop")}>
+              مشاهده رویدادها{" "}
+            </Button>
           </Empty>
         ) : (
           <Row justify="center">

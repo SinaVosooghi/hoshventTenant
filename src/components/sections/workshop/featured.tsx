@@ -6,10 +6,11 @@ import FeaturedItem from "./featuredItem";
 import Link from "next/link";
 // @ts-ignore
 import { Fade, Slide } from "react-reveal";
-import Event from "../../../datamodel/Event";
+import WorkshopItem from "./featuredItem";
+import Workshop from "../../../datamodel/Workshop";
 require("./style.less");
 
-const EventSlider = ({
+const WorkshopSlider = ({
   items,
   loading,
   title,
@@ -17,7 +18,7 @@ const EventSlider = ({
   type,
   hideShowMore,
 }: {
-  items: [Event];
+  items: [Workshop];
   loading?: boolean;
   title: string;
   subTitle: string;
@@ -93,10 +94,10 @@ const EventSlider = ({
                 navigation={true}
                 modules={[Autoplay, Navigation]}
               >
-                {items?.map((event: Event) => (
-                  <SwiperSlide key={event?.id}>
-                    <Link href={`/workshop/${event?.slug}`}>
-                      <FeaturedItem event={event} />
+                {items?.map((workshop: Workshop) => (
+                  <SwiperSlide key={workshop?.id}>
+                    <Link href={`/workshop/${workshop?.slug}`}>
+                      <WorkshopItem workshop={workshop} />
                     </Link>
                   </SwiperSlide>
                 ))}
@@ -109,4 +110,4 @@ const EventSlider = ({
   );
 };
 
-export default EventSlider;
+export default WorkshopSlider;

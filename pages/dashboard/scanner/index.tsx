@@ -24,6 +24,7 @@ import { getCookie, getCookies } from "cookies-next";
 import Setting from "../../../src/datamodel/Setting";
 import useGetSetting from "../../../src/hooks/useGetSetting";
 import PrintableCard from "../../../src/components/printCard";
+import { siteManualCheckin } from "../../../src/shared/apollo/graphql/mutations/timeline/siteManualCheckin";
 
 require("./style.less");
 
@@ -69,22 +70,33 @@ const Scanner = () => {
     });
   }, []);
 
-  const [checkin, { loading: checkinLoading }] = useMutation(siteCheckin, {
-    notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      message.success("ورود شما با موفقیت ثبت شد!");
-    },
-    onError: (error) => {
-      if (error.message === "Unauthorized") {
-        notification.error({
-          message: "خطا",
-          description: "خطا در ثبت",
-        });
-      } else {
-        message.error("خطایی رخ داده است");
-      }
-    },
-  });
+  const [checkin, { loading: checkinLoading }] = useMutation(
+    siteManualCheckin,
+    {
+      notifyOnNetworkStatusChange: true,
+      refetchQueries: [siteGetTimeline],
+      onCompleted: () => {
+        message.success("ثبت با موفقیت ثبت شد!");
+      },
+      onError: (error) => {
+        if (error.message === "Unauthorized") {
+          notification.error({
+            message: "خطا",
+            description: "مجدد وارد حساب کاربری شوید!",
+          });
+        }
+        if (error.message === "Already added") {
+          notification.warning({
+            message: "خطا",
+            description: "قبلا ثبت شده است!",
+          });
+        } else {
+          console.log(error);
+          message.error("خطایی رخ داده است");
+        }
+      },
+    }
+  );
 
   const [checkout, { loading: checkoutLoading }] = useMutation(siteCheckout, {
     notifyOnNetworkStatusChange: true,
@@ -118,12 +130,19 @@ const Scanner = () => {
     }
   }, [data]);
 
-  const checkinHandler = (id: number, type: string) => {
+  const checkinHandler = (id: number, type: string, serviceId: string) => {
+    let services = [...attendee.services];
+    const objIndex = services.findIndex((obj) => obj.id == serviceId);
+    services[objIndex].scanned = true;
+
     checkin({
       variables: {
-        aid: parseInt(attendee?.id),
-        type,
-        id: parseInt(id),
+        input: {
+          aid: parseInt(attendee?.id),
+          type,
+          id: parseInt(id),
+          service: serviceId,
+        },
       },
     });
   };
@@ -309,19 +328,28 @@ const Scanner = () => {
             </p>
 
             <div className="skills">
-              <h1>{attendee?.event?.title}</h1>
-              {attendee?.event?.halls?.map((hall) => {
+              <h1>{attendee?.workshop?.title}</h1>
+              <h1>{attendee?.seminar?.title}</h1>
+              {attendee?.services?.map((service) => {
                 return (
                   <>
-                    <h6>{hall.title}</h6>
-                    <ul>
-                      {hall.seminars?.map((seminar) => (
-                        <li>{seminar.title}</li>
-                      ))}
-                      {hall.workshops?.map((workshop) => (
-                        <li>{workshop.title}</li>
-                      ))}
-                    </ul>
+                    <h6>{service.title}</h6>
+                    <div className="buttons">
+                      <Button
+                        className="primary"
+                        loading={checkinLoading}
+                        disabled={service.scanned}
+                        onClick={() => {
+                          checkinHandler(
+                            service.id,
+                            attendee.workshop ? "workshop" : "seminar",
+                            service.id
+                          );
+                        }}
+                      >
+                        {service.scanned ? "غیر فعال" : "ثبت"}
+                      </Button>
+                    </div>
                   </>
                 );
               })}
