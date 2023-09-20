@@ -66,15 +66,17 @@ const EventSlider = ({
             <Col md={8} className="section-actions">
               {!hideShowMore ? (
                 <div className="actions-btn">
-                  <Button>مشاهده همه </Button>
-                  <span className="actions-icon">
-                    <img
-                      src="/assets/icons/arrow-left.png"
-                      height={12}
-                      width={18}
-                      alt="arrow"
-                    />
-                  </span>
+                  <Link href={"/workshops"}>
+                    <Button>مشاهده همه </Button>
+                    <span className="actions-icon">
+                      <img
+                        src="/assets/icons/arrow-left.png"
+                        height={12}
+                        width={18}
+                        alt="arrow"
+                      />
+                    </span>
+                  </Link>
                 </div>
               ) : (
                 <></>
