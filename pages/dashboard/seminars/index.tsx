@@ -18,9 +18,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useEffect } from "react";
 import currencyType from "../../../src/components/currency";
-import { siteGetEventsApi } from "../../../src/shared/apollo/graphql/queries/event/siteGetEventsApi";
-import { siteGetWorkshopApi } from "../../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshopApi";
-import { siteGetWorkshops } from "../../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshops";
+import { siteGetSminarsApi } from "../../../src/shared/apollo/graphql/queries/seminar/siteGetSeminarsApi";
 
 const { Text } = Typography;
 
@@ -44,7 +42,7 @@ const Courses = () => {
       title: "عنوان",
       key: "title",
       render: (row) => (
-        <Link passHref href={`/workshop/${row?.slug}`} target="_blank">
+        <Link passHref href={`/seminar/${row?.slug}`} target="_blank">
           {row?.title}
           <br />
           <Text type="secondary">{row?.duration}</Text>
@@ -117,14 +115,10 @@ const Courses = () => {
       width: 50,
       render: (_, record: any) => (
         <Space size="middle">
-          <Link passHref href={`/dashboard/attendees/?w=${record?.id}`}>
+          <Link passHref href={`/dashboard/attendees/?s=${record?.id}`}>
             <Button>لیست مراجعین</Button>
           </Link>
-          <Link
-            passHref
-            href={`/workshop/${record?.slug}`}
-            target="_blank"
-          >
+          <Link passHref href={`/seminar/${record?.slug}`} target="_blank">
             <Tooltip title="مشاهده رویداد">
               <Button>
                 <EyeOutlined rev={undefined} />
@@ -136,7 +130,7 @@ const Courses = () => {
     },
   ];
 
-  const [getItems, { data, loading }] = useLazyQuery(siteGetWorkshops, {
+  const [getItems, { data, loading }] = useLazyQuery(siteGetSminarsApi, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
   });
@@ -157,13 +151,13 @@ const Courses = () => {
   }, []);
 
   return (
-    <Card title={<h3>لیست ورکشاپ ها</h3>} loading={loading}>
+    <Card title={<h3>لیست رویداد ها</h3>} loading={loading}>
       <Row gutter={[16, 16]}>
         <Col md={24}>
           <Table
             scroll={{ x: true }}
             columns={columns}
-            dataSource={data?.workshopsApi?.workshops}
+            dataSource={data?.seminarsApi?.seminars}
             pagination={{ hideOnSinglePage: true }}
           />
         </Col>

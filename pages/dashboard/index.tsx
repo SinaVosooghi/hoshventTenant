@@ -3,6 +3,7 @@ import {
   PlusOutlined,
   QrcodeOutlined,
   ReadOutlined,
+  ScanOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { useQuery } from "@apollo/client";
@@ -19,13 +20,15 @@ import Events from "./events";
 import { NextSeo } from "next-seo";
 import moment from "moment";
 import { siteGetEventsApi } from "../../src/shared/apollo/graphql/queries/event/siteGetEventsApi";
+import { siteGetScans } from "../../src/shared/apollo/graphql/queries/scan/siteGetWorkshops";
+import { siteGetWorkshops } from "../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshops";
+import { siteGetSminarsApi } from "../../src/shared/apollo/graphql/queries/seminar/siteGetSeminarsApi";
 
 const TeachersDashboard = () => {
   const router = useRouter();
 
-  const [lastConference, setLastConference] = useState<Lesson | null>(null);
-  const { data: eventsApi, loading: courseLoading } = useQuery(
-    siteGetEventsApi,
+  const { data: workshopsApi, loading: workshopLoading } = useQuery(
+    siteGetWorkshops,
     {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: "network-only",
@@ -39,67 +42,32 @@ const TeachersDashboard = () => {
     }
   );
 
-  useMemo(() => {
-    if (eventsApi?.eventsApi) {
-      eventsApi.eventsApi?.events?.map((attend: any) => {
-        attend.sections?.map((section: any) => {
-          section?.lessons?.map(({ lesson }: { lesson: Lesson }) => {
-            if (lesson?.type === "conference") {
-              setLastConference(lesson);
-            }
-          });
-        });
-      });
-    }
-  }, [eventsApi]);
-
-  const { data: lessons, loading } = useQuery(siteGetLessons, {
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: "network-only",
-    variables: {
-      input: {
-        limit: 1,
-        skip: 0,
-      },
-    },
-  });
-
-  const { data: attendeesApi, loading: attendLoading } = useQuery(
-    siteGetAttendees,
+  const { data: seminarApi, loading: seminarLoading } = useQuery(
+    siteGetSminarsApi,
     {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: "network-only",
       variables: {
         input: {
-          limit: 1,
           skip: 0,
+          // @ts-ignore
+          siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
         },
       },
     }
   );
 
-  const joinButton = (lastConference: Lesson) => {
-    const isBefore = moment().isBefore(
-      lastConference?.conferenceoptions?.startdate
-    );
-    if (!isBefore) {
-      return <Button disabled>برگزار شده</Button>;
-    }
-
-    return (
-      <Tooltip title={lastConference?.conferenceoptions?.starturl ?? ""}>
-        <a href={lastConference?.conferenceoptions?.starturl}>
-          <Button
-            disabled={!lastConference?.conferenceoptions?.starturl}
-            type="dashed"
-            target="_blank"
-          >
-            لینک شروع کلاس
-          </Button>
-        </a>
-      </Tooltip>
-    );
-  };
+  const { data: scanData, loading: scanLoading } = useQuery(siteGetScans, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "network-only",
+    variables: {
+      input: {
+        skip: 0,
+        // @ts-ignore
+        siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
+      },
+    },
+  });
 
   return (
     <>
@@ -111,7 +79,7 @@ const TeachersDashboard = () => {
             extra={
               <Space>
                 <Button
-                  onClick={() => router.push("/dashboard/lessons/add")}
+                  onClick={() => router.push("/dashboard/chats/")}
                   type="primary"
                   icon={<PlusOutlined rev={undefined} />}
                   ghost
@@ -124,23 +92,30 @@ const TeachersDashboard = () => {
             <Row gutter={16}>
               <Col span={5}>
                 <Statistic
-                  title="تعداد رویداد ها"
-                  loading={loading}
-                  value={eventsApi?.eventsApi?.count}
+                  title="تعداد ورکشاپ ها"
+                  loading={workshopLoading}
+                  value={workshopsApi?.workshopsApi?.count}
                   prefix={<ReadOutlined rev={undefined} />}
                 />
               </Col>
               <Col span={5}>
                 <Statistic
-                  loading={attendLoading}
-                  title="تعداد کل شرکت کنندگان"
-                  value={attendeesApi?.attendeesApi?.count}
+                  loading={seminarLoading}
+                  title="تعداد کل سمینارها"
+                  value={seminarApi?.seminarsApi  ?.count}
                   prefix={<UserOutlined rev={undefined} />}
                 />
               </Col>
               <Col span={5}>
                 <Statistic
-                  loading={attendLoading}
+                  loading={scanLoading}
+                  title="تعداد اسکن ها"
+                  value={scanData?.scans?.count}
+                  prefix={<ScanOutlined rev={undefined} />}
+                />
+              </Col>
+              <Col span={5}>
+                <Statistic
                   title="اسکن QR CODE"
                   value=" "
                   suffix={

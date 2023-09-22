@@ -155,12 +155,6 @@ const GeneralSetting = () => {
             <Input />
           </Form.Item>
         </Col>
-        <Col md={12} xs={24}>
-          <Form.Item label="عنوان ساز" name="title">
-            <Input />
-          </Form.Item>
-        </Col>
-
         <Col md={24}>
           <Form.Item label="درباره من" rules={[{ required: true }]}>
             <ReactQuill

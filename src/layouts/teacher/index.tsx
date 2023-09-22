@@ -1,5 +1,6 @@
 import {
   AppstoreFilled,
+  AppstoreOutlined,
   BookOutlined,
   DashboardOutlined,
   DollarOutlined,
@@ -7,6 +8,7 @@ import {
   MessageOutlined,
   PlusOutlined,
   ReadOutlined,
+  ScanOutlined,
   SettingOutlined,
   UnorderedListOutlined,
   UserOutlined,
@@ -77,13 +79,22 @@ const TeacherLaout = ({ children }: any) => {
 
   const items: MenuItem[] = [
     getItem("داشبورد", "/dashboard", <DashboardOutlined rev={undefined} />),
-    getItem("رویداد ها", "events", <ReadOutlined rev={undefined} />, [
-      getItem(
-        "لیست رویداد ها",
-        "/dashboard/events",
-        <UnorderedListOutlined rev={undefined} />
-      ),
-    ]),
+    getItem("ورکشاپ ها", "/dashboard/events", <ReadOutlined rev={undefined} />),
+    getItem(
+      "رویدادهای جانبی",
+      "/dashboard/seminars",
+      <ReadOutlined rev={undefined} />
+    ),
+    getItem(
+      "لیست اسکن ها",
+      "/dashboard/scans",
+      <ScanOutlined rev={undefined} />
+    ),
+    getItem(
+      "لیست سرویس ها",
+      "/dashboard/services",
+      <AppstoreOutlined rev={undefined} />
+    ),
 
     getItem(
       "مراجعه کنندگان",
