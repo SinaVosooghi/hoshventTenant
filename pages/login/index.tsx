@@ -47,9 +47,7 @@ export default function Login() {
         delete data.ability;
         const { type, access_token, firstName, lastName } = data;
         const loginData = {
-          type: "instructor",
-          firstName,
-          lastName,
+          ...data,
           accessToken: access_token,
         };
 
@@ -77,7 +75,6 @@ export default function Login() {
           notification.error({ message: "اطلاعات ورود اشتباه است" });
         }
       });
-    console.log(898798);
   };
 
   const onFinishFailed = (errorInfo: any) => {

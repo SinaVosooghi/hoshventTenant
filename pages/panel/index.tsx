@@ -59,7 +59,10 @@ const TeachersDashboard = () => {
             {lastEvent && (
               <Col span={8}>
                 <Statistic title="آخرین رویداد" value={lastEvent.title} />
-                <Link href={`/panel/events/view/?id=${lastEvent?.id}`} target="_blank">
+                <Link
+                  href={`/panel/events/view/?id=${lastEvent?.id}`}
+                  target="_blank"
+                >
                   <Button>جزییات رویداد</Button>
                 </Link>
               </Col>
