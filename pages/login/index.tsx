@@ -44,22 +44,21 @@ export default function Login() {
       .then(({ data }) => {
         setLoading(false);
 
+        delete data.ability;
         const { type, access_token, firstName, lastName } = data;
         const loginData = {
-          ...data,
+          type: "instructor",
+          firstName,
+          lastName,
           accessToken: access_token,
-          ability: [
-            {
-              action: "manage",
-              subject: "all",
-            },
-          ],
         };
+
         if (handleLogin(loginData)) {
           notification.success({
             message: firstName + " " + lastName,
             description: "شما وارد حساب کاربریتان شدید",
           });
+          console.log(type);
           if (type === "instructor") {
             router.push("/dashboard");
           } else if (type === "user") {
@@ -70,6 +69,7 @@ export default function Login() {
         }
       })
       .catch((errors) => {
+        console.log("ererer");
         setLoading(false);
         if (errors?.response?.data.statusCode === 401) {
           notification.error({ message: "دسترسی غیر مجاز" });
@@ -77,6 +77,7 @@ export default function Login() {
           notification.error({ message: "اطلاعات ورود اشتباه است" });
         }
       });
+    console.log(898798);
   };
 
   const onFinishFailed = (errorInfo: any) => {
