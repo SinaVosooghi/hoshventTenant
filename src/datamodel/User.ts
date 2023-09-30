@@ -10,7 +10,7 @@ export default interface User {
   mobilenumber: number;
   username: string;
   userType: string;
-  access_token: string;
+  accessToken: string;
   type: "instructor" | "user";
   about: string;
 }

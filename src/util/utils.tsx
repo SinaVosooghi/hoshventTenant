@@ -14,7 +14,18 @@ export const checkLogin = () => {
 };
 
 export const handleLogin = (data: any) => {
-  setCookie("user", JSON.stringify(data), { maxAge: 864000000 });
+  const loginData = { ...data };
+  delete loginData.role;
+  const roleData = data.role;
+  setCookie("user", JSON.stringify(loginData), {
+    maxAge: 24 * 60 * 60,
+    path: "/",
+  });
+
+  setCookie("role", JSON.stringify(roleData), {
+    maxAge: 24 * 60 * 60,
+    path: "/",
+  });
   return true;
 };
 

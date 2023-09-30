@@ -45,10 +45,9 @@ export default function Login() {
         setLoading(false);
 
         delete data.ability;
-        const { type, access_token, firstName, lastName } = data;
+        const { type, firstName, lastName } = data;
         const loginData = {
           ...data,
-          accessToken: access_token,
         };
 
         if (handleLogin(loginData)) {

@@ -27,7 +27,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: `Bearer ${userCookie?.access_token}`,
+      authorization: `Bearer ${userCookie?.accessToken}`,
     },
   };
 });
