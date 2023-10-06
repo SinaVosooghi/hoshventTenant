@@ -71,7 +71,7 @@ function usePayment({
               id: product.id,
               title: product.title,
               qty: product.qty,
-              services: product.services,
+              services: product.selectedOptions,
               type: product.__typename,
             };
           }),

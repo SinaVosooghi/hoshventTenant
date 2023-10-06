@@ -10,6 +10,7 @@ export default interface Category {
   icon: string;
   visibility: boolean;
   featured: boolean;
+  link: string;
   created: Date;
   updated: Date;
 }

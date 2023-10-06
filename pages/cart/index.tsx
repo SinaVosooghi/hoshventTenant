@@ -17,10 +17,12 @@ const Cart = () => {
 
   const total = () => {
     let total = 0;
+
     total = Math.ceil(
       items
         ?.map((item: any) => {
-          const servicesTotal = item.services?.reduce(
+          console.log(item);
+          const servicesTotal = item?.selectedOptions?.reduce(
             (prev: any, curr: any) => prev + curr.price,
             0
           );

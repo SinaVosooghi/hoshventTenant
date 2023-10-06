@@ -6,15 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "../../src/shared/store";
 import { NextSeo } from "next-seo";
 
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import PaymentForm from "../../src/hooks/paymentForm";
 import Setting from "../../src/datamodel/Setting";
 import useGetSetting from "../../src/hooks/useGetSetting";
 import { renderCurrency } from "../../src/util/utils";
-import Product from "../../src/datamodel/Product";
 import Event from "../../src/datamodel/Event";
-import usePayment from "../../src/hooks/usePayment";
 
 require("./style.less");
 
@@ -30,7 +26,7 @@ const CourseCheckout = () => {
     total = Math.ceil(
       items
         ?.map((item: any) => {
-          const servicesTotal = item.services?.reduce(
+          const servicesTotal = item.selectedOptions?.reduce(
             (prev: any, curr: any) => prev + curr.price,
             0
           );
@@ -43,7 +39,7 @@ const CourseCheckout = () => {
   };
 
   const renderEventPrice = (item) => {
-    const servicesTotal = item.services?.reduce(
+    const servicesTotal = item.selectedOptions?.reduce(
       (prev: any, curr: any) => prev + curr.price,
       0
     );

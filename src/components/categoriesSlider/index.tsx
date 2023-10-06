@@ -68,13 +68,15 @@ const CategoriesSlider = () => {
                 {brands?.brandsApi?.brands.map((brand: Category) => (
                   <SwiperSlide key={brand.id}>
                     <div className="category-item">
-                      <img
-                        src={
-                          process.env.NEXT_PUBLIC_SITE_URL + "/" + brand.image
-                        }
-                        width={100}
-                        alt={brand.title}
-                      />
+                      <a href={brand.link ?? "#"}>
+                        <img
+                          src={
+                            process.env.NEXT_PUBLIC_SITE_URL + "/" + brand.image
+                          }
+                          width={100}
+                          alt={brand.title}
+                        />
+                      </a>
                     </div>
                   </SwiperSlide>
                 ))}

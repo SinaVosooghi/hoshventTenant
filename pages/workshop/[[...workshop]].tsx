@@ -33,7 +33,7 @@ const Workshop = () => {
   const dispatch = useDispatch<Dispatch>();
   const [user, setUser] = useState<User | null>(null);
   const [options, setOptions] = useState<any>([]);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState<any>([]);
 
   const { data: workshopApi } = useQuery(siteGetWorkshopApi, {
     notifyOnNetworkStatusChange: true,
@@ -49,6 +49,7 @@ const Workshop = () => {
         <>محصول {workshopApi?.workshopApi?.title} به سبد خرید شما اضافه شد.</>
       ),
     });
+
     dispatch.cart.addItem({
       ...workshopApi?.workshopApi,
       selectedOptions,
@@ -81,9 +82,10 @@ const Workshop = () => {
   };
 
   const handleChange = (value: string[]) => {
-    const find = options.find((o) => {
-      return o.value === value[0];
+    const find = value.map((o) => {
+      return options.find((op) => op.value === o);
     });
+
     setSelectedOptions(find);
   };
 
@@ -94,6 +96,7 @@ const Workshop = () => {
         return {
           label: service.title,
           value: service.id,
+          price: service.price,
         };
       });
       setOptions(serviceOptions);

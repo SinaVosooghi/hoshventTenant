@@ -60,7 +60,7 @@ const Courses = () => {
       key: "price",
       render: (row) => (
         <>
-          {row.workshop
+          {row.workshop?.price
             ? row.workshop?.price?.toLocaleString() + " " + currencyType()
             : "-"}
         </>
@@ -93,7 +93,7 @@ const Courses = () => {
       key: "action",
       width: 50,
       render: (_, record: any) =>
-      record.workshop?.title ? (
+        record.workshop?.title ? (
           <Space size="middle">
             <Link
               passHref

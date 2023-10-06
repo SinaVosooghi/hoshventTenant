@@ -29,7 +29,7 @@ const ProductCheckoutInfo = ({ product }: { product: Product | null }) => {
         <div className="organizer-detail">
           <div>
             <span>سرویس های انتخاب شده: </span>
-            {product?.services?.map((service) => {
+            {product?.selectedOptions?.map((service) => {
               return (
                 <Tag key={service.key}>
                   {service.title}:{" "}

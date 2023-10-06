@@ -40,6 +40,7 @@ const cartModel = createModel<RootState>()({
         data = [...state.items, { ...action, qty: 1 }];
       }
 
+
       return {
         ...state,
         items: data,
