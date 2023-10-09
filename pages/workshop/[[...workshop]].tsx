@@ -221,7 +221,7 @@ const Workshop = () => {
                   <span>
                     {moment(workshopApi?.workshopApi?.updated)
                       .locale("fa")
-                      .format("YYYY MMM D")}
+                      .format("D MMM YYYY")}
                   </span>
                 </div>
               </div>
