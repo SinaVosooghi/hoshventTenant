@@ -79,11 +79,7 @@ const PrintableCard = ({ boxes, name, event, qrcode, url }) => {
         </div>
       </div>
       <ReactToPrint
-        trigger={() => (
-          <Button size="large" type="primary">
-            پریت کارت ورود
-          </Button>
-        )}
+        trigger={() => <Button type="primary">پرینت کارت ورود</Button>}
         content={() => componentRef.current}
       />
     </div>

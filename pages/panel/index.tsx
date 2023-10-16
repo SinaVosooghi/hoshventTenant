@@ -14,12 +14,17 @@ import Link from "next/link";
 import { ReactQrCode } from "@devmehq/react-qr-code";
 import reactSvgToImage from "react-svg-to-image";
 import { getUserFromCookie } from "../../src/util/utils";
+import PrintableCard from "../../src/components/printCard";
+import { User } from "../../src/datamodel";
+import useGetSetting from "../../src/hooks/useGetSetting";
+import Setting from "../../src/datamodel/Setting";
 
 const { Text, Paragraph } = Typography;
 
 const TeachersDashboard = () => {
   const [lastEvent, setLastEvent] = useState<Lesson | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const { data: siteData }: { data: Setting } = useGetSetting();
 
   const { data: userEventsApi, loading: courseLoading } = useQuery(
     siteGetUserEventsApi,
@@ -81,16 +86,24 @@ const TeachersDashboard = () => {
             </Col>
             <Col>
               <Space direction="vertical" size={0}>
-                <Space direction="vertical" size={0}>
+                <Space direction="vertical" size={8}>
                   <Text strong>رمزینه پاسخ سریع (QRCode)</Text>
                   <Paragraph>
                     این کد را در اختیار عوامل اجرای قرار دهید.
                   </Paragraph>
                 </Space>
-                <Button size="small" onClick={qrDownloader}>
-                  دانلود QR Code
-                </Button>
-                <a href="path_to_file" id="link" download="qr_code"></a>
+                <Space>
+                  <Button onClick={qrDownloader}>دانلود QR Code</Button>
+                  <a href="path_to_file" id="link" download="qr_code"></a>
+                  {user && (
+                    <PrintableCard
+                      boxes={siteData}
+                      name={`${user?.firstName} ${user?.lastName}`}
+                      event={"کارت ورود"}
+                      url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+                    />
+                  )}
+                </Space>
               </Space>
             </Col>
             <Col span={8}>

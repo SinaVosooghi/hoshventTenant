@@ -62,7 +62,8 @@ const Edit = () => {
       <Card title={`جزییات ${data?.workshopApi?.title}`} loading={loading}>
         <Row gutter={[24, 24]}>
           <Col>
-            {user && (
+            ${data?.workshopApi?.description}
+            {/* {user && (
               <div className="qrcode">
                 <ReactQrCode
                   value={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}&w=${data?.workshopApi?.id}`}
@@ -97,7 +98,7 @@ const Edit = () => {
                 دانلود QR Code
               </Button>
               <a href="path_to_file" id="link" download="qr_code"></a>
-            </Space>
+            </Space> */}
           </Col>
         </Row>
       </Card>

@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Button, Card, message, notification } from "antd";
+import { Button, Card, Form, Input, message, notification } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { QrReader } from "react-qr-reader";
 import moment from "jalali-moment";
@@ -8,288 +8,69 @@ import ReactToPrint from "react-to-print";
 import { siteGetTimeline } from "../../src/shared/apollo/graphql/queries/timeline/siteGetTimeline";
 import { siteCheckin } from "../../src/shared/apollo/graphql/mutations/timeline/siteChekin";
 import { siteCheckout } from "../../src/shared/apollo/graphql/mutations/timeline/siteCheckout";
+import PrintableCard from "../../src/components/printCard";
+import { siteGetUserByMobileNumber } from "../../src/shared/apollo/graphql/queries/user/siteGetUserByMobile";
+import useGetSetting from "../../src/hooks/useGetSetting";
+import Setting from "../../src/datamodel/Setting";
+import { User } from "../../src/datamodel";
 
 require("./style.less");
 
 const Scanner = () => {
-  const [data, setData] = useState("No result");
-  const [attendee, setAttendee] = useState();
-  const componentRef = useRef();
+  const [user, setUser] = useState<User>();
+  const { data: siteData }: { data: Setting } = useGetSetting();
 
-  const [getUserInfo] = useLazyQuery(siteGetTimeline, {
+  const [getUserInfo] = useLazyQuery(siteGetUserByMobileNumber, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
-    onCompleted: ({ timeline }) => {
-      setAttendee(timeline);
+    onCompleted: ({ userByMobile }) => {
+      setUser(userByMobile);
     },
     onError: () => {
       notification.warning({ message: "موردی یافت نشد!" });
     },
   });
 
-  const [checkin, { loading: checkinLoading }] = useMutation(siteCheckin, {
-    notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      message.success("ورود شما با موفقیت ثبت شد!");
-    },
-    onError: (error) => {
-      if (error.message === "Unauthorized") {
-        notification.error({
-          message: "خطا",
-          description: "خطا در ثبت",
-        });
-      } else {
-        message.error("خطایی رخ داده است");
-      }
-    },
-  });
-
-  const [checkout, { loading: checkoutLoading }] = useMutation(siteCheckout, {
-    notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      message.success("خروج شما با موفقیت ثبت شد!");
-    },
-    onError: (error) => {
-      if (error.message === "Unauthorized") {
-        notification.error({
-          message: "خطا",
-          description: "خطا در ثبت",
-        });
-      } else {
-        message.error("خطایی رخ داده است");
-      }
-    },
-  });
-
-  useEffect(() => {
-    if (data) {
-      getUserInfo({
-        variables: {
-          url: data,
-        },
-      });
+  const onFinish = (values: any) => {
+    if (values.mobileNumber) {
+      getUserInfo({ variables: { mobilenumber: values.mobileNumber } });
     }
-  }, [data]);
-
-  const checkinHandler = (id: number, type: string) => {
-    checkin({
-      variables: {
-        aid: parseInt(attendee?.id),
-        type,
-        id: parseInt(id),
-      },
-    });
-  };
-
-  const checkoutHandler = (id, type) => {
-    checkout({
-      variables: {
-        aid: parseInt(attendee?.id),
-        type,
-        id: parseInt(id),
-      },
-    });
-  };
-
-  const renderUsertype = (type: string) => {
-    let t = "کاربر";
-    switch (type) {
-      case "user":
-        t = "کاربر";
-        break;
-      case "lecturer":
-        t = "سخنران";
-        break;
-      case "instructor":
-        t = "عوامل اجرایی";
-        break;
-      case "tenant":
-        t = "مدریر سایت";
-        break;
-      case "guest":
-        t = "میهمان";
-        break;
-    }
-
-    return t;
   };
 
   return (
-    <Card id="scanner" style={{ margin: "50px 0" }}>
-      <div className="camera">
-        <QrReader
-          constraints={{ facingMode: "user" }}
-          onResult={(result, error) => {
-            if (!!result) {
-              setData(result?.text);
-            }
+    <Card id="scanner" style={{ margin: "50px 0" }} title="گرفتن کارت ورود">
+      <Form
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        style={{ maxWidth: 600 }}
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        autoComplete="off"
+      >
+        <Form.Item
+          label="شماره موبایل"
+          name="mobileNumber"
+          rules={[
+            { required: true, message: "لطفا شماره موبایل را وارد کنید!" },
+          ]}
+        >
+          <Input />
+        </Form.Item>
 
-            if (!!error) {
-              console.info(error);
-            }
-          }}
-          videoStyle={{ borderRadius: "20px" }}
-          containerStyle={{ width: "100%", borderRadius: "20px" }}
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            جستجو
+          </Button>
+        </Form.Item>
+      </Form>
+      {user && (
+        <PrintableCard
+          boxes={siteData}
+          name={`${user?.firstName} ${user?.lastName}`}
+          event={"کارت ورود"}
+          url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
         />
-      </div>
-      {attendee && (
-        <div id="user-profile">
-          <div className="card-container" id="card">
-            <span className="pro">
-              {renderUsertype(attendee?.user?.usertype)}
-            </span>
-            <div className="qrcode">
-              <ReactQrCode
-                value={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${attendee?.user.id}&e=${attendee?.event?.id}`}
-                size={100}
-                viewBox={`0 0 100 100`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  backgroundColor: "#fff",
-                }}
-                renderAs="canvas"
-                id="qr"
-              />
-            </div>
-            <h3>
-              {attendee?.user?.firstName} {attendee?.user?.lastName}
-            </h3>
-            <h5>{attendee?.user?.mobilenumber}</h5>
-            <p>
-              <b>
-                {attendee?.user?.email} <br /> عضویت:{" "}
-              </b>
-              {moment(attendee?.user?.created)
-                .locale("fa")
-                .format("ddd D MMM, YYYY")}
-            </p>
-
-            <div className="skills">
-              <h1>{attendee?.event?.title}</h1>
-              {attendee?.event?.halls?.map((hall) => {
-                return (
-                  <>
-                    <h6>{hall.title}</h6>
-                    <ul>
-                      {hall.seminars?.map((seminar) => (
-                        <li>
-                          {seminar.title}
-                          <div className="buttons">
-                            <Button
-                              className="primary"
-                              loading={checkinLoading}
-                              onClick={() => {
-                                checkinHandler(seminar.id, "seminar");
-                              }}
-                            >
-                              ثبت ورود
-                            </Button>
-                            <Button
-                              className="primary ghost"
-                              loading={checkoutLoading}
-                              onClick={() => {
-                                checkoutHandler(seminar.id, "seminar");
-                              }}
-                            >
-                              ثبت خروج
-                            </Button>
-                          </div>
-                        </li>
-                      ))}
-                      {hall.workshops?.map((workshop) => (
-                        <li>
-                          {workshop.title}
-                          <div className="buttons">
-                            <Button
-                              className="primary"
-                              loading={checkinLoading}
-                              onClick={() => {
-                                checkinHandler(workshop.id, "workshop");
-                              }}
-                            >
-                              ثبت ورود
-                            </Button>
-                            <Button
-                              className="primary ghost"
-                              loading={checkoutLoading}
-                              onClick={() => {
-                                checkoutHandler(workshop.id, "workshop");
-                              }}
-                            >
-                              ثبت خروج
-                            </Button>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                );
-              })}
-            </div>
-          </div>
-          <div style={{ display: "none" }}>
-            <div ref={componentRef} style={{ padding: 20 }}>
-              <div
-                style={{ width: 200, textAlign: "center", margin: "0 auto" }}
-              >
-                <ReactQrCode
-                  value={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${attendee?.user.id}&e=${attendee?.event?.id}`}
-                  size={100}
-                  viewBox={`0 0 100 100`}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "#fff",
-                  }}
-                  renderAs="canvas"
-                  id="qr"
-                />
-              </div>
-              <h3 style={{ textAlign: "center" }}>
-                {attendee?.user?.firstName} {attendee?.user?.lastName}
-              </h3>
-              <h5 style={{ textAlign: "center" }}>
-                {attendee?.user?.mobilenumber}
-              </h5>
-              <p style={{ textAlign: "center" }}>
-                <b>
-                  {attendee?.user?.email} <br /> عضویت:{" "}
-                </b>
-                {moment(attendee?.user?.created)
-                  .locale("fa")
-                  .format("ddd D MMM, YYYY")}
-              </p>
-
-              <div style={{ textAlign: "center" }}>
-                <h1>{attendee?.event?.title}</h1>
-                {attendee?.event?.halls?.map((hall) => {
-                  return (
-                    <>
-                      <h6>{hall.title}</h6>
-                      <ul>
-                        {hall.seminars?.map((seminar) => (
-                          <li>{seminar.title}</li>
-                        ))}
-                        {hall.workshops?.map((workshop) => (
-                          <li>{workshop.title}</li>
-                        ))}
-                      </ul>
-                    </>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-          <ReactToPrint
-            trigger={() => (
-              <Button size="large" type="primary">
-                پریت کارت ورود
-              </Button>
-            )}
-            content={() => componentRef.current}
-          />
-        </div>
       )}
     </Card>
   );
