@@ -54,7 +54,7 @@ const CategoriesSlider = () => {
 
   return (
     <div id="category-slider">
-      <p>برخی از مشتریان</p>
+      <p>حامیان</p>
       <Fade>
         <Row justify="center">
           <Col md={20} xs={24}>
