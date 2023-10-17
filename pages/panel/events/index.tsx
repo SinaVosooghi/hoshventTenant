@@ -4,20 +4,29 @@ import { Space, Tag, Table, Tooltip, Row, Col, Button, Card } from "antd";
 import { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useEffect } from "react";
 import { siteGetUserEventsApi } from "../../../src/shared/apollo/graphql/queries/event/siteGetUserEventsApi";
 import currencyType from "../../../src/components/currency";
 import moment from "jalali-moment";
+import { siteGetCertificate } from "../../../src/shared/apollo/graphql/queries/certificate/siteGetCertificate";
+import PrintableCertificate from "../../../src/components/printCertificate";
+import { User } from "../../../src/datamodel";
+import { getUserFromCookie } from "../../../src/util/utils";
 
 const Courses = () => {
-  const router = useRouter();
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [value, setValue] = useState("");
   const [statusValue, setStatusValue] = useState(null);
 
-  const [items, setItems] = useState([]);
+  const [user, setUser] = useState<User | null>(null);
+
+  useMemo(() => {
+    if (getUserFromCookie()) {
+      setUser(getUserFromCookie());
+    }
+  }, []);
 
   interface DataType {
     key: string;
@@ -101,6 +110,14 @@ const Courses = () => {
             >
               <Button>جزییات رویداد</Button>
             </Link>
+            {moment().diff(record.workshop.end_date, "days") > 0 && (
+              <PrintableCertificate
+                type="workshop"
+                event={record.workshop.title}
+                name={user?.firstName + " " + user?.lastName}
+              />
+            )}
+
             <Link
               passHref
               href={`/workshop/${record?.workshop?.slug}`}
@@ -121,6 +138,14 @@ const Courses = () => {
             >
               <Button>جزییات رویداد</Button>
             </Link>
+
+            {moment().diff(record.seminar.end_date, "days") > 0 && (
+              <PrintableCertificate
+                type="seminar"
+                event={record.seminar.title}
+                name={user?.firstName + " " + user?.lastName}
+              />
+            )}
             <Link
               passHref
               href={`/seminar/${record?.seminar?.slug}`}
