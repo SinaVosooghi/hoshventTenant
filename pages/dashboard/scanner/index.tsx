@@ -38,6 +38,7 @@ const Scanner = () => {
   const [form] = Form.useForm();
   const [isCheckin, setIsCheckin] = useState(true);
   const { data: siteData }: { data: Setting } = useGetSetting();
+  const [showError, setShowError] = useState(false);
 
   const [getUserInfo] = useLazyQuery(siteGetTimeline, {
     notifyOnNetworkStatusChange: true,
@@ -46,6 +47,7 @@ const Scanner = () => {
       setAttendee(timeline);
     },
     onError: () => {
+      setShowError(true);
       notification.warning({ message: "موردی یافت نشد!" });
     },
   });
@@ -57,6 +59,7 @@ const Scanner = () => {
 
   useEffect(() => {
     let userCookie: User | null = null;
+    setShowError(false);
     if (getCookie("user")) {
       // @ts-ignore
       userCookie = JSON.parse(getCookie("user"));
@@ -91,7 +94,6 @@ const Scanner = () => {
             description: "قبلا ثبت شده است!",
           });
         } else {
-          console.log(error);
           message.error("خطایی رخ داده است");
         }
       },
@@ -116,6 +118,7 @@ const Scanner = () => {
   });
 
   useEffect(() => {
+    setShowError(false);
     if (data) {
       getUserInfo({
         variables: {
@@ -206,6 +209,14 @@ const Scanner = () => {
           message="برای اسکن کردن یک ورکشاپ یا یک رویداد جانبی را انتخاب کنید!"
           showIcon
         />
+        {showError && (
+          <Alert
+            message={"موردی یافت نشد!"}
+            type="error"
+            showIcon
+            style={{ marginBottom: 20, marginTop: 10 }}
+          />
+        )}
         <div className="select-items">
           <Form form={form} name="control-hooks" style={{ maxWidth: 600 }}>
             <Form.Item label="نوع" name="type">
@@ -246,6 +257,7 @@ const Scanner = () => {
                       seminar: null,
                     });
                     setIsWorkshop(true);
+                    setShowError(false);
 
                     setSelectedSeminar(null);
                     setSelectedWorkshop(e);
@@ -270,6 +282,7 @@ const Scanner = () => {
                   value={selectedSeminar}
                   onChange={(e) => {
                     setIsWorkshop(false);
+                    setShowError(false);
                     setSelectedWorkshop(null);
                     setSelectedSeminar(e);
                     form.setFieldsValue({
