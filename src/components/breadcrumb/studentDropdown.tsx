@@ -18,10 +18,6 @@ const StudentDropdown = ({ user }: { user: User | null }) => {
       label: <Link href="/panel/events">رویدادها</Link>,
     },
     {
-      key: "3",
-      label: <Link href="/panel/favorites/">علاقمندی ها</Link>,
-    },
-    {
       type: "divider",
     },
     {
