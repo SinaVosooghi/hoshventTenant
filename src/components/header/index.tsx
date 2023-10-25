@@ -130,6 +130,17 @@ const MainHeader = () => {
             <Link href={"/seminars"}>سمینار ها</Link>
           </li>
 
+          <li
+            className={
+              router.asPath === "/services/" ||
+              router.route === "/services/[[...service]]"
+                ? "active"
+                : ""
+            }
+          >
+            <Link href={"/services"}>خدمات</Link>
+          </li>
+
           {menus &&
             menus.menusApi?.menus?.map(
               (m: {
@@ -338,6 +349,17 @@ const MainHeader = () => {
                   }
                 >
                   <Link href={"/seminars"}>سمینار ها</Link>
+                </li>
+
+                <li
+                  className={
+                    router.asPath === "/services/" ||
+                    router.route === "/service/[[...service]]"
+                      ? "active"
+                      : ""
+                  }
+                >
+                  <Link href={"/services"}>خدمات</Link>
                 </li>
 
                 {menus &&

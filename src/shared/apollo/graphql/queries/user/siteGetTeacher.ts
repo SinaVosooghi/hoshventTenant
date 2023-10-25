@@ -15,6 +15,12 @@ export const siteGetTeacher = gql`
       instagram
       linkedin
       whatsapp
+      firstNameen
+      lastNameen
+      category {
+        title
+        titleen
+      }
       follows {
         id
       }

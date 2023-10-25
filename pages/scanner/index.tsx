@@ -61,93 +61,91 @@ const Scanner = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url('${
-          process.env.NEXT_PUBLIC_SITE_URL + "/" + siteData?.banner
-        }')`,
-        backgroundPositionY: 299,
-        backgroundSize: "cover",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <img src="/assets/print-header.jpg" width={"100%"} />
+    <>
       <NextSeo nofollow noindex title="پرینت کارت" />
-      <Row justify={"center"} align="top" style={{ height: "100vh" }}>
-        <Col md={6} xs={22}>
-          <Card
-            id="scanner"
-            style={{ margin: "50px 0" }}
-            title="گرفتن کارت ورود"
-          >
-            {showError && (
-              <Alert
-                message={"موردی یافت نشد!"}
-                type="error"
-                showIcon
-                style={{ marginBottom: 20 }}
-              />
-            )}
-
-            <Form
-              name="basic"
-              style={{ maxWidth: 600 }}
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              size="large"
-              autoComplete="off"
-            >
-              {siteData?.isNationalCode === "ncode" ? (
-                <Form.Item
-                  label="کد ملی"
-                  name="nationalcode"
-                  rules={[
-                    {
-                      required: true,
-                      message: "لطفا کدملی را وارد کنید!",
-                    },
-                  ]}
-                >
-                  <Input size="large" type="number" />
-                </Form.Item>
-              ) : (
-                <Form.Item
-                  label="شماره موبایل"
-                  name="mobileNumber"
-                  rules={[
-                    {
-                      required: true,
-                      message: "لطفا شماره موبایل را وارد کنید!",
-                    },
-                  ]}
-                >
-                  <Input size="large" />
-                </Form.Item>
+      <div
+        id="scanner"
+        style={{
+          backgroundImage: `url('${
+            process.env.NEXT_PUBLIC_SITE_URL + "/" + siteData?.banner
+          }')`,
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+        }}
+      >
+        <Row justify={"center"} align="top">
+          <Col md={6} xs={22}>
+            <Card title="گرفتن کارت ورود">
+              {showError && (
+                <Alert
+                  message={"موردی یافت نشد!"}
+                  type="error"
+                  showIcon
+                  style={{ marginBottom: 20 }}
+                />
               )}
 
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  block
-                  loading={loading}
-                >
-                  جستجو
-                </Button>
-              </Form.Item>
-            </Form>
-            {user && (
-              <PrintableCard
-                boxes={siteData}
-                name={`${user?.firstName} ${user?.lastName}`}
-                event={"کارت ورود"}
-                url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
-              />
-            )}
-          </Card>
-        </Col>
-      </Row>
-    </div>
+              <Form
+                name="basic"
+                style={{ maxWidth: 600 }}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                size="large"
+                autoComplete="off"
+              >
+                {siteData?.isNationalCode === "ncode" ? (
+                  <Form.Item
+                    label="کد ملی"
+                    name="nationalcode"
+                    rules={[
+                      {
+                        required: true,
+                        message: "لطفا کدملی را وارد کنید!",
+                      },
+                    ]}
+                  >
+                    <Input size="large" type="number" />
+                  </Form.Item>
+                ) : (
+                  <Form.Item
+                    label="شماره موبایل"
+                    name="mobileNumber"
+                    rules={[
+                      {
+                        required: true,
+                        message: "لطفا شماره موبایل را وارد کنید!",
+                      },
+                    ]}
+                  >
+                    <Input size="large" />
+                  </Form.Item>
+                )}
+
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    block
+                    loading={loading}
+                  >
+                    جستجو
+                  </Button>
+                </Form.Item>
+              </Form>
+              {user && (
+                <PrintableCard
+                  boxes={siteData}
+                  name={`${user?.firstName} ${user?.lastName}`}
+                  event={"کارت ورود"}
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+                  user={user}
+                />
+              )}
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </>
   );
 };
 

@@ -28,6 +28,7 @@ function usePayment({
     notifyOnNetworkStatusChange: true,
     onCompleted: ({ doPayment }) => {
       setLoading(false);
+
       if (doPayment) {
         notification.success({ message: "خرید با موفقیت انجام شد!" });
 
@@ -71,7 +72,6 @@ function usePayment({
               id: product.id,
               title: product.title,
               qty: product.qty,
-              services: product.selectedOptions,
               type: product.__typename,
             };
           }),

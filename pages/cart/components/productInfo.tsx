@@ -9,6 +9,7 @@ import currencyType from "../../../src/components/currency";
 
 const ProductCheckoutInfo = ({ product }: { product: Product | null }) => {
   const dispatch = useDispatch<Dispatch>();
+  console.log(product);
 
   return (
     <div className="product-checkout-info">
@@ -26,21 +27,6 @@ const ProductCheckoutInfo = ({ product }: { product: Product | null }) => {
         </div>
         <div className="product-divider"></div>
 
-        <div className="organizer-detail">
-          <div>
-            <span>سرویس های انتخاب شده: </span>
-            {product?.selectedOptions?.map((service) => {
-              return (
-                <Tag key={service.key}>
-                  {service.title}:{" "}
-                  {service.price
-                    ? service.price.toLocaleString() + " تومان"
-                    : "رایگان"}
-                </Tag>
-              );
-            })}
-          </div>
-        </div>
         <div className="product-details">
           <div className="item-button">
             <Button>

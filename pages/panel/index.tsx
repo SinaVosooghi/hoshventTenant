@@ -101,6 +101,7 @@ const TeachersDashboard = () => {
                       name={`${user?.firstName} ${user?.lastName}`}
                       event={"کارت ورود"}
                       url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+                      user={user}
                     />
                   )}
                 </Space>
@@ -130,9 +131,9 @@ const TeachersDashboard = () => {
       <Col span={24}>
         <Calendar />
       </Col>
-      <Col span={24}>
+      {/* <Col span={24}> ///////////////////////////////////////////////////////////////////////
         <Events />
-      </Col>
+      </Col> */}
     </Row>
   );
 };

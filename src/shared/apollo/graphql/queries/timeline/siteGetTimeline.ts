@@ -8,7 +8,6 @@ export const siteGetTimeline = gql`
         created
         updated
         status
-        services
         user {
             id
             username
@@ -18,6 +17,10 @@ export const siteGetTimeline = gql`
             usertype
             email
             created
+        }
+        service{
+          id
+          title
         }
         workshop {
             id

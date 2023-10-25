@@ -25,25 +25,10 @@ const CourseCheckout = () => {
     let total = 0;
     total = Math.ceil(
       items
-        ?.map((item: any) => {
-          const servicesTotal = item.selectedOptions?.reduce(
-            (prev: any, curr: any) => prev + curr.price,
-            0
-          );
-          return (item?.price + servicesTotal) * item?.qty;
-        })
+        ?.map((item: any) => item?.price * item.qty)
         .reduce((prev: any, curr: any) => prev + curr, 0)
     );
-
     return total;
-  };
-
-  const renderEventPrice = (item) => {
-    const servicesTotal = item.selectedOptions?.reduce(
-      (prev: any, curr: any) => prev + curr.price,
-      0
-    );
-    return item?.price + servicesTotal;
   };
 
   const renderPrice = () => {
@@ -89,6 +74,7 @@ const CourseCheckout = () => {
                 <th className="left-align">مبلغ</th>
               </tr>
             </thead>
+
             <tbody>
               {items?.map((event: Event) => {
                 return (
@@ -98,7 +84,7 @@ const CourseCheckout = () => {
                     <td width={"10%"}>{event?.qty}</td>
                     <td width={"10%"} className="left-align">
                       <div className="currency-text">
-                        {renderEventPrice(event).toLocaleString()}
+                        {(event?.price * event?.qty).toLocaleString()}
                         <small>{renderCurrency(data?.currency)} </small>
                       </div>
                     </td>
@@ -182,7 +168,7 @@ const CourseCheckout = () => {
             style={{ margin: 100 }}
             description={<span>سبد خرید خالیست</span>}
           >
-            <Button onClick={() => router.push("/courses")}>
+            <Button onClick={() => router.push("/")}>
               مشاهده رویداد ها
             </Button>
           </Empty>

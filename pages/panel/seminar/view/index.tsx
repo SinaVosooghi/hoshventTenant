@@ -64,6 +64,7 @@ const Edit = () => {
                   name={`${user?.firstName} ${user?.lastName}`}
                   event={data?.seminarApi?.title}
                   url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.id}&s=${data?.seminarApi?.id}`}
+                  user={user}
                 />
               </div>
             )}

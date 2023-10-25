@@ -34,6 +34,7 @@ const cartModel = createModel<RootState>()({
       );
       let data = [...state.items];
 
+      console.log(action);
       if (index >= 0) {
         data[index].qty = 1;
       } else {

@@ -92,16 +92,10 @@ export default function Register() {
           backgroundImage: `url('${
             process.env.NEXT_PUBLIC_SITE_URL + "/" + siteData?.banner
           }')`,
-          backgroundPositionY: 299,
-          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
         }}
       >
-        <img
-          src="/assets/print-header.jpg"
-          width={"100%"}
-          style={{ marginBottom: 49 }}
-        />
         <Row align="middle" justify="center">
           <Col md={8}>
             <div id="login-card">

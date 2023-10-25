@@ -16,11 +16,21 @@ export const siteGetUser = gql`
       status
       about
       avatar
+      firstNameen
+      lastNameen
+      category {
+        title
+        titleen
+      }
       seminars {
         id
         title
       }
       workshops {
+        id
+        title
+      }
+      services {
         id
         title
       }

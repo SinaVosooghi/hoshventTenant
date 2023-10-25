@@ -8,5 +8,8 @@ export default interface Service {
   body: string;
   price: number;
   workshops: any;
-  seminars: any
+  seminars: any;
+  image:string;
+  start_date: Date;
+  end_date: Date;
 }

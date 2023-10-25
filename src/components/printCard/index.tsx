@@ -6,6 +6,8 @@ import { Title } from "./Title";
 import ReactToPrint from "react-to-print";
 import { Button } from "antd";
 import { useRef } from "react";
+import { useQuery } from "@apollo/client";
+import { siteGetUser } from "../../shared/apollo/graphql/queries/user/siteGetUser";
 
 const styles = {
   width: 1004,
@@ -13,10 +15,17 @@ const styles = {
   position: "relative",
 };
 
-const PrintableCard = ({ boxes, name, event, qrcode, url }) => {
+const PrintableCard = ({ boxes, name, event, qrcode, url, user }: any) => {
   const componentRef = useRef();
 
   const elements = boxes?.cardlayout && JSON.parse(boxes?.cardlayout);
+  const { data, loading } = useQuery(siteGetUser, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "network-only",
+    variables: {
+      id: parseInt(user.uid),
+    },
+  });
 
   return (
     <div>
@@ -62,6 +71,24 @@ const PrintableCard = ({ boxes, name, event, qrcode, url }) => {
                     {event}
                   </Title>
                 );
+              } else if (type === "nameen") {
+                return (
+                  <Title key={key} id={key} left={left} top={top}>
+                    {data?.user?.firstNameen} {data?.user?.lastNameen}
+                  </Title>
+                );
+              } else if (type === "categoryen") {
+                return (
+                  <Title key={key} id={key} left={left} top={top}>
+                    {data?.user?.category?.titleen}
+                  </Title>
+                );
+              } else if (type === "category") {
+                return (
+                  <Title key={key} id={key} left={left} top={top}>
+                    {data?.user?.category?.title}
+                  </Title>
+                );
               } else if (type === "logo") {
                 return (
                   <Logo key={key} id={key} left={left} top={top}>
@@ -79,7 +106,11 @@ const PrintableCard = ({ boxes, name, event, qrcode, url }) => {
         </div>
       </div>
       <ReactToPrint
-        trigger={() => <Button type="primary">پرینت کارت ورود</Button>}
+        trigger={() => (
+          <Button type="primary" loading={loading}>
+            پرینت کارت ورود
+          </Button>
+        )}
         content={() => componentRef.current}
       />
     </div>
