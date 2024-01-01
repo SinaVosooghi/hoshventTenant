@@ -69,7 +69,6 @@ const MainHeader = () => {
   });
 
   useEffect(() => {
-    console.log(user);
     if (getUserFromCookie()) {
       setUser(getUserFromCookie());
     }
@@ -108,37 +107,59 @@ const MainHeader = () => {
       >
         <ul id="drawer-list">
           <li className={router.asPath === "/" ? "active" : ""}>
-            <HomeTwoTone twoToneColor="#F79826" rev={undefined} />
-            <Link href={"/"} onClick={() => setOpen(false)}>
-              صفحه اصلی
-            </Link>
+            <Link href={"/"}>صفحه اصلی</Link>
           </li>
           <li
             className={
-              router.asPath === "/courses/" ||
-              router.route === "/course/[[...course]]"
+              router.asPath === "/workshops/" ||
+              router.route === "/workshops/[[...workshop]]"
                 ? "active"
                 : ""
             }
           >
-            <VideoCameraTwoTone twoToneColor="#F79826" rev={undefined} />
-            <Link href={"/courses"} onClick={() => setOpen(false)}>
-              رویداد ها
-            </Link>
+            <Link href={"/workshops"}>ورکشاپ ها</Link>
+          </li>
+          <li
+            className={
+              router.asPath === "/seminars/" ||
+              router.route === "/seminars/[[...seminar]]"
+                ? "active"
+                : ""
+            }
+          >
+            <Link href={"/seminars"}>سمینار ها</Link>
           </li>
 
-          <li className={router.asPath === "/shop/" ? "active" : ""}>
-            <ShoppingTwoTone twoToneColor="#F79826" rev={undefined} />
-            <Link href={"/shop"} onClick={() => setOpen(false)}>
-              فروشگاه
-            </Link>
+          <li
+            className={
+              router.asPath === "/services/" ||
+              router.route === "/services/[[...service]]"
+                ? "active"
+                : ""
+            }
+          >
+            <Link href={"/services"}>خدمات</Link>
           </li>
+
+          {menus &&
+            menus.menusApi?.menus?.map(
+              (m: {
+                id: Key | null | undefined;
+                link: string | UrlObject;
+                title: string;
+              }) => {
+                return (
+                  <li
+                    key={m.id}
+                    className={router.asPath === m.link ? "active" : ""}
+                  >
+                    <Link href={m.link}>{m.title}</Link>
+                  </li>
+                );
+              }
+            )}
           <li className={router.asPath === "/contact/" ? "active" : ""}>
-            <PhoneTwoTone twoToneColor="#F79826" rev={undefined} />
-            <Link href={"/contact"} onClick={() => setOpen(false)}>
-              {" "}
-              تماس با ما
-            </Link>
+            <Link href={"/contact"}> تماس با ما</Link>
           </li>
         </ul>
       </Drawer>
@@ -328,6 +349,17 @@ const MainHeader = () => {
                   }
                 >
                   <Link href={"/seminars"}>سمینار ها</Link>
+                </li>
+
+                <li
+                  className={
+                    router.asPath === "/services/" ||
+                    router.route === "/service/[[...service]]"
+                      ? "active"
+                      : ""
+                  }
+                >
+                  <Link href={"/services"}>خدمات</Link>
                 </li>
 
                 {menus &&

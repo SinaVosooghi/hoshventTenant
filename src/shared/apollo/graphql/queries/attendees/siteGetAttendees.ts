@@ -6,13 +6,23 @@ export const siteGetAttendees = gql`
     attendeesApi(input: $input) {
       attends {
         id
-        event {
+        workshop {
           id
           title
           seotitle
           image
-          duration
-          capacity
+          price
+          slug
+          featured
+          status
+          created
+          updated
+        }
+        seminar {
+          id
+          title
+          seotitle
+          image
           price
           slug
           featured

@@ -34,19 +34,30 @@ const Scanner = () => {
   const componentRef = useRef();
   const [selectedSeminar, setSelectedSeminar] = useState(null);
   const [selectedWorkshop, setSelectedWorkshop] = useState(null);
-  const [isWorkshop, setIsWorkshop] = useState(true);
+  const [selectedService, setSelectedService] = useState(null);
+
+  const [type, setType] = useState<"workshop" | "seminar" | "service" | null>(
+    null
+  );
   const [form] = Form.useForm();
   const [isCheckin, setIsCheckin] = useState(true);
   const { data: siteData }: { data: Setting } = useGetSetting();
+  const [showError, setShowError] = useState(false);
 
   const [getUserInfo] = useLazyQuery(siteGetTimeline, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
     onCompleted: ({ timeline }) => {
+      notification.success({ message: "ثبت شد" });
       setAttendee(timeline);
     },
-    onError: () => {
-      notification.warning({ message: "موردی یافت نشد!" });
+    onError: (err) => {
+      setShowError(true);
+      if (err.message === "Already checkin") {
+        notification.warning({ message: "قبلا ثبت شده است" });
+      } else {
+        notification.warning({ message: "موردی یافت نشد!" });
+      }
     },
   });
 
@@ -57,6 +68,7 @@ const Scanner = () => {
 
   useEffect(() => {
     let userCookie: User | null = null;
+    setShowError(false);
     if (getCookie("user")) {
       // @ts-ignore
       userCookie = JSON.parse(getCookie("user"));
@@ -70,92 +82,24 @@ const Scanner = () => {
     });
   }, []);
 
-  const [checkin, { loading: checkinLoading }] = useMutation(
-    siteManualCheckin,
-    {
-      notifyOnNetworkStatusChange: true,
-      refetchQueries: [siteGetTimeline],
-      onCompleted: () => {
-        message.success("ثبت با موفقیت ثبت شد!");
-      },
-      onError: (error) => {
-        if (error.message === "Unauthorized") {
-          notification.error({
-            message: "خطا",
-            description: "مجدد وارد حساب کاربری شوید!",
-          });
-        }
-        if (error.message === "Already added") {
-          notification.warning({
-            message: "خطا",
-            description: "قبلا ثبت شده است!",
-          });
-        } else {
-          console.log(error);
-          message.error("خطایی رخ داده است");
-        }
-      },
-    }
-  );
-
-  const [checkout, { loading: checkoutLoading }] = useMutation(siteCheckout, {
-    notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      message.success("خروج شما با موفقیت ثبت شد!");
-    },
-    onError: (error) => {
-      if (error.message === "Unauthorized") {
-        notification.error({
-          message: "خطا",
-          description: "خطا در ثبت",
-        });
-      } else {
-        message.error("خطایی رخ داده است");
-      }
-    },
-  });
-
   useEffect(() => {
+    setShowError(false);
     if (data) {
       getUserInfo({
         variables: {
           input: {
             url: data,
-            ...(isWorkshop && { workshop: selectedWorkshop?.toString() }),
-            ...(!isWorkshop && { seminar: selectedSeminar?.toString() }),
+            ...(type === "workshop" && {
+              workshop: selectedWorkshop?.toString(),
+            }),
+            ...(type === "seminar" && { seminar: selectedSeminar?.toString() }),
+            ...(type === "service" && { service: selectedService?.toString() }),
             checkin: isCheckin,
           },
         },
       });
     }
   }, [data]);
-
-  const checkinHandler = (id: number, type: string, serviceId: string) => {
-    let services = [...attendee.services];
-    const objIndex = services.findIndex((obj) => obj.id == serviceId);
-    services[objIndex].scanned = true;
-
-    checkin({
-      variables: {
-        input: {
-          aid: parseInt(attendee?.id),
-          type,
-          id: parseInt(id),
-          service: serviceId,
-        },
-      },
-    });
-  };
-
-  const checkoutHandler = (id, type) => {
-    checkout({
-      variables: {
-        aid: parseInt(attendee?.id),
-        type,
-        id: parseInt(id),
-      },
-    });
-  };
 
   const renderUsertype = (type: string) => {
     let t = "کاربر";
@@ -181,7 +125,7 @@ const Scanner = () => {
   };
 
   const renderCamera = () => {
-    if (selectedSeminar || selectedWorkshop) {
+    if (selectedSeminar || selectedWorkshop || selectedService) {
       return (
         <QrReader
           constraints={{ facingMode: "environment" }}
@@ -206,6 +150,14 @@ const Scanner = () => {
           message="برای اسکن کردن یک ورکشاپ یا یک رویداد جانبی را انتخاب کنید!"
           showIcon
         />
+        {showError && (
+          <Alert
+            message={"موردی یافت نشد!"}
+            type="error"
+            showIcon
+            style={{ marginBottom: 20, marginTop: 10 }}
+          />
+        )}
         <div className="select-items">
           <Form form={form} name="control-hooks" style={{ maxWidth: 600 }}>
             <Form.Item label="نوع" name="type">
@@ -244,11 +196,14 @@ const Scanner = () => {
                     form.setFieldsValue({
                       workshop: e,
                       seminar: null,
+                      service: null,
                     });
-                    setIsWorkshop(true);
+                    setType("workshop");
+                    setShowError(false);
 
                     setSelectedSeminar(null);
                     setSelectedWorkshop(e);
+                    setSelectedService(null);
                   }}
                 >
                   {user?.user?.workshops?.map((workshop) => (
@@ -269,18 +224,53 @@ const Scanner = () => {
                   style={{ minWidth: 280 }}
                   value={selectedSeminar}
                   onChange={(e) => {
-                    setIsWorkshop(false);
+                    setType("seminar");
+                    setShowError(false);
                     setSelectedWorkshop(null);
                     setSelectedSeminar(e);
+                    setSelectedService(null);
+
                     form.setFieldsValue({
                       workshop: null,
                       seminar: e,
+                      service: null,
                     });
                   }}
                 >
                   {user?.user?.seminars?.map((seminar) => (
                     <Select.Option value={seminar.id} key={seminar.id}>
                       {seminar.title}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            ) : (
+              ""
+            )}
+
+            {user?.user?.services?.length ? (
+              <Form.Item name="service" label="انتخاب سرویس">
+                <Select
+                  placeholder="انتخاب سرویس"
+                  style={{ minWidth: 280 }}
+                  value={setSelectedService}
+                  onChange={(e) => {
+                    form.setFieldsValue({
+                      workshop: null,
+                      seminar: null,
+                      service: e,
+                    });
+                    setType("service");
+                    setShowError(false);
+
+                    setSelectedSeminar(null);
+                    setSelectedWorkshop(null);
+                    setSelectedService(e);
+                  }}
+                >
+                  {user?.user?.services?.map((service) => (
+                    <Select.Option value={service.id} key={service.id}>
+                      {service.title}
                     </Select.Option>
                   ))}
                 </Select>
@@ -330,29 +320,7 @@ const Scanner = () => {
             <div className="skills">
               <h1>{attendee?.workshop?.title}</h1>
               <h1>{attendee?.seminar?.title}</h1>
-              {attendee?.services?.map((service) => {
-                return (
-                  <>
-                    <h6>{service.title}</h6>
-                    <div className="buttons">
-                      <Button
-                        className="primary"
-                        loading={checkinLoading}
-                        disabled={service.scanned}
-                        onClick={() => {
-                          checkinHandler(
-                            service.id,
-                            attendee.workshop ? "workshop" : "seminar",
-                            service.id
-                          );
-                        }}
-                      >
-                        {service.scanned ? "غیر فعال" : "ثبت"}
-                      </Button>
-                    </div>
-                  </>
-                );
-              })}
+              <h1>{attendee?.service?.title}</h1>
             </div>
           </div>
           <div>
@@ -361,6 +329,7 @@ const Scanner = () => {
               name={`${attendee?.user?.firstName} ${attendee?.user?.lastName}`}
               event={attendee?.event?.title}
               url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${attendee?.user.id}&e=${attendee?.event?.id}`}
+              user={attendee.user}
             />
           </div>
         </div>

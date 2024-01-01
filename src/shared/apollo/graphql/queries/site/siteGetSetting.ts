@@ -17,6 +17,8 @@ export const siteGetSite = gql`
       logo
       tax
       cardlayout
+      banner
+      isNationalCode
       registerFields {
         order
         title

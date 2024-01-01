@@ -45,22 +45,19 @@ export default function Login() {
       .then(({ data }) => {
         setLoading(false);
 
-        const { type, access_token, firstName, lastName } = data;
+        delete data.ability;
+        const { type, firstName, lastName } = data;
         const loginData = {
           ...data,
-          accessToken: access_token,
-          ability: [
-            {
-              action: "manage",
-              subject: "all",
-            },
-          ],
         };
+        
+
         if (handleLogin(loginData)) {
           notification.success({
             message: firstName + " " + lastName,
             description: "شما وارد حساب کاربریتان شدید",
           });
+          console.log(type);
           if (type === "instructor") {
             router.push("/dashboard");
           } else if (type === "user") {
@@ -71,6 +68,7 @@ export default function Login() {
         }
       })
       .catch((errors) => {
+        console.log("ererer");
         setLoading(false);
         if ("You do not have access to this page!") {
           notification.error({

@@ -54,10 +54,9 @@ export default function Register() {
       .then(({ data }) => {
         setLoading(false);
 
-        const { type, access_token, firstName, lastName } = data;
+        const { type, firstName, lastName } = data;
         const loginData = {
           ...data,
-          accessToken: access_token,
           ability: [
             {
               action: "manage",

@@ -18,7 +18,7 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
   const [statusValue, setStatusValue] = useState(null);
 
   const router = useRouter();
-  const { event } = router.query;
+  const { s, w } = router.query;
 
   interface DataType {
     key: string;
@@ -30,9 +30,9 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "رویداد",
+      title: "عنوان",
       key: "name",
-      render: (row) => <span>{row.event?.title}</span>,
+      render: (row) => <span>{row.workshop?.title ?? row.seminar?.title}</span>,
     },
     {
       title: "شرکت کننده",
@@ -78,13 +78,16 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
           skip: (currentPage - 1) * rowsPerPage,
           searchTerm: value,
           status: statusValue ?? null,
-          event: event && parseInt(event[0]),
+          // @ts-ignore
+          ...(w && { w: parseInt(w) }),
+          // @ts-ignore
+          ...(s && { s: parseInt(s) }),
           // @ts-ignore
           siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
         },
       },
     });
-  }, [event]);
+  }, [w, s]);
 
   useEffect(() => {
     getAttendees({
@@ -94,7 +97,10 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
           skip: (currentPage - 1) * rowsPerPage,
           searchTerm: value,
           status: statusValue ?? null,
-          event: event && parseInt(event[0]),
+          // @ts-ignore
+          ...(w && { w: parseInt(w) }),
+          // @ts-ignore
+          ...(s && { s: parseInt(s) }),
           // @ts-ignore
           siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
         },

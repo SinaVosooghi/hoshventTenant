@@ -9,6 +9,9 @@ export const siteGetServices = gql`
         title
         body
         price
+        image
+        start_date
+        end_date
       }
       count
     }

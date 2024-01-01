@@ -10,11 +10,15 @@ import { useEffect, useState } from "react";
 import { getUserFromCookie } from "../../../../src/util/utils";
 import { User } from "../../../../src/datamodel";
 import { siteGetSeminarApi } from "../../../../src/shared/apollo/graphql/queries/seminar/siteGetSeminarApi";
+import PrintableCard from "../../../../src/components/printCard";
+import useGetSetting from "../../../../src/hooks/useGetSetting";
+import Setting from "../../../../src/datamodel/Setting";
 const { Text, Paragraph } = Typography;
 
 const Edit = () => {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const { data: siteData }: { data: Setting } = useGetSetting();
 
   const { id } = router.query;
   const { data, loading } = useQuery(siteGetSeminarApi, {
@@ -54,6 +58,13 @@ const Edit = () => {
                   }}
                   renderAs="canvas"
                   id="qr"
+                />
+                <PrintableCard
+                  boxes={siteData}
+                  name={`${user?.firstName} ${user?.lastName}`}
+                  event={data?.seminarApi?.title}
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.id}&s=${data?.seminarApi?.id}`}
+                  user={user}
                 />
               </div>
             )}

@@ -19,6 +19,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import currencyType from "../../../src/components/currency";
 import { siteGetEventsApi } from "../../../src/shared/apollo/graphql/queries/event/siteGetEventsApi";
+import { siteGetWorkshopApi } from "../../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshopApi";
+import { siteGetWorkshops } from "../../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshops";
 
 const { Text } = Typography;
 
@@ -39,20 +41,15 @@ const Courses = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "عنوان رویداد",
+      title: "عنوان",
       key: "title",
       render: (row) => (
-        <Link passHref href={`/event/${row?.slug}`} target="_blank">
+        <Link passHref href={`/workshop/${row?.slug}`} target="_blank">
           {row?.title}
           <br />
           <Text type="secondary">{row?.duration}</Text>
         </Link>
       ),
-    },
-    {
-      title: "مدت",
-      key: "duration",
-      render: (row) => <span>{row?.duration}</span>,
     },
     {
       title: "قیمت",
@@ -120,13 +117,14 @@ const Courses = () => {
       width: 50,
       render: (_, record: any) => (
         <Space size="middle">
-          <Link passHref href={`/dashboard/events/view?id=${record?.id}`}>
-            <Button>جزییات رویداد</Button>
-          </Link>
-          <Link passHref href={`/dashboard/attendees/${record?.id}`}>
+          <Link passHref href={`/dashboard/attendees/?w=${record?.id}`}>
             <Button>لیست مراجعین</Button>
           </Link>
-          <Link passHref href={`/event/${record?.event?.slug}`} target="_blank">
+          <Link
+            passHref
+            href={`/workshop/${record?.slug}`}
+            target="_blank"
+          >
             <Tooltip title="مشاهده رویداد">
               <Button>
                 <EyeOutlined rev={undefined} />
@@ -138,7 +136,7 @@ const Courses = () => {
     },
   ];
 
-  const [getItems, { data, loading }] = useLazyQuery(siteGetEventsApi, {
+  const [getItems, { data, loading }] = useLazyQuery(siteGetWorkshops, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
   });
@@ -159,13 +157,13 @@ const Courses = () => {
   }, []);
 
   return (
-    <Card title={<h3>لیست رویداد ها</h3>} loading={loading}>
+    <Card title={<h3>لیست ورکشاپ ها</h3>} loading={loading}>
       <Row gutter={[16, 16]}>
         <Col md={24}>
           <Table
             scroll={{ x: true }}
             columns={columns}
-            dataSource={data?.eventsApi?.events}
+            dataSource={data?.workshopsApi?.workshops}
             pagination={{ hideOnSinglePage: true }}
           />
         </Col>

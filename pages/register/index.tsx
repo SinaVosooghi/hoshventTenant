@@ -43,6 +43,8 @@ export default function Register() {
       lastName,
       registerField,
       gender,
+      lastNameen,
+      firstNameen,
     } = data;
 
     axios
@@ -55,16 +57,17 @@ export default function Register() {
         firstName,
         registerFields: registerField,
         gender,
+        lastNameen,
+        firstNameen,
         // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       })
       .then(({ data }) => {
         setLoading(false);
 
-        const { type, access_token, firstName, lastName } = data;
+        const { type, firstName, lastName } = data;
         const loginData = {
           ...data,
-          accessToken: access_token,
           ability: [
             {
               action: "manage",
@@ -157,6 +160,22 @@ export default function Register() {
                     >
                       <Input size="large" />
                     </Form.Item>
+
+                    <Form.Item
+                      label="نام (English)"
+                      name="firstNameen"
+                      hasFeedback
+                    >
+                      <Input size="large" />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="نام خانوادگی (English)"
+                      name="lastNameen"
+                      hasFeedback
+                    >
+                      <Input size="large" />
+                    </Form.Item>
                     <Form.Item
                       label="ایمیل"
                       name="email"
@@ -164,6 +183,24 @@ export default function Register() {
                       rules={[{ required: true, type: "email" }]}
                     >
                       <Input size="large" placeholder="john@doe.com" />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="کد ملی"
+                      name="nationalcode"
+                      hasFeedback
+                      rules={[
+                        {
+                          required: true,
+                        },
+                      ]}
+                    >
+                      <Input
+                        style={{ width: "100%" }}
+                        size="large"
+                        maxLength={11}
+                        placeholder="09121232323"
+                      />
                     </Form.Item>
 
                     <Form.Item

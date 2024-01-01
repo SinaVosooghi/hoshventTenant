@@ -6,6 +6,7 @@ export default interface Setting {
   keywords: string;
   email: string;
   logo: string;
+  banner: string;
   logo_second: string;
   favicon: string;
   description: string;
@@ -21,5 +22,6 @@ export default interface Setting {
   blogQuestion: { questions: [{ title: string }] };
   productQuestion: { questions: [{ title: string }] };
   currency: string;
-  cardlayout: string
+  cardlayout: string;
+  isNationalCode: 'ncode' | 'mobile'
 }

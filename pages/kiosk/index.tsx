@@ -24,13 +24,14 @@ import Link from "next/link";
 import { validateMessages } from "../../src/util/messageValidators";
 import { NextSeo } from "next-seo";
 import useGetSetting from "../../src/hooks/useGetSetting";
+import Setting from "../../src/datamodel/Setting";
 
 require("./style.less");
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { data } = useGetSetting();
+  const { data: siteData }: { data: Setting } = useGetSetting();
 
   const onFinish = ({
     password,
@@ -39,6 +40,7 @@ export default function Register() {
     mobilenumber,
     firstName,
     lastName,
+    nationalcode,
   }: any) => {
     axios
       .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/register", {
@@ -48,6 +50,7 @@ export default function Register() {
         mobilenumber,
         lastName,
         firstName,
+        nationalcode,
         // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       })
@@ -63,7 +66,12 @@ export default function Register() {
       })
       .catch((errors) => {
         setLoading(false);
-        if (errors?.response?.data.statusCode === 401) {
+        if (
+          errors?.response?.data?.message ===
+          "Already exist, User with this mobile!"
+        ) {
+          notification.error({ message: "موبایل وارد شده تکراریست!" });
+        } else if (errors?.response?.data.statusCode === 401) {
           notification.error({ message: "دسترسی غیر مجاز" });
         } else {
           notification.error({ message: "اطلاعات ورود اشتباه است" });
@@ -78,11 +86,20 @@ export default function Register() {
   return (
     <>
       <NextSeo title={"ثبت نام"} description={"ثبت نام در سایت"} />
-      <div id="kiosk">
+      <div
+        id="kiosk"
+        style={{
+          backgroundImage: `url('${
+            process.env.NEXT_PUBLIC_SITE_URL + "/" + siteData?.banner
+          }')`,
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+        }}
+      >
         <Row align="middle" justify="center">
           <Col md={8}>
             <div id="login-card">
-              <h1>ثبت نام در {data?.companyName}</h1>
+              <h1>ثبت نام در رویداد</h1>
               <p>
                 با ورود و یا ثبت نام در سایت شما شرایط و قوانین استفاده از سرویس
                 های سایت و قوانین حریم خصوصی آن را می‌پذیرید
@@ -120,6 +137,19 @@ export default function Register() {
                       rules={[{ required: true, type: "email" }]}
                     >
                       <Input size="large" placeholder="john@doe.com" />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="کدملی"
+                      name="nationalcode"
+                      hasFeedback
+                      rules={[{ required: true }]}
+                    >
+                      <InputNumber
+                        size="large"
+                        placeholder="12345568"
+                        style={{ width: "100%" }}
+                      />
                     </Form.Item>
 
                     <Form.Item

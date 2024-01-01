@@ -1,7 +1,7 @@
 import {
   CookieValueTypes,
+  deleteCookie,
   getCookie,
-  removeCookies,
   setCookie,
 } from "cookies-next";
 import { User } from "../datamodel";
@@ -14,7 +14,18 @@ export const checkLogin = () => {
 };
 
 export const handleLogin = (data: any) => {
-  setCookie("user", JSON.stringify(data), { maxAge: 864000000 });
+  const loginData = { ...data };
+  delete loginData.role;
+  const roleData = data.role;
+  const date = new Date();
+
+  setCookie("user", JSON.stringify(loginData), {
+    maxAge: date.getTime() + 7 * 24 * 60 * 60 * 1000,
+  });
+
+  setCookie("role", JSON.stringify(roleData), {
+    maxAge: 24 * 60 * 60,
+  });
   return true;
 };
 
@@ -28,7 +39,7 @@ export const getUserFromCookie = (): User | null => {
 };
 
 export const handleLogout = () => {
-  removeCookies("user");
+  deleteCookie("user");
   return true;
 };
 

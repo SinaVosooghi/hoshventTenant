@@ -47,6 +47,8 @@ module.exports = withBundleAnalyzer(
           "127.0.0.1",
           "https://hoshvent.com",
           "hoshvent.com",
+          "api.hoshvent.com",
+          "https://api.hoshvent.com"
         ],
       },
       trailingSlash: true,
