@@ -40,6 +40,7 @@ export default function Login() {
         email,
         password,
         remember,
+        s: process.env.NEXT_PUBLIC_SITE,
       })
       .then(({ data }) => {
         setLoading(false);
@@ -71,7 +72,11 @@ export default function Login() {
       })
       .catch((errors) => {
         setLoading(false);
-        if (errors?.response?.data.statusCode === 401) {
+        if ("You do not have access to this page!") {
+          notification.error({
+            message: "شما اجازه ورود به این صفحه را ندارید!",
+          });
+        } else if (errors?.response?.data.statusCode === 401) {
           notification.error({ message: "دسترسی غیر مجاز" });
         } else {
           notification.error({ message: "اطلاعات ورود اشتباه است" });
