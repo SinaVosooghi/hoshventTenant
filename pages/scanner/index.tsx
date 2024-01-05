@@ -1,23 +1,6 @@
-import { useLazyQuery, useMutation } from "@apollo/client";
-import {
-  Alert,
-  Button,
-  Card,
-  Col,
-  Form,
-  Input,
-  Row,
-  message,
-  notification,
-} from "antd";
-import { useEffect, useRef, useState } from "react";
-import { QrReader } from "react-qr-reader";
-import moment from "jalali-moment";
-import { ReactQrCode } from "@devmehq/react-qr-code";
-import ReactToPrint from "react-to-print";
-import { siteGetTimeline } from "../../src/shared/apollo/graphql/queries/timeline/siteGetTimeline";
-import { siteCheckin } from "../../src/shared/apollo/graphql/mutations/timeline/siteChekin";
-import { siteCheckout } from "../../src/shared/apollo/graphql/mutations/timeline/siteCheckout";
+import { useLazyQuery } from "@apollo/client";
+import { Alert, Button, Card, Col, Form, Input, Row, notification } from "antd";
+import { useState } from "react";
 import PrintableCard from "../../src/components/printCard";
 import { siteGetUserByMobileNumber } from "../../src/shared/apollo/graphql/queries/user/siteGetUserByMobile";
 import useGetSetting from "../../src/hooks/useGetSetting";
@@ -31,6 +14,8 @@ const Scanner = () => {
   const [user, setUser] = useState<User>();
   const { data: siteData }: { data: Setting } = useGetSetting();
   const [showError, setShowError] = useState(false);
+  const [inputValue, setInputValue] = useState(0);
+  const [form] = Form.useForm();
 
   const [getUserInfo, { loading }] = useLazyQuery(siteGetUserByMobileNumber, {
     notifyOnNetworkStatusChange: true,
@@ -60,6 +45,35 @@ const Scanner = () => {
     }
   };
 
+  const handleBackspaceClick = () => {
+    const currentInput =
+      form.getFieldValue("nationalcode") ||
+      form.getFieldValue("mobileNumber") ||
+      "";
+    form.setFieldsValue({ mobileNumber: currentInput.slice(0, -1) });
+  };
+
+  const handleKeyboardClick = (value) => {
+    const currentInput =
+      form.getFieldValue("nationalcode") ||
+      form.getFieldValue("mobileNumber") ||
+      "";
+    form.setFieldValue("mobileNumber", currentInput + value);
+  };
+
+  const customNumberKeyboard = (
+    <div className="custom-keyboard">
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, "", 0].map((number) => (
+        <Button key={number} onClick={() => handleKeyboardClick(number)}>
+          {number}
+        </Button>
+      ))}
+      <Button onClick={handleBackspaceClick} className="backspace-button">
+        ⌫
+      </Button>
+    </div>
+  );
+
   return (
     <>
       <NextSeo nofollow noindex title="پرینت کارت" />
@@ -86,6 +100,7 @@ const Scanner = () => {
               )}
 
               <Form
+                form={form}
                 name="basic"
                 style={{ maxWidth: 600 }}
                 initialValues={{ remember: true }}
@@ -104,7 +119,7 @@ const Scanner = () => {
                       },
                     ]}
                   >
-                    <Input size="large" type="number" />
+                    <Input size="large" type="number" readOnly />
                   </Form.Item>
                 ) : (
                   <Form.Item
@@ -117,7 +132,7 @@ const Scanner = () => {
                       },
                     ]}
                   >
-                    <Input size="large" />
+                    <Input size="large" readOnly />
                   </Form.Item>
                 )}
 
@@ -132,6 +147,7 @@ const Scanner = () => {
                   </Button>
                 </Form.Item>
               </Form>
+              {customNumberKeyboard}
               {user && (
                 <PrintableCard
                   boxes={siteData}
