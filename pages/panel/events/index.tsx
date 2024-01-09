@@ -110,7 +110,7 @@ const Courses = () => {
             >
               <Button>جزییات رویداد</Button>
             </Link>
-            {moment().diff(record.workshop.end_date, "days") > 0 && (
+            {moment().diff(record.workshop?.end_date, "days") > 0 && (
               <PrintableCertificate
                 type="workshop"
                 event={record.workshop.title}
@@ -139,7 +139,7 @@ const Courses = () => {
               <Button>جزییات رویداد</Button>
             </Link>
 
-            {moment().diff(record.seminar.end_date, "days") > 0 && (
+            {moment().diff(record.seminar?.end_date, "days") > 0 && (
               <PrintableCertificate
                 type="seminar"
                 event={record.seminar.title}
