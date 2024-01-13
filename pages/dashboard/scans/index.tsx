@@ -1,27 +1,12 @@
-import { EyeOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import {
-  Space,
-  Tag,
-  Table,
-  Tooltip,
-  Row,
-  Col,
-  Button,
-  Card,
-  Typography,
-} from "antd";
+import { Table, Row, Col, Card, Typography } from "antd";
 import { ColumnsType } from "antd/es/table";
 import moment from "jalali-moment";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useEffect } from "react";
-import currencyType from "../../../src/components/currency";
-import { siteGetScans } from "../../../src/shared/apollo/graphql/queries/scan/siteGetWorkshops";
 import momentJalali from "jalali-moment";
-
-const { Text } = Typography;
+import { siteGetTimelines } from "../../../src/shared/apollo/graphql/queries/timeline/siteGetTimelines";
+import { getUserFromCookie } from "../../../src/util/utils";
 
 const Courses = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -69,7 +54,9 @@ const Courses = () => {
       render: (row) => (
         <>
           {row?.checkout &&
-            momentJalali(row?.checkout).locale("fa").format("H:mm  YYYY/MM/DD ")}
+            momentJalali(row?.checkout)
+              .locale("fa")
+              .format("H:mm  YYYY/MM/DD ")}
         </>
       ),
     },
@@ -82,22 +69,25 @@ const Courses = () => {
     },
   ];
 
-  const [getItems, { data, loading }] = useLazyQuery(siteGetScans, {
+  const [getItems, { data, loading }] = useLazyQuery(siteGetTimelines, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
   });
 
   useEffect(() => {
-    getItems({
-      variables: {
-        input: {
-          limit: 10,
-          skip: (currentPage - 1) * rowsPerPage,
-          // @ts-ignore
-          siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
+    if (getUserFromCookie()) {
+      const user = getUserFromCookie();
+      getItems({
+        variables: {
+          input: {
+            limit: 10,
+            skip: (currentPage - 1) * rowsPerPage,
+            // @ts-ignore
+            scannedby: parseInt(user?.uid),
+          },
         },
-      },
-    });
+      });
+    }
   }, []);
 
   return (
@@ -107,7 +97,7 @@ const Courses = () => {
           <Table
             scroll={{ x: true }}
             columns={columns}
-            dataSource={data?.scans?.scans}
+            dataSource={data?.timelines?.timelines}
             pagination={{ hideOnSinglePage: true }}
           />
         </Col>
