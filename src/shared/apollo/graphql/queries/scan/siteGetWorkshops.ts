@@ -16,6 +16,8 @@ export const siteGetScans = gql`
           firstName
           lastName
         }
+        checkin
+        checkout
         created
         updated
       }

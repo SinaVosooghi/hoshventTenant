@@ -136,6 +136,7 @@ export default function Register() {
                     onFinish={onFinish}
                     autoComplete="off"
                     validateMessages={validateMessages}
+                    size="large"
                   >
                     <Form.Item label="جنسیت" name="gender" initialValue="male">
                       <Radio.Group value={"male"} defaultValue={"male"}>
@@ -269,6 +270,7 @@ export default function Register() {
                             label={field?.title}
                             name={["registerField", field.title]}
                             hasFeedback
+                            rules={[{ required: field.required }]}
                           >
                             <Input size="large" />
                           </Form.Item>
@@ -282,6 +284,7 @@ export default function Register() {
                             hasFeedback
                             rules={[
                               {
+                                required: field.required,
                                 type: "number",
                               },
                             ]}

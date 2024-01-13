@@ -25,11 +25,12 @@ import Setting from "../../../src/datamodel/Setting";
 import useGetSetting from "../../../src/hooks/useGetSetting";
 import PrintableCard from "../../../src/components/printCard";
 import { siteManualCheckin } from "../../../src/shared/apollo/graphql/mutations/timeline/siteManualCheckin";
+import { ReloadOutlined } from "@ant-design/icons";
 
 require("./style.less");
 
 const Scanner = () => {
-  const [data, setData] = useState("No result");
+  const [data, setData] = useState();
   const [attendee, setAttendee] = useState();
   const componentRef = useRef();
   const [selectedSeminar, setSelectedSeminar] = useState(null);
@@ -279,6 +280,18 @@ const Scanner = () => {
               ""
             )}
           </Form>
+          {attendee && (
+            <Button
+              type="primary"
+              block
+              size="large"
+              style={{ marginBottom: 20 }}
+              onClick={() => window.location.reload()}
+            >
+              <ReloadOutlined />
+              اسکن جدید
+            </Button>
+          )}
         </div>
       </div>
       <div className="camera">

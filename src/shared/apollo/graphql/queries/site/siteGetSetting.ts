@@ -23,6 +23,7 @@ export const siteGetSite = gql`
         order
         title
         type
+        required
       }
     }
   }

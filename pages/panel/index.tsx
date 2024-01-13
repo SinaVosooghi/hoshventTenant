@@ -95,15 +95,6 @@ const TeachersDashboard = () => {
                 <Space>
                   <Button onClick={qrDownloader}>دانلود QR Code</Button>
                   <a href="path_to_file" id="link" download="qr_code"></a>
-                  {user && (
-                    <PrintableCard
-                      boxes={siteData}
-                      name={`${user?.firstName} ${user?.lastName}`}
-                      event={"کارت ورود"}
-                      url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
-                      user={user}
-                    />
-                  )}
                 </Space>
               </Space>
             </Col>
@@ -124,6 +115,18 @@ const TeachersDashboard = () => {
                   <Button>جزییات رویداد</Button>
                 </Link>
               </Col>
+            )}
+          </Row>
+          <Row>
+            {user && (
+              <PrintableCard
+                showCard
+                boxes={siteData}
+                name={`${user?.firstName} ${user?.lastName}`}
+                event={"کارت ورود"}
+                url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+                user={user}
+              />
             )}
           </Row>
         </Card>

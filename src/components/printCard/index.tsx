@@ -4,7 +4,7 @@ import { Name } from "./Name";
 import { QrCode } from "./QRCode";
 import { Title } from "./Title";
 import ReactToPrint from "react-to-print";
-import { Button } from "antd";
+import { Button, Card } from "antd";
 import { useRef } from "react";
 import { useQuery } from "@apollo/client";
 import { siteGetUser } from "../../shared/apollo/graphql/queries/user/siteGetUser";
@@ -15,7 +15,15 @@ const styles = {
   position: "relative",
 };
 
-const PrintableCard = ({ boxes, name, event, qrcode, url, user }: any) => {
+const PrintableCard = ({
+  boxes,
+  name,
+  event,
+  qrcode,
+  url,
+  user,
+  showCard = false,
+}: any) => {
   const componentRef = useRef();
 
   const elements = boxes?.cardlayout && JSON.parse(boxes?.cardlayout);
@@ -28,8 +36,25 @@ const PrintableCard = ({ boxes, name, event, qrcode, url, user }: any) => {
   });
 
   return (
-    <div>
-      <div style={{ display: "none" }}>
+    <Card
+      title="کارت ورود"
+      extra={
+        <ReactToPrint
+          trigger={() => (
+            <Button type="primary" loading={loading}>
+              پرینت کارت ورود
+            </Button>
+          )}
+          content={() => componentRef.current}
+        />
+      }
+    >
+      <div
+        style={{
+          display: showCard ? "block" : "none",
+          transform: showCard ? "scale(0.6)" : "",
+        }}
+      >
         <div style={styles} ref={componentRef}>
           {elements &&
             Object.keys(elements).map((key) => {
@@ -105,15 +130,7 @@ const PrintableCard = ({ boxes, name, event, qrcode, url, user }: any) => {
             })}
         </div>
       </div>
-      <ReactToPrint
-        trigger={() => (
-          <Button type="primary" loading={loading}>
-            پرینت کارت ورود
-          </Button>
-        )}
-        content={() => componentRef.current}
-      />
-    </div>
+    </Card>
   );
 };
 

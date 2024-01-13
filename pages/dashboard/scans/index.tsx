@@ -19,15 +19,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import currencyType from "../../../src/components/currency";
 import { siteGetScans } from "../../../src/shared/apollo/graphql/queries/scan/siteGetWorkshops";
+import momentJalali from "jalali-moment";
 
 const { Text } = Typography;
 
 const Courses = () => {
-  const router = useRouter();
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [value, setValue] = useState("");
-  const [statusValue, setStatusValue] = useState(null);
 
   interface DataType {
     key: string;
@@ -54,6 +52,26 @@ const Courses = () => {
       title: "نوع",
       width: 100,
       render: (row) => <span>{row?.workshop ? "ورکشاپ" : "سمینار"}</span>,
+    },
+    {
+      title: "ورود",
+      width: 100,
+      render: (row) => (
+        <>
+          {row?.checkin &&
+            momentJalali(row?.checkin).locale("fa").format("H:mm  YYYY/MM/DD ")}
+        </>
+      ),
+    },
+    {
+      title: "خروج",
+      width: 100,
+      render: (row) => (
+        <>
+          {row?.checkout &&
+            momentJalali(row?.checkout).locale("fa").format("H:mm  YYYY/MM/DD ")}
+        </>
+      ),
     },
     {
       title: "ثبت شده",
