@@ -179,7 +179,7 @@ const Workshop = () => {
                       </div>
 
                       <div className="item-button">
-                        {renderButton()}
+                        {workshopApi?.workshopApi?.price && renderButton()}
 
                         <div className="item-price">
                           {workshopApi?.workshopApi?.price && (

@@ -96,7 +96,7 @@ const PlanSlider = ({
                 {workshopsApi?.workshopsApi?.workshops?.map(
                   (workshop: Workshop) => (
                     <SwiperSlide key={workshop?.id}>
-                      <Link href={`/plan/${workshop?.slug}`}>
+                      <Link href={`/workshop/${workshop?.slug}`}>
                         <WorkshopItem workshop={workshop} />
                       </Link>
                     </SwiperSlide>
