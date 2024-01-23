@@ -33,9 +33,7 @@ function usePayment({
 
         dispatch.cart.emptyCart();
         dispatch.cart.removeDiscount();
-        if (doPayment) {
-          location.replace(doPayment);
-        }
+        location.replace(doPayment);
       } else {
         notification.error({ message: "خطا هنگام خرید رویداد" });
       }
