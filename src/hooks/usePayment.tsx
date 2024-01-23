@@ -5,6 +5,7 @@ import { notification } from "antd";
 import { useRouter } from "next/dist/client/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, RootState } from "../shared/store";
+import { useLocation } from "react-router-dom";
 
 function usePayment({
   itemId,
@@ -32,15 +33,16 @@ function usePayment({
       if (doPayment) {
         notification.success({ message: "خرید با موفقیت انجام شد!" });
 
-        dispatch.cart.emptyCart();
-        dispatch.cart.removeDiscount();
-        location.replace(doPayment);
+        // dispatch.cart.emptyCart();
+        // dispatch.cart.removeDiscount();
+        // location.replace(doPayment);
       } else {
         notification.error({ message: "خطا هنگام خرید رویداد" });
       }
     },
     onError: (error) => {
       setLoading(false);
+      console.log(error.message);
       if (error.message === "Already added") {
         notification.error({
           message: "خطا",
