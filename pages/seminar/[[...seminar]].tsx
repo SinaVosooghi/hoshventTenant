@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Row, Tooltip, notification } from "antd";
 import moment from "jalali-moment";
 import { useRouter } from "next/router";
@@ -7,19 +8,22 @@ import MainBreadCrumb from "../../src/components/breadcrumb";
 import Link from "next/link";
 import { NextSeo } from "next-seo";
 // @ts-ignore
-import { Fade, Slide } from "react-reveal";
-import HomeServices from "../../src/components/homepage/services";
-import SeminarsSlider from "../../src/components/servicesSlider";
-import WorkshopSlider from "../../src/components/workshopSlider";
-import { siteGetWorkshopApi } from "../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshopApi";
+import { Fade } from "react-reveal";
 import { siteGetSeminarApi } from "../../src/shared/apollo/graphql/queries/seminar/siteGetSeminarApi";
 import currencyType from "../../src/components/currency";
-
+import { getUserFromCookie } from "../../src/util/utils";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "../../src/shared/store";
+import { User } from "../../src/datamodel";
 require("./style.less");
 
 const PlanItem = () => {
   const router = useRouter();
   const { seminar } = router.query;
+  const dispatch = useDispatch<Dispatch>();
+  const [user, setUser] = useState<User | null>(null);
+  const [options, setOptions] = useState<any>([]);
+  const [selectedOptions, setSelectedOptions] = useState<any>([]);
 
   const { data: seminarApi } = useQuery(siteGetSeminarApi, {
     notifyOnNetworkStatusChange: true,
@@ -27,6 +31,67 @@ const PlanItem = () => {
     // @ts-ignore
     variables: { slug: seminar && seminar[0] },
   });
+
+  const addToCart = () => {
+    notification.success({
+      message: `محصول اضافه شد`,
+      description: (
+        <>محصول {seminarApi?.seminarApi?.title} به سبد خرید شما اضافه شد.</>
+      ),
+    });
+
+    dispatch.cart.addItem({
+      ...seminarApi?.seminarApi,
+      selectedOptions,
+    });
+  };
+
+  useEffect(() => {
+    if (getUserFromCookie()) {
+      setUser(getUserFromCookie());
+    }
+  }, []);
+
+  const renderButton = () => {
+    var pastDate = moment(seminarApi?.seminarApi.end_date);
+
+    const isPassed = moment().diff(pastDate, "days");
+
+    if (isPassed > 1) {
+      return <Button disabled>این رویداد پایان یافته</Button>;
+    } else {
+      return (
+        <Tooltip title={!user ? "جهت خرید وارد حساب کاربری شوید" : ""}>
+          <Button onClick={() => addToCart()} disabled={!user}>
+            افزودن به سبد خرید
+            <img src="/assets/icons/cart.png" width={18} alt="arrow" />
+          </Button>
+        </Tooltip>
+      );
+    }
+  };
+
+  const handleChange = (value: string[]) => {
+    const find = value.map((o) => {
+      return options.find((op) => op.value === o);
+    });
+
+    setSelectedOptions(find);
+  };
+
+  useEffect(() => {
+    if (seminarApi?.seminarApi.services.length) {
+      const services = [...seminarApi?.seminarApi.services];
+      const serviceOptions = services.map((service) => {
+        return {
+          label: service.title,
+          value: service.id,
+          price: service.price,
+        };
+      });
+      setOptions(serviceOptions);
+    }
+  }, [seminarApi]);
 
   return (
     <>
@@ -60,6 +125,8 @@ const PlanItem = () => {
                         parse(seminarApi?.seminarApi.seobody)}
 
                       <div className="item-button">
+                        {renderButton()}
+
                         <div className="item-price">
                           {seminarApi?.seminarApi?.price && (
                             <p className="item-regular-price">
@@ -72,11 +139,6 @@ const PlanItem = () => {
                               : "رایگان"}
                           </span>
                         </div>
-                        <Link
-                          href={`/event/${seminarApi?.seminarApi.hall?.event?.slug}`}
-                        >
-                          <Button>جزییات رویداد</Button>
-                        </Link>
                       </div>
                     </div>
                   </Col>
