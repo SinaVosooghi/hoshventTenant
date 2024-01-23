@@ -25,7 +25,7 @@ const PlanItem = () => {
   const [options, setOptions] = useState<any>([]);
   const [selectedOptions, setSelectedOptions] = useState<any>([]);
 
-  const { data: seminarApi } = useQuery(siteGetSeminarApi, {
+  const { data: seminarApi, loading } = useQuery(siteGetSeminarApi, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
     // @ts-ignore
@@ -114,7 +114,11 @@ const PlanItem = () => {
         <Row justify="center">
           <Col md={20} xs={24} id="event-container">
             <Fade>
-              <div id="event-card">
+              <Card
+                id="event-card"
+                bodyStyle={{ padding: 0 }}
+                loading={loading}
+              >
                 <Row gutter={[24, 24]}>
                   <Col md={10} xs={24} className="event-content">
                     <div className="event-title">
@@ -155,7 +159,7 @@ const PlanItem = () => {
                     ></div>
                   </Col>
                 </Row>
-              </div>
+              </Card>
             </Fade>
           </Col>
 

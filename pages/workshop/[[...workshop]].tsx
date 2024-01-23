@@ -35,7 +35,7 @@ const Workshop = () => {
   const [options, setOptions] = useState<any>([]);
   const [selectedOptions, setSelectedOptions] = useState<any>([]);
 
-  const { data: workshopApi } = useQuery(siteGetWorkshopApi, {
+  const { data: workshopApi, loading } = useQuery(siteGetWorkshopApi, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
     // @ts-ignore
@@ -124,7 +124,11 @@ const Workshop = () => {
         <Row justify="center">
           <Col md={20} xs={24} id="workshop-container">
             <Fade>
-              <div id="workshop-card">
+              <Card
+                id="workshop-card"
+                bodyStyle={{ padding: 0 }}
+                loading={loading}
+              >
                 <Row>
                   <Col md={10} xs={24} className="workshop-content">
                     <div className="workshop-title">
@@ -209,7 +213,7 @@ const Workshop = () => {
                     ></div>
                   </Col>
                 </Row>
-              </div>
+              </Card>
             </Fade>
           </Col>
 
