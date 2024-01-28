@@ -50,14 +50,12 @@ export default function Login() {
         const loginData = {
           ...data,
         };
-        
 
         if (handleLogin(loginData)) {
           notification.success({
             message: firstName + " " + lastName,
             description: "شما وارد حساب کاربریتان شدید",
           });
-          console.log(type);
           if (type === "instructor") {
             router.push("/dashboard");
           } else if (type === "user") {
@@ -68,7 +66,6 @@ export default function Login() {
         }
       })
       .catch((errors) => {
-        console.log("ererer");
         setLoading(false);
         if ("You do not have access to this page!") {
           notification.error({
@@ -83,7 +80,6 @@ export default function Login() {
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
     message.error(errorInfo.message);
   };
 
@@ -132,7 +128,6 @@ export default function Login() {
                       rules={[
                         {
                           required: true,
-                          type: "email",
                         },
                       ]}
                     >
