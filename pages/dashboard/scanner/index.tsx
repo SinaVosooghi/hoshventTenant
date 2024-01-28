@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import {
   Alert,
   Button,
@@ -7,7 +7,6 @@ import {
   Radio,
   Select,
   Spin,
-  message,
   notification,
 } from "antd";
 import { useEffect, useRef, useState } from "react";
@@ -15,27 +14,24 @@ import { QrReader } from "react-qr-reader";
 import { siteGetTimeline } from "../../../src/shared/apollo/graphql/queries/timeline/siteGetTimeline";
 import moment from "jalali-moment";
 import { ReactQrCode } from "@devmehq/react-qr-code";
-import { siteCheckin } from "../../../src/shared/apollo/graphql/mutations/timeline/siteChekin";
-import { siteCheckout } from "../../../src/shared/apollo/graphql/mutations/timeline/siteCheckout";
-import ReactToPrint from "react-to-print";
 import { siteGetUser } from "../../../src/shared/apollo/graphql/queries/user/siteGetUser";
 import { User } from "../../../src/datamodel";
-import { getCookie, getCookies } from "cookies-next";
+import { getCookie } from "cookies-next";
 import Setting from "../../../src/datamodel/Setting";
 import useGetSetting from "../../../src/hooks/useGetSetting";
 import PrintableCard from "../../../src/components/printCard";
-import { siteManualCheckin } from "../../../src/shared/apollo/graphql/mutations/timeline/siteManualCheckin";
 import { ReloadOutlined } from "@ant-design/icons";
+import { debounce } from "lodash";
 
 require("./style.less");
 
 const Scanner = () => {
   const [data, setData] = useState();
   const [attendee, setAttendee] = useState();
-  const componentRef = useRef();
   const [selectedSeminar, setSelectedSeminar] = useState(null);
   const [selectedWorkshop, setSelectedWorkshop] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
+  const qrRef = useRef(null);
 
   const [type, setType] = useState<"workshop" | "seminar" | "service" | null>(
     null
@@ -51,9 +47,12 @@ const Scanner = () => {
     onCompleted: ({ timeline }) => {
       notification.success({ message: "ثبت شد" });
       setAttendee(timeline);
+      handleRescan();
     },
     onError: (err) => {
       setShowError(true);
+      handleRescan();
+
       if (err.message === "Already checkin") {
         notification.warning({ message: "قبلا ثبت شده است" });
       } else {
@@ -125,10 +124,21 @@ const Scanner = () => {
     return t;
   };
 
+  const handleRescan = debounce(() => {
+    setData(null);
+    setAttendee(null);
+    // Reset the QR scanner by calling the QrReader component's API
+    if (qrRef.current) {
+      qrRef.current.openImageDialog(); // Opens the file dialog to trigger a rescan
+    }
+  }, 1000);
+
   const renderCamera = () => {
     if (selectedSeminar || selectedWorkshop || selectedService) {
       return (
         <QrReader
+          ref={qrRef}
+          style={{ width: "100%" }}
           constraints={{ facingMode: "environment" }}
           onResult={(result, error) => {
             if (!!result) {
@@ -166,6 +176,7 @@ const Scanner = () => {
                 <Radio.Button
                   value="checkin"
                   onChange={() => {
+                    handleRescan();
                     setIsCheckin(true);
                     form.setFieldsValue({
                       type: "checkin",
@@ -177,6 +188,7 @@ const Scanner = () => {
                 <Radio.Button
                   value="checkout"
                   onChange={() => {
+                    handleRescan();
                     setIsCheckin(false);
                     form.setFieldsValue({
                       type: "checkout",
@@ -280,18 +292,16 @@ const Scanner = () => {
               ""
             )}
           </Form>
-          {attendee && (
-            <Button
-              type="primary"
-              block
-              size="large"
-              style={{ marginBottom: 20 }}
-              onClick={() => window.location.reload()}
-            >
-              <ReloadOutlined />
-              اسکن جدید
-            </Button>
-          )}
+          {/* <Button
+            type="primary"
+            block
+            size="large"
+            style={{ marginBottom: 20 }}
+            onClick={handleRescan}
+          >
+            <ReloadOutlined />
+            اسکن جدید
+            </Button> */}
         </div>
       </div>
       <div className="camera">

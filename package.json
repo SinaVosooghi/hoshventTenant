@@ -29,6 +29,7 @@
     "html-react-parser": "^3.0.12",
     "insane": "^2.6.2",
     "jalali-moment": "^3.3.11",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "next": "13.1.2",
     "next-compose-plugins": "^2.2.1",
