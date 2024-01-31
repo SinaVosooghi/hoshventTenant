@@ -16,6 +16,7 @@ const styles = {
 };
 
 const PrintableCard = ({
+  form,
   boxes,
   name,
   event,
@@ -40,8 +41,13 @@ const PrintableCard = ({
       title="کارت ورود"
       extra={
         <ReactToPrint
+          onAfterPrint={() => form.resetFields()}
           trigger={() => (
-            <Button type="primary" loading={loading}>
+            <Button
+              type="primary"
+              loading={loading}
+              onClick={() => form.resetFields()}
+            >
               پرینت کارت ورود
             </Button>
           )}

@@ -14,7 +14,6 @@ const Scanner = () => {
   const [user, setUser] = useState<User>();
   const { data: siteData }: { data: Setting } = useGetSetting();
   const [showError, setShowError] = useState(false);
-  const [inputValue, setInputValue] = useState(0);
   const [form] = Form.useForm();
 
   const [getUserInfo, { loading }] = useLazyQuery(siteGetUserByMobileNumber, {
@@ -132,7 +131,7 @@ const Scanner = () => {
                       },
                     ]}
                   >
-                    <Input size="large" readOnly />
+                    <Input size="large" />
                   </Form.Item>
                 )}
 
@@ -149,13 +148,16 @@ const Scanner = () => {
               </Form>
               {customNumberKeyboard}
               {user && (
-                <PrintableCard
-                  boxes={siteData}
-                  name={`${user?.firstName} ${user?.lastName}`}
-                  event={"کارت ورود"}
-                  url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
-                  user={user}
-                />
+                <div style={{ marginTop: 12 }}>
+                  <PrintableCard
+                    form={form}
+                    boxes={siteData}
+                    name={`${user?.firstName} ${user?.lastName}`}
+                    event={"کارت ورود"}
+                    url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+                    user={user}
+                  />
+                </div>
               )}
             </Card>
           </Col>

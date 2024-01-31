@@ -129,7 +129,7 @@ export default function Register() {
                         label="نام"
                         name="firstName"
                         hasFeedback
-                        rules={[{ required: true, min: 3 }]}
+                        rules={[{ required: true}]}
                       >
                         <Input size="large" />
                       </Form.Item>
@@ -138,7 +138,7 @@ export default function Register() {
                         label="نام خانوادگی"
                         name="lastName"
                         hasFeedback
-                        rules={[{ required: true, min: 4 }]}
+                        rules={[{ required: true }]}
                       >
                         <Input size="large" />
                       </Form.Item>
