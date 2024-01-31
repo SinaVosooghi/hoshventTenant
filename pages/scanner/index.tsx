@@ -204,6 +204,8 @@ const Scanner = () => {
                     event={"کارت ورود"}
                     url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
                     user={user}
+                    form={form}
+                    setUser={setUser}
                   />
                 )}
               </div>

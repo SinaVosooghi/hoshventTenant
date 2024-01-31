@@ -23,6 +23,7 @@ const PrintableCard = ({
   qrcode,
   url,
   user,
+  setUser,
   showCard = false,
 }: any) => {
   const componentRef = useRef();
@@ -41,13 +42,12 @@ const PrintableCard = ({
       title="کارت ورود"
       extra={
         <ReactToPrint
-          onAfterPrint={() => form.resetFields()}
+          onAfterPrint={() => {
+            form?.resetFields();
+            setUser();
+          }}
           trigger={() => (
-            <Button
-              type="primary"
-              loading={loading}
-              onClick={() => form.resetFields()}
-            >
+            <Button type="primary" loading={loading}>
               پرینت کارت ورود
             </Button>
           )}
