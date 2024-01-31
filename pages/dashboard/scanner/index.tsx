@@ -20,7 +20,6 @@ import { getCookie } from "cookies-next";
 import Setting from "../../../src/datamodel/Setting";
 import useGetSetting from "../../../src/hooks/useGetSetting";
 import PrintableCard from "../../../src/components/printCard";
-import { ReloadOutlined } from "@ant-design/icons";
 import { debounce } from "lodash";
 
 require("./style.less");

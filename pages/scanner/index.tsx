@@ -7,6 +7,8 @@ import useGetSetting from "../../src/hooks/useGetSetting";
 import Setting from "../../src/datamodel/Setting";
 import { User } from "../../src/datamodel";
 import { NextSeo } from "next-seo";
+import { ReactQrCode } from "@devmehq/react-qr-code";
+import moment from "jalali-moment";
 
 require("./style.less");
 
@@ -72,6 +74,29 @@ const Scanner = () => {
       </Button>
     </div>
   );
+
+  const renderUsertype = (type: string) => {
+    let t = "کاربر";
+    switch (type) {
+      case "user":
+        t = "کاربر";
+        break;
+      case "lecturer":
+        t = "سخنران";
+        break;
+      case "instructor":
+        t = "عوامل اجرایی";
+        break;
+      case "tenant":
+        t = "مدریر سایت";
+        break;
+      case "guest":
+        t = "میهمان";
+        break;
+    }
+
+    return t;
+  };
 
   return (
     <>
@@ -148,17 +173,40 @@ const Scanner = () => {
               </Form>
               {customNumberKeyboard}
               {user && (
-                <div style={{ marginTop: 12 }}>
+                <div id="user-profile" style={{ marginTop: 12 }}>
+                  <div className="card-container" id="card">
+                    <span className="pro">
+                      {renderUsertype(user?.usertype)}
+                    </span>
+
+                    <h3 style={{ textAlign: "right", marginRight: 30 }}>
+                      {user?.firstName} {user?.lastName}
+                    </h3>
+                    <h5 style={{ textAlign: "right", marginRight: 30 }}>
+                      {user?.mobilenumber}
+                    </h5>
+                    <p style={{ textAlign: "right", marginRight: 30 }}>
+                      <b>
+                        {user?.email} <br /> عضویت:{" "}
+                      </b>
+                      {moment(user?.created)
+                        .locale("fa")
+                        .format("ddd D MMM, YYYY")}
+                    </p>
+                  </div>
+                </div>
+              )}
+              <div style={{ marginTop: 12 }}>
+                {user && (
                   <PrintableCard
-                    form={form}
                     boxes={siteData}
                     name={`${user?.firstName} ${user?.lastName}`}
                     event={"کارت ورود"}
                     url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
                     user={user}
                   />
-                </div>
-              )}
+                )}
+              </div>
             </Card>
           </Col>
         </Row>
