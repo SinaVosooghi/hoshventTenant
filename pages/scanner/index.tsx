@@ -24,7 +24,7 @@ const Scanner = () => {
     onCompleted: ({ userByMobile }) => {
       setUser(userByMobile);
     },
-    onError: () => {
+    onError: (err) => {
       setShowError(true);
       notification.warning({ message: "موردی یافت نشد!" });
     },
