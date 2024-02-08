@@ -88,6 +88,7 @@ export default function Register() {
           }')`,
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
+          backgroundPosition: "center top",
         }}
       >
         <Row align="middle" justify="center">
@@ -129,7 +130,7 @@ export default function Register() {
                         label="نام"
                         name="firstName"
                         hasFeedback
-                        rules={[{ required: true}]}
+                        rules={[{ required: true }]}
                       >
                         <Input size="large" />
                       </Form.Item>

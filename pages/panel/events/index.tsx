@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import { siteGetUserEventsApi } from "../../../src/shared/apollo/graphql/queries/event/siteGetUserEventsApi";
 import currencyType from "../../../src/components/currency";
 import moment from "jalali-moment";
-import { siteGetCertificate } from "../../../src/shared/apollo/graphql/queries/certificate/siteGetCertificate";
 import PrintableCertificate from "../../../src/components/printCertificate";
 import { User } from "../../../src/datamodel";
 import { getUserFromCookie } from "../../../src/util/utils";

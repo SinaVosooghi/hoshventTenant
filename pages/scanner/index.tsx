@@ -1,5 +1,15 @@
 import { useLazyQuery } from "@apollo/client";
-import { Alert, Button, Card, Col, Form, Input, Row, notification } from "antd";
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Flex,
+  Form,
+  Input,
+  Row,
+  notification,
+} from "antd";
 import { useState } from "react";
 import PrintableCard from "../../src/components/printCard";
 import { siteGetUserByMobileNumber } from "../../src/shared/apollo/graphql/queries/user/siteGetUserByMobile";
@@ -9,6 +19,7 @@ import { User } from "../../src/datamodel";
 import { NextSeo } from "next-seo";
 import { ReactQrCode } from "@devmehq/react-qr-code";
 import moment from "jalali-moment";
+import PrintableCertificate from "../../src/components/printCertificate";
 
 require("./style.less");
 
@@ -109,6 +120,7 @@ const Scanner = () => {
           }')`,
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
+          backgroundPosition: "center top",
         }}
       >
         <Row justify={"center"} align="top">
@@ -196,7 +208,7 @@ const Scanner = () => {
                   </div>
                 </div>
               )}
-              <div style={{ marginTop: 12 }}>
+              <Flex style={{ marginTop: 12 }} gap={12} justify="center">
                 {user && (
                   <PrintableCard
                     boxes={siteData}
@@ -208,7 +220,22 @@ const Scanner = () => {
                     setUser={setUser}
                   />
                 )}
-              </div>
+                {/* {user && (
+                  <PrintableCertificate
+                  type="workshop"
+                  event={record.workshop.title}
+                  name={user?.firstName + " " + user?.lastName}
+
+                    boxes={siteData}
+                    name={`${user?.firstName} ${user?.lastName}`}
+                    event={"کارت ورود"}
+                    url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+                    user={user}
+                    form={form}
+                    setUser={setUser}
+                  />
+                )} */}
+              </Flex>
             </Card>
           </Col>
         </Row>

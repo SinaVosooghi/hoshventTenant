@@ -4,7 +4,7 @@ import { Name } from "./Name";
 import { QrCode } from "./QRCode";
 import { Title } from "./Title";
 import ReactToPrint from "react-to-print";
-import { Button, Card } from "antd";
+import { Button, Card, Flex } from "antd";
 import { useRef } from "react";
 import { useQuery } from "@apollo/client";
 import { siteGetUser } from "../../shared/apollo/graphql/queries/user/siteGetUser";
@@ -20,7 +20,6 @@ const PrintableCard = ({
   boxes,
   name,
   event,
-  qrcode,
   url,
   user,
   setUser,
@@ -38,9 +37,8 @@ const PrintableCard = ({
   });
 
   return (
-    <Card
-      title="کارت ورود"
-      extra={
+    <div>
+      <Flex>
         <ReactToPrint
           onAfterPrint={() => {
             form?.resetFields();
@@ -53,8 +51,7 @@ const PrintableCard = ({
           )}
           content={() => componentRef.current}
         />
-      }
-    >
+      </Flex>
       <div
         style={{
           display: showCard ? "block" : "none",
@@ -136,7 +133,7 @@ const PrintableCard = ({
             })}
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 
