@@ -53,7 +53,11 @@ const Scanner = () => {
       handleRescan();
 
       if (err.message === "Already checkin") {
-        notification.warning({ message: "قبلا ثبت شده است" });
+        notification.warning({ message: "قبلا ورود ثبت شده است" });
+      } else if (err.message === "Not checked in") {
+        notification.warning({ message: "وارد نشده است" });
+      } else if (err.message === "Already checked out") {
+        notification.warning({ message: "قبلا  خروج ثبت شده است" });
       } else {
         notification.warning({ message: "موردی یافت نشد!" });
       }
