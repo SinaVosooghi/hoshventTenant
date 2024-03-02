@@ -60,10 +60,28 @@ const CategoriesSlider = () => {
           <Col md={20} xs={24}>
             <div className="categories-swiper">
               <Swiper
-                className="main-swiper"
-                {...params}
                 navigation={true}
                 modules={[Autoplay, Navigation]}
+                autoplay={{ delay: 3000 }}
+                className="main-swiper"
+                breakpoints={{
+                  0: {
+                    slidesPerView: 1.25,
+                    spaceBetween: 8,
+                  },
+                  480: {
+                    slidesPerView: 1.15,
+                    spaceBetween: 60,
+                  },
+                  768: {
+                    slidesPerView: 4,
+                    spaceBetween: 0,
+                  },
+                  1024: {
+                    slidesPerView: 7,
+                    spaceBetween: 0,
+                  },
+                }}
               >
                 {brands?.brandsApi?.brands.map((brand: Category) => (
                   <SwiperSlide key={brand.id}>

@@ -106,7 +106,10 @@ const MainHeader = () => {
         }
       >
         <ul id="drawer-list">
-          <li className={router.asPath === "/" ? "active" : ""}>
+          <li
+            className={router.asPath === "/" ? "active" : ""}
+            onClick={() => setOpen(false)}
+          >
             <Link href={"/"}>صفحه اصلی</Link>
           </li>
           <li
@@ -116,10 +119,12 @@ const MainHeader = () => {
                 ? "active"
                 : ""
             }
+            onClick={() => setOpen(false)}
           >
             <Link href={"/workshops"}>ورکشاپ ها</Link>
           </li>
           <li
+            onClick={() => setOpen(false)}
             className={
               router.asPath === "/seminars/" ||
               router.route === "/seminars/[[...seminar]]"
@@ -131,6 +136,7 @@ const MainHeader = () => {
           </li>
 
           <li
+            onClick={() => setOpen(false)}
             className={
               router.asPath === "/services/" ||
               router.route === "/services/[[...service]]"
@@ -150,6 +156,7 @@ const MainHeader = () => {
               }) => {
                 return (
                   <li
+                    onClick={() => setOpen(false)}
                     key={m.id}
                     className={router.asPath === m.link ? "active" : ""}
                   >
@@ -158,7 +165,10 @@ const MainHeader = () => {
                 );
               }
             )}
-          <li className={router.asPath === "/contact/" ? "active" : ""}>
+          <li
+            className={router.asPath === "/contact/" ? "active" : ""}
+            onClick={() => setOpen(false)}
+          >
             <Link href={"/contact"}> تماس با ما</Link>
           </li>
         </ul>
@@ -170,17 +180,6 @@ const MainHeader = () => {
         <MenuOutlined onClick={showDrawer} rev={undefined} />
 
         <div id="account">
-          <Button>
-            {data?.logo && (
-              <Image
-                src={`${process.env.NEXT_PUBLIC_SITE_URL + "/" + data?.logo}`}
-                height={20}
-                width={20}
-                alt="search"
-              />
-            )}
-          </Button>
-
           {user?.type === "user" && <StudentDropdown user={user} />}
           {user?.type === "instructor" && <TeacherDropdown user={user} />}
 
@@ -236,15 +235,6 @@ const MainHeader = () => {
                     />
                   </div>
 
-                  <Button className="header-search">
-                    <Image
-                      src="/assets/icons/search.png"
-                      height={20}
-                      width={20}
-                      alt="search"
-                    />
-                  </Button>
-
                   {user?.type === "user" && <StudentDropdown user={user} />}
                   {user?.type === "instructor" && (
                     <TeacherDropdown user={user} />
@@ -286,11 +276,14 @@ const MainHeader = () => {
                           </Link>
                         </div>
 
-                        {cartItems.map((item: Event) => (
-                          <span key={item.id}>
-                            <CartItem event={item} />
-                          </span>
-                        ))}
+                        {
+                          // @ts-ignore
+                          cartItems.map((item: Event) => (
+                            <span key={item.id}>
+                              <CartItem event={item} />
+                            </span>
+                          ))
+                        }
 
                         <div className="cart-total">
                           <div className="total-price">

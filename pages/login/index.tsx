@@ -89,9 +89,10 @@ export default function Login() {
 
   useEffect(() => {
     if (getUserFromCookie()) {
-      if (getUserFromCookie()?.type === "instructor") {
+      const userType = getUserFromCookie()?.type;
+      if (userType === "instructor") {
         router.push("/dashboard");
-      } else if (getUserFromCookie()?.type === "user") {
+      } else if (userType === "user") {
         router.push("/panel");
       } else {
         router.push("/panel");

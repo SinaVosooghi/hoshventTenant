@@ -83,7 +83,7 @@ const Workshop = () => {
 
   const handleChange = (value: string[]) => {
     const find = value.map((o) => {
-      return options.find((op) => op.value === o);
+      return options.find((op: any) => op.value === o);
     });
 
     setSelectedOptions(find);
@@ -143,7 +143,7 @@ const Workshop = () => {
                               <span>
                                 {moment(workshopApi?.workshopApi?.start_date)
                                   .locale("fa")
-                                  .format("YYYY MMM D")}{" "}
+                                  .format("D MMM YYYY")}{" "}
                                 ساعت
                                 {moment(workshopApi?.workshopApi?.start_date)
                                   .locale("fa")
@@ -159,7 +159,7 @@ const Workshop = () => {
                               <span>
                                 {moment(workshopApi?.workshopApi?.end_date)
                                   .locale("fa")
-                                  .format("YYYY MMM D")}{" "}
+                                  .format("D MMM YYYY")}{" "}
                                 ساعت
                                 {moment(workshopApi?.workshopApi?.end_date)
                                   .locale("fa")

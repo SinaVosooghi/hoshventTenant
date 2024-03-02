@@ -39,7 +39,7 @@ const Cart = () => {
             style={{ margin: 100 }}
             description={<span>سبد خرید خالیست</span>}
           >
-            <Button onClick={() => router.push("/")}>مشاهده رویدادها </Button>
+            <Button onClick={() => router.push("/seminars")}>مشاهده رویدادها </Button>
           </Empty>
         ) : (
           <Row justify="center">

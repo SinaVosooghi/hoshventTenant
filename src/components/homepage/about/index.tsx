@@ -18,7 +18,7 @@ const HomeAbout = () => {
               <div className="about-content">
                 <div className="about-title">
                   <h1>
-                    معرفی <strong> سایت</strong>
+                    معرفی <strong> رویداد</strong>
                   </h1>
                 </div>
                 {data?.body && parse(data?.body)}

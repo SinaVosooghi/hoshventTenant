@@ -18,7 +18,7 @@ import { Dispatch } from "../../src/shared/store";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { checkLogin, handleLogin } from "../../src/util/utils";
+import { checkLogin, getUserFromCookie, handleLogin } from "../../src/util/utils";
 import CategoriesSlider from "../../src/components/categoriesSlider";
 import MainBreadCrumb from "../../src/components/breadcrumb";
 import Link from "next/link";
@@ -112,7 +112,16 @@ export default function Register() {
   };
 
   useEffect(() => {
-    if (checkLogin()) router.push("/dashboard");
+    if (getUserFromCookie()) {
+      const userType = getUserFromCookie()?.type;
+      if (userType === "instructor") {
+        router.push("/dashboard");
+      } else if (userType === "user") {
+        router.push("/panel");
+      } else {
+        router.push("/panel");
+      }
+    }
   }, []);
 
   return (

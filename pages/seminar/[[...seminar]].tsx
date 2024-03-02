@@ -73,7 +73,7 @@ const PlanItem = () => {
 
   const handleChange = (value: string[]) => {
     const find = value.map((o) => {
-      return options.find((op) => op.value === o);
+      return options.find((op: any) => op.value === o);
     });
 
     setSelectedOptions(find);

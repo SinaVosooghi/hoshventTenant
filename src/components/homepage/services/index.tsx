@@ -29,7 +29,7 @@ const HomeServices = ({
                         title
                       ) : (
                         <>
-                          ویژگی های <strong> ما</strong>
+                          خدمات <strong> ما</strong>
                         </>
                       )}
                     </h1>

@@ -10,12 +10,12 @@ import HomeServices from "../src/components/homepage/services";
 import { siteGetServices } from "../src/shared/apollo/graphql/queries/services/siteGetServices";
 import EventSlider from "../src/components/sections/featured/featured";
 import PlanSlider from "../src/components/plans/plans";
-import { siteGetWorkshops } from "../src/shared/apollo/graphql/queries/workshop/siteGetWorkshops";
+import { siteGetSminarsApi } from "../src/shared/apollo/graphql/queries/seminar/siteGetSeminarsApi";
 
 export default function Home() {
   const { data }: { data: Setting } = useGetSetting();
 
-  const { data: workshopsApi, loading } = useQuery(siteGetWorkshops, {
+  const { data: seminarsApi, loading } = useQuery(siteGetSminarsApi, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
     variables: {
@@ -51,10 +51,10 @@ export default function Home() {
       <HomeMainSlider />
       <HomeAbout />
       <EventSlider
-        items={workshopsApi?.workshopsApi?.workshops}
+        items={seminarsApi?.seminarsApi?.seminars}
         loading={loading}
-        title="ورکشاپ های"
-        subTitle="برگزار شده"
+        title="رویدادهای"
+        subTitle="جانبی"
       />
 
       {/* Service components */}
