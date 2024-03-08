@@ -84,7 +84,7 @@ const PrintableCertificate = ({ name, event, type }) => {
         </div>
       </div>
       <ReactToPrint
-        trigger={() => <Button loading={fetchCertificate}>پرینت مدرک</Button>}
+        trigger={() => <Button loading={fetchCertificate}>پرینت گواهیمنامه</Button>}
         content={() => componentRef.current}
       />
     </div>

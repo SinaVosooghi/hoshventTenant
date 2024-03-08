@@ -149,7 +149,7 @@ const PanelLayout = ({ children }: any) => {
     if (e.key === "signout") {
       handleLogout();
       notification.success({ message: "شما از حساب کاربری خارج شدید!" });
-      router.push("/");
+      router.push("/login");
     } else {
       router.push(e.key);
     }

@@ -1,9 +1,18 @@
-import { EditOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
+import { EyeOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import { Space, Tag, Table, Tooltip, Row, Col, Button, Card } from "antd";
+import {
+  Space,
+  Tag,
+  Table,
+  Tooltip,
+  Row,
+  Col,
+  Button,
+  Card,
+  Statistic,
+} from "antd";
 import { ColumnsType } from "antd/es/table";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { useEffect } from "react";
 import { siteGetUserEventsApi } from "../../../src/shared/apollo/graphql/queries/event/siteGetUserEventsApi";
@@ -12,6 +21,7 @@ import moment from "jalali-moment";
 import PrintableCertificate from "../../../src/components/printCertificate";
 import { User } from "../../../src/datamodel";
 import { getUserFromCookie } from "../../../src/util/utils";
+import { siteGetTimelines } from "../../../src/shared/apollo/graphql/queries/timeline/siteGetTimelines";
 
 const Courses = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -59,7 +69,15 @@ const Courses = () => {
       key: "duration",
       render: (row) => (
         <span>
-          {moment(row?.start_date).locale("fa").format("YYYY MMM D")}{" "}
+          {row.workshop?.title
+            ? row?.workshop?.start_date &&
+              moment(row?.workshop?.start_date ?? null)
+                .locale("fa")
+                .format("YYYY MMM D")
+            : row?.seminar?.start_date &&
+              moment(row?.seminar?.start_date)
+                .locale("fa")
+                .format("YYYY MMM D")}
         </span>
       ),
     },
@@ -169,6 +187,26 @@ const Courses = () => {
     }
   );
 
+  const [getTimelines, { data: userTimelines }] = useLazyQuery(
+    siteGetTimelines,
+    {
+      fetchPolicy: "network-only",
+    }
+  );
+
+  useEffect(() => {
+    if (user) {
+      getTimelines({
+        variables: {
+          input: {
+            skip: 0,
+            user: parseInt(user.uid),
+          },
+        },
+      });
+    }
+  }, [user]);
+
   useEffect(() => {
     getItems({
       variables: {
@@ -185,6 +223,13 @@ const Courses = () => {
   return (
     <Card title={<h3>لیست رویداد ها</h3>} loading={loading}>
       <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <Statistic
+            title="مجموع ساعت حضور"
+            value={userTimelines?.userTimelines?.total}
+            suffix={"دقیقه"}
+          />
+        </Col>
         <Col md={24}>
           <Table
             scroll={{ x: true }}

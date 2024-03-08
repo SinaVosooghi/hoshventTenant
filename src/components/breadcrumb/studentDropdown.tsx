@@ -25,7 +25,7 @@ const StudentDropdown = ({ user }: { user: User | null }) => {
       onClick: () => {
         handleLogout();
         notification.success({ message: "شما از حساب کاربری خارج شدید!" });
-        router.push("/");
+        router.push("/login");
       },
       label: "خروج از حساب کاربری",
       danger: true,

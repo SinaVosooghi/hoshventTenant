@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { Button, Card, Form, Input, notification } from "antd";
-import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { User } from "../../../../src/datamodel";
@@ -10,6 +9,7 @@ import parse from "html-react-parser";
 import Message from "../../../../src/datamodel/Message";
 import { siteCreateMessage } from "../../../../src/shared/apollo/graphql/mutations/message/create";
 import { SendOutlined, UserOutlined } from "@ant-design/icons";
+import moment from "jalali-moment";
 
 require("./style.less");
 
@@ -70,7 +70,9 @@ const Edit = () => {
       loading={loading}
       title={`مشاهده ${data?.chatApi.subject}`}
       className="chat-body"
-      extra={moment(data?.chatApi.created).format("YYYY/M/D H:m ")}
+      extra={moment(data?.chatApi.created)
+        .locale("fa")
+        .format("YYYY/M/D | H:m ")}
     >
       <section className="msger">
         <main className="msger-chat">
@@ -80,7 +82,7 @@ const Edit = () => {
               return message.user.id === parseFloat(user.uid) ? (
                 <div className="msg left-msg" key={message.id}>
                   <div className="msg-img">
-                    <UserOutlined rev={undefined}/>
+                    <UserOutlined rev={undefined} />
                   </div>
 
                   <div className="msg-bubble">
@@ -89,7 +91,9 @@ const Edit = () => {
                         {message.user?.firstName + " " + message.user?.lastName}
                       </div>
                       <div className="msg-info-time">
-                        {moment(message?.created).format("YYYY/M/D | H:m")}
+                        {moment(message?.created)
+                          .locale("fa")
+                          .format("YYYY/M/D | H:m")}
                       </div>
                     </div>
 
@@ -99,7 +103,7 @@ const Edit = () => {
               ) : (
                 <div className="msg right-msg" key={message.id}>
                   <div className="msg-img">
-                    <UserOutlined rev={undefined}/>
+                    <UserOutlined rev={undefined} />
                   </div>
 
                   <div className="msg-bubble">
@@ -108,7 +112,9 @@ const Edit = () => {
                         {message.user?.firstName + " " + message.user?.lastName}
                       </div>{" "}
                       <div className="msg-info-time">
-                        {moment(message?.created).format("YYYY/M/D | H:m")}
+                        {moment(message?.created)
+                          .locale("fa")
+                          .format("YYYY/M/D | H:m")}
                       </div>{" "}
                     </div>
 

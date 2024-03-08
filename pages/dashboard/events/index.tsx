@@ -18,8 +18,6 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useEffect } from "react";
 import currencyType from "../../../src/components/currency";
-import { siteGetEventsApi } from "../../../src/shared/apollo/graphql/queries/event/siteGetEventsApi";
-import { siteGetWorkshopApi } from "../../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshopApi";
 import { siteGetWorkshops } from "../../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshops";
 
 const { Text } = Typography;
@@ -68,7 +66,6 @@ const Courses = () => {
     },
     {
       title: "تاریخ شروع",
-      width: 100,
       render: (row) => (
         <span>
           {(row?.start_date &&
@@ -82,7 +79,6 @@ const Courses = () => {
     },
     {
       title: "ساعت شروع",
-      width: 100,
       render: (row) => (
         <span>
           {(row?.start_date &&
@@ -95,8 +91,9 @@ const Courses = () => {
       title: "ثبت شده",
       key: "created",
       dataIndex: "created",
-      width: 100,
-      render: (created) => <span>{moment(created).format("l")}</span>,
+      render: (created) => (
+        <span>{moment(created).locale("fa").locale("fa").format("l")}</span>
+      ),
     },
     {
       title: "وضعیت",
@@ -120,11 +117,7 @@ const Courses = () => {
           <Link passHref href={`/dashboard/attendees/?w=${record?.id}`}>
             <Button>لیست مراجعین</Button>
           </Link>
-          <Link
-            passHref
-            href={`/workshop/${record?.slug}`}
-            target="_blank"
-          >
+          <Link passHref href={`/workshop/${record?.slug}`} target="_blank">
             <Tooltip title="مشاهده رویداد">
               <Button>
                 <EyeOutlined rev={undefined} />

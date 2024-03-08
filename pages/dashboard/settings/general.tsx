@@ -106,16 +106,23 @@ const GeneralSetting = () => {
     if (values.image) images = values.image[0];
     delete values.image;
 
+    let userCookie: User | null = null;
+    if (getCookie("user")) {
+      // @ts-ignore
+      userCookie = JSON.parse(getCookie("user"));
+    }
+
     update({
       variables: {
         input: {
           ...values,
-          avatar: images,
+          id: parseInt(userCookie?.uid),
           about,
         },
       },
     });
   };
+
   return (
     <Form
       form={form}
@@ -167,57 +174,6 @@ const GeneralSetting = () => {
               value={about ?? ""}
               onChange={setAbout}
             />
-          </Form.Item>
-        </Col>
-
-        <Col md={24}>
-          <Form.Item label="تصویر ">
-            <Row gutter={[16, 16]}>
-              <Col md={image ? 18 : 24}>
-                <Form.Item
-                  name="image"
-                  valuePropName="imagesList"
-                  getValueFromEvent={normFile}
-                  noStyle
-                >
-                  <Upload.Dragger
-                    name="image"
-                    action={process.env.NEXT_PUBLIC_UPLOAD_MULTIPLE_API}
-                    multiple={false}
-                    accept="image/*"
-                    maxCount={1}
-                  >
-                    <p className="ant-upload-drag-icon">
-                      <InboxOutlined rev={undefined} />
-                    </p>
-                    <p className="ant-upload-text">
-                      برای آپلود روی فایل کلیک کنید یا به این قسمت بکشید
-                    </p>
-                  </Upload.Dragger>
-                </Form.Item>
-              </Col>
-              {image && (
-                <Col>
-                  <Space direction="vertical">
-                    <Image
-                      width={200}
-                      alt="image"
-                      src={process.env.NEXT_PUBLIC_SITE_URL + "/" + image}
-                    />
-                    <Button
-                      type="primary"
-                      size="small"
-                      block
-                      danger
-                      onClick={() => setImage(null)}
-                      icon={<CloseCircleOutlined rev={undefined} />}
-                    >
-                      حذف
-                    </Button>
-                  </Space>
-                </Col>
-              )}
-            </Row>
           </Form.Item>
         </Col>
       </Row>

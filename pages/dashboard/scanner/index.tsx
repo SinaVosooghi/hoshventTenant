@@ -164,14 +164,14 @@ const Scanner = () => {
           message="برای اسکن کردن یک ورکشاپ یا یک رویداد جانبی را انتخاب کنید!"
           showIcon
         />
-        {showError && (
+        {/* {showError && (
           <Alert
             message={"موردی یافت نشد!"}
             type="error"
             showIcon
             style={{ marginBottom: 20, marginTop: 10 }}
           />
-        )}
+        )} */}
         <div className="select-items">
           <Form form={form} name="control-hooks" style={{ maxWidth: 600 }}>
             <Form.Item label="نوع" name="type">
@@ -234,9 +234,9 @@ const Scanner = () => {
             )}
 
             {user?.user?.seminars?.length ? (
-              <Form.Item name="seminar" label="انتخاب سمینار">
+              <Form.Item name="seminar" label="انتخاب رویداد جانبی">
                 <Select
-                  placeholder="انتخاب سمینار"
+                  placeholder="انتخاب رویداد جانبی"
                   style={{ minWidth: 280 }}
                   value={selectedSeminar}
                   onChange={(e) => {

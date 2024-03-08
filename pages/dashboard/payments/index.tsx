@@ -19,7 +19,7 @@ import {
   Typography,
 } from "antd";
 import { ColumnsType } from "antd/es/table";
-import moment from "moment";
+import moment from "jalali-moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -119,7 +119,7 @@ const Courses = () => {
       key: "created",
       dataIndex: "created",
       width: 100,
-      render: (created) => <span>{moment(created).format("l")}</span>,
+      render: (created) => <span>{moment(created).locale("fa").format("l")}</span>,
     },
     {
       title: "وضعیت",

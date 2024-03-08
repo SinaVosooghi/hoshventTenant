@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { Button, Card, Form, Input, notification } from "antd";
-import moment from "moment";
+import moment from "jalali-moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { User } from "../../../../src/datamodel";

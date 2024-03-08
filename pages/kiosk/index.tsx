@@ -5,6 +5,7 @@ import {
   Checkbox,
   Col,
   Form,
+  Image,
   Input,
   InputNumber,
   message,
@@ -80,17 +81,13 @@ export default function Register() {
   return (
     <>
       <NextSeo title={"ثبت نام"} description={"ثبت نام در سایت"} />
-      <div
-        id="kiosk"
-        style={{
-          backgroundImage: `url('${
-            process.env.NEXT_PUBLIC_SITE_URL + "/" + siteData?.banner
-          }')`,
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed",
-          backgroundPosition: "center top",
-        }}
-      >
+      <div id="kiosk" style={{ display: "flex", flexDirection: "column" }}>
+        <Image
+          src={process.env.NEXT_PUBLIC_SITE_URL + "/" + siteData?.banner}
+          alt="rasta"
+          preview={false}
+          style={{ marginBottom: 20 }}
+        />
         <Row align="middle" justify="center">
           {created ? (
             <Result

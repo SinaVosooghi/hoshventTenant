@@ -23,13 +23,12 @@ import {
   notification,
 } from "antd";
 import { ColumnsType } from "antd/es/table";
-import moment from "moment";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useEffect } from "react";
 import { siteCreateChat } from "../../../src/shared/apollo/graphql/mutations/chat/create";
 import { siteGetChats } from "../../../src/shared/apollo/graphql/queries/chat/siteGetChats";
+import moment from "jalali-moment";
 const { Option } = Select;
 
 const Courses = () => {
@@ -98,7 +97,9 @@ const Courses = () => {
       title: "ثبت شده",
       key: "created",
       dataIndex: "created",
-      render: (created) => <span>{moment(created).format("l")}</span>,
+      render: (created) => (
+        <span>{moment(created).locale("fa").format("l")}</span>
+      ),
     },
     {
       title: "نوع",

@@ -24,6 +24,7 @@ const PrintableCard = ({
   user,
   setUser,
   showCard = false,
+  showThumbnail,
 }: any) => {
   const componentRef = useRef();
 
@@ -37,28 +38,113 @@ const PrintableCard = ({
   });
 
   return (
-    <div>
-      <Flex>
-        <ReactToPrint
-          onAfterPrint={() => {
-            form?.resetFields();
-            setUser();
+    <>
+      <div>
+        <Flex>
+          <ReactToPrint
+            onAfterPrint={() => {
+              form?.resetFields();
+            }}
+            trigger={() => (
+              <Button type="primary" loading={loading}>
+                پرینت کارت ورود
+              </Button>
+            )}
+            content={() => componentRef.current}
+          />
+        </Flex>
+        <div
+          style={{
+            display: showCard ? "block" : "none",
+            transform: showCard ? "scale(0.6)" : "",
           }}
-          trigger={() => (
-            <Button type="primary" loading={loading}>
-              پرینت کارت ورود
-            </Button>
-          )}
-          content={() => componentRef.current}
-        />
-      </Flex>
-      <div
-        style={{
-          display: showCard ? "block" : "none",
-          transform: showCard ? "scale(0.6)" : "",
-        }}
-      >
-        <div style={styles} ref={componentRef}>
+        >
+          <div style={styles} ref={componentRef}>
+            {elements &&
+              Object.keys(elements).map((key) => {
+                const { left, top, title, type } = elements[key];
+                if (type === "qr") {
+                  return (
+                    <QrCode key={key} id={key} left={left} top={top}>
+                      <div
+                        style={{
+                          width: 180,
+                          textAlign: "center",
+                          margin: "0 auto",
+                        }}
+                      >
+                        <ReactQrCode
+                          value={url}
+                          size={100}
+                          viewBox={`0 0 100 100`}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "#fff",
+                          }}
+                          renderAs="canvas"
+                          id="qr"
+                        />
+                      </div>
+                    </QrCode>
+                  );
+                } else if (type === "name") {
+                  return (
+                    <Name key={key} id={key} left={left} top={top}>
+                      {name ?? ""}
+                    </Name>
+                  );
+                } else if (type === "title") {
+                  return (
+                    <Title key={key} id={key} left={left} top={top}>
+                      {event}
+                    </Title>
+                  );
+                } else if (type === "nameen") {
+                  return (
+                    <Title key={key} id={key} left={left} top={top}>
+                      {data?.user?.firstNameen} {data?.user?.lastNameen}
+                    </Title>
+                  );
+                } else if (type === "categoryen") {
+                  return (
+                    <Title key={key} id={key} left={left} top={top}>
+                      {data?.user?.category?.titleen}
+                    </Title>
+                  );
+                } else if (type === "category") {
+                  return (
+                    <Title key={key} id={key} left={left} top={top}>
+                      {data?.user?.category?.title}
+                    </Title>
+                  );
+                } else if (type === "logo") {
+                  return (
+                    <Logo key={key} id={key} left={left} top={top}>
+                      <img
+                        src={`${
+                          process.env.NEXT_PUBLIC_SITE_URL + "/" + boxes?.logo
+                        }`}
+                        width="100%"
+                        alt={"Logo"}
+                      />
+                    </Logo>
+                  );
+                }
+              })}
+          </div>
+        </div>
+      </div>
+      {showThumbnail && (
+        <div
+          style={{
+            width: 1004,
+            height: 531,
+            position: "relative",
+            transform: "scale(0.8)",
+          }}
+          className="printCard"
+        >
           {elements &&
             Object.keys(elements).map((key) => {
               const { left, top, title, type } = elements[key];
@@ -132,8 +218,8 @@ const PrintableCard = ({
               }
             })}
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

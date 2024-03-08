@@ -40,13 +40,12 @@
   font-weight: 700;
 }
 
-
 html,
 body {
   direction: rtl;
   padding: 0;
   margin: 0;
-  font-family: 'peyda';
+  font-family: "peyda";
 }
 
 main {
@@ -72,7 +71,9 @@ main {
   background: no-repeat 1049px -176px url("/assets/bg-top.png") !important;
 }
 
-.ant-notification-notice .ant-notification-notice-with-icon .ant-notification-notice-message {
+.ant-notification-notice
+  .ant-notification-notice-with-icon
+  .ant-notification-notice-message {
   font-family: peyda;
 }
 
@@ -160,15 +161,13 @@ main {
   text-align: right !important;
 }
 
-
 .qrcode {
   width: 200px;
 
   svg {
-    border: 10px solid #fff
+    border: 10px solid #fff;
   }
 }
-
 
 .panel-nav-icon {
   display: none;
@@ -504,9 +503,11 @@ a {
   &.silver {
     #header-main {
       background: rgb(147, 154, 164);
-      background: linear-gradient(90deg,
-          rgba(147, 154, 164, 0) 0%,
-          rgba(147, 154, 164, 0.26) 100%);
+      background: linear-gradient(
+        90deg,
+        rgba(147, 154, 164, 0) 0%,
+        rgba(147, 154, 164, 0.26) 100%
+      );
     }
 
     .nav-circle {
@@ -696,7 +697,7 @@ a {
   direction: ltr;
 
   &.excerpt {
-    .ql-toolbar.ql-snow+.ql-container.ql-snow {
+    .ql-toolbar.ql-snow + .ql-container.ql-snow {
       min-height: 150px;
     }
   }
@@ -707,7 +708,7 @@ a {
     border-left: none;
   }
 
-  .ql-toolbar.ql-snow+.ql-container.ql-snow {
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border: none;
     background-color: #fafafa;
     min-height: 250px;
@@ -767,8 +768,8 @@ a:hover {
   color: #4a90e2;
 }
 
-@media (prefers-color-scheme: dark) {}
-
+@media (prefers-color-scheme: dark) {
+}
 
 ::-webkit-scrollbar {
   width: 10px;
@@ -780,15 +781,23 @@ a:hover {
 
 ::-webkit-scrollbar-thumb {
   background: rgb(72, 72, 72);
-  border-radius: 20px
+  border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: darkgray;
 }
 
-.ant-table-wrapper .ant-table-ping-right:not(.ant-table-has-fix-right) .ant-table-container::after,
-.ant-table-wrapper .ant-table-ping-left:not(.ant-table-has-fix-left) .ant-table-container::before {
+.ant-table-wrapper
+  .ant-table-ping-right:not(.ant-table-has-fix-right)
+  .ant-table-container::after,
+.ant-table-wrapper
+  .ant-table-ping-left:not(.ant-table-has-fix-left)
+  .ant-table-container::before {
   box-shadow: none;
+}
 
+.prinatbleCard {
+  border-radius: 4px;
+  border: 1px solid #eee;
 }

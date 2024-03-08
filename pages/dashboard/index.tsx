@@ -18,7 +18,7 @@ import Lessons from "./lessons";
 import Events from "./events";
 
 import { NextSeo } from "next-seo";
-import moment from "moment";
+import moment from "jalali-moment";
 import { siteGetEventsApi } from "../../src/shared/apollo/graphql/queries/event/siteGetEventsApi";
 import { siteGetScans } from "../../src/shared/apollo/graphql/queries/scan/siteGetWorkshops";
 import { siteGetWorkshops } from "../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshops";
@@ -101,7 +101,7 @@ const TeachersDashboard = () => {
               <Col span={5}>
                 <Statistic
                   loading={seminarLoading}
-                  title="تعداد کل سمینارها"
+                  title="تعداد کل	رویداد جانبی "
                   value={seminarApi?.seminarsApi  ?.count}
                   prefix={<UserOutlined rev={undefined} />}
                 />

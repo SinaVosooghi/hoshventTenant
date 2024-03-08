@@ -94,7 +94,7 @@ const Courses = () => {
       key: "created",
       dataIndex: "created",
       width: 100,
-      render: (created) => <span>{moment(created).format("l")}</span>,
+      render: (created) => <span>{moment(created).locale("fa").format("l")}</span>,
     },
     {
       title: "وضعیت",

@@ -1,15 +1,12 @@
 import { UserOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import { Space, Tag, Table, Card, Row, Col, Statistic } from "antd";
+import {  Tag, Table, Card, Row, Col, Statistic } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { getCookie } from "cookies-next";
-import moment from "moment";
-import Link from "next/link";
 import { useState } from "react";
 import { useEffect } from "react";
-import { User } from "../../../src/datamodel";
 import { siteGetAttendees } from "../../../src/shared/apollo/graphql/queries/attendees/siteGetAttendees";
 import { useRouter } from "next/router";
+import moment from "jalali-moment";
 
 const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -45,7 +42,7 @@ const Attendees = ({ hideCount = false }: { hideCount?: Boolean }) => {
       key: "created",
       dataIndex: "created",
       width: 100,
-      render: (created) => <span>{moment(created).format("l")}</span>,
+      render: (created) => <span>{moment(created).locale("fa").locale("fa").format("l")}</span>,
     },
     {
       title: "وضعیت",

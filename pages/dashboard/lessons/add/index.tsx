@@ -23,7 +23,7 @@ import dynamic from "next/dynamic";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 import { useRef } from "react";
-import moment from "moment";
+import moment from "jalali-moment";
 import { NextSeo } from "next-seo";
 import { quillModules } from "../../../../src/util/utils";
 import { validateMessages } from "../../../../src/util/messageValidators";

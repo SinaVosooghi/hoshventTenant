@@ -10,7 +10,7 @@ import {
   Row,
   Typography,
 } from "antd";
-import moment from "moment";
+import moment from "jalali-moment";
 import { Suspense, useState } from "react";
 
 require("./style.less");

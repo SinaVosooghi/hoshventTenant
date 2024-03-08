@@ -6,6 +6,7 @@ import {
   Col,
   Flex,
   Form,
+  Image,
   Input,
   Row,
   notification,
@@ -66,6 +67,10 @@ const Scanner = () => {
   };
 
   const handleKeyboardClick = (value) => {
+    if (value === "Clear") {
+      form.setFieldValue("mobileNumber", "");
+      return;
+    }
     const currentInput =
       form.getFieldValue("nationalcode") ||
       form.getFieldValue("mobileNumber") ||
@@ -75,7 +80,7 @@ const Scanner = () => {
 
   const customNumberKeyboard = (
     <div className="custom-keyboard">
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9, "", 0].map((number) => (
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, "Clear", 0].map((number) => (
         <Button key={number} onClick={() => handleKeyboardClick(number)}>
           {number}
         </Button>
@@ -112,20 +117,16 @@ const Scanner = () => {
   return (
     <>
       <NextSeo nofollow noindex title="پرینت کارت" />
-      <div
-        id="scanner"
-        style={{
-          backgroundImage: `url('${
-            process.env.NEXT_PUBLIC_SITE_URL + "/" + siteData?.banner
-          }')`,
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed",
-          backgroundPosition: "center top",
-        }}
-      >
+      <div id="scanner" style={{ display: "flex", flexDirection: "column" }}>
+        <Image
+          src={process.env.NEXT_PUBLIC_SITE_URL + "/" + siteData?.banner}
+          alt="rasta"
+          preview={false}
+          style={{ marginBottom: 20 }}
+        />
         <Row justify={"center"} align="top">
           <Col md={6} xs={22}>
-            <Card title="گرفتن کارت ورود">
+            <Card title="دریافت کارت ورود">
               {showError && (
                 <Alert
                   message={"موردی یافت نشد!"}
@@ -220,6 +221,7 @@ const Scanner = () => {
                     setUser={setUser}
                   />
                 )}
+                <p>لطفا کارت ورود را از روی پرینتر بردارید</p>
                 {/* {user && (
                   <PrintableCertificate
                   type="workshop"

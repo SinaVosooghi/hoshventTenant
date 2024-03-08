@@ -134,7 +134,7 @@ const TeacherLaout = ({ children }: any) => {
     if (e.key === "signout") {
       handleLogout();
       notification.success({ message: "شما از حساب کاربری خارج شدید!" });
-      router.push("/");
+      router.push("/login");
     } else {
       router.push(e.key);
     }
@@ -168,11 +168,12 @@ const TeacherLaout = ({ children }: any) => {
                 <Col md={20} xs={24}>
                   <Row id="teacher-dashboard">
                     <Col xs={24} lg={0} md={0}>
-                      <AppstoreFilled
-                        className="panel-nav-icon"
+                      <Button
                         onClick={() => showDrawer()}
-                        rev={undefined}
-                      />
+                        style={{ marginBottom: 10 }}
+                      >
+                        منو مدیریت
+                      </Button>
                     </Col>
                     <Col md={5} xs={0}>
                       <Menu

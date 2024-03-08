@@ -117,20 +117,22 @@ const TeachersDashboard = () => {
               </Col>
             )}
           </Row>
-          <Row>
-            {user && (
-              <PrintableCard
-                showCard
-                boxes={siteData}
-                name={`${user?.firstName} ${user?.lastName}`}
-                event={"کارت ورود"}
-                url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
-                user={user}
-              />
-            )}
-          </Row>
         </Card>
       </Col>
+      <Card title="کارت ورود">
+        {user && (
+          <PrintableCard
+            showCard={false}
+            boxes={siteData}
+            name={`${user?.firstName} ${user?.lastName}`}
+            event={"کارت ورود"}
+            url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+            user={user}
+            setUser={setUser}
+            showThumbnail
+          />
+        )}
+      </Card>
       <Col span={24}>
         <Calendar />
       </Col>
