@@ -83,6 +83,6 @@ export const quillModules = {
       { align: "right" },
       { align: "justify" },
     ],
-    [{ direction: "rtl" }], // this is rtl support
+    [{ direction: "rtl" }],
   ],
 };

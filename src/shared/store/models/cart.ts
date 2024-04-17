@@ -29,18 +29,9 @@ const cartModel = createModel<RootState>()({
   effects: {},
   reducers: {
     addItem(state, action) {
-      const index = state.items.findIndex(
-        (event) => event.id === event.id
-      );
       let data = [...state.items];
 
-      console.log(action);
-      if (index >= 0) {
-        data[index].qty = 1;
-      } else {
-        data = [...state.items, { ...action, qty: 1 }];
-      }
-
+      data = [...state.items, { ...action, qty: 1 }];
 
       return {
         ...state,

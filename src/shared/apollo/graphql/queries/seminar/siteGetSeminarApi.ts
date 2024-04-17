@@ -16,10 +16,6 @@ export const siteGetSeminarApi = gql`
       end_date
       hall {
         title
-        event {
-          id
-          slug
-        }
       }
       lecturers {
         id

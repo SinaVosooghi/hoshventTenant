@@ -17,10 +17,7 @@ export const siteGetTimelines = gql`
           title
           slug
           hall {
-            event {
-              title
-              image
-            }
+            title
           }
         }
         seminar {
@@ -28,10 +25,7 @@ export const siteGetTimelines = gql`
           title
           slug
           hall {
-            event {
-              title
-              image
-            }
+            title
           }
         }
         service {

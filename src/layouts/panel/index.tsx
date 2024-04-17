@@ -108,7 +108,7 @@ const PanelLayout = ({ children }: any) => {
   }
 
   const items: MenuItem[] = [
-    getItem("داشبورد", "/panel", <DashboardOutlined rev={undefined} />),
+    getItem("کارت ورود", "/panel", <DashboardOutlined rev={undefined} />),
     getItem("رویداد های من", "/panel/events", <BookOutlined rev={undefined} />),
     getItem(
       "پیام ها",

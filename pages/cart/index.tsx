@@ -38,9 +38,7 @@ const Cart = () => {
             imageStyle={{ margin: 30 }}
             style={{ margin: 100 }}
             description={<span>سبد خرید خالیست</span>}
-          >
-            <Button onClick={() => router.push("/seminars")}>مشاهده رویدادها </Button>
-          </Empty>
+          ></Empty>
         ) : (
           <Row justify="center">
             <Col md={20} xs={24} id="buy-product-container">

@@ -120,79 +120,34 @@ const Courses = () => {
       width: 50,
       render: (_, record: any) =>
         record.workshop?.title ? (
-          <Space size="middle">
-            <Link
-              passHref
-              href={`/panel/workshop/view?id=${record.workshop?.slug}`}
-            >
+          <Link
+            passHref
+            href={`/workshop/${record?.workshop?.slug}`}
+            target="_blank"
+          >
+            <Tooltip title="مشاهده رویداد">
               <Button>جزییات رویداد</Button>
-            </Link>
-            {moment().diff(record.workshop?.end_date, "days") > 0 && (
-              <PrintableCertificate
-                type="workshop"
-                event={record.workshop.title}
-                name={user?.firstName + " " + user?.lastName}
-              />
-            )}
-
-            <Link
-              passHref
-              href={`/workshop/${record?.workshop?.slug}`}
-              target="_blank"
-            >
-              <Tooltip title="مشاهده رویداد">
-                <Button>
-                  <EyeOutlined rev={undefined} />
-                </Button>
-              </Tooltip>
-            </Link>
-          </Space>
+            </Tooltip>
+          </Link>
         ) : (
-          <Space size="middle">
-            <Link
-              passHref
-              href={`/panel/seminar/view?id=${record.seminar?.slug}`}
-            >
+          <Link
+            passHref
+            href={`/seminar/${record?.seminar?.slug}`}
+            target="_blank"
+          >
+            <Tooltip title="مشاهده رویداد">
               <Button>جزییات رویداد</Button>
-            </Link>
-
-            {moment().diff(record.seminar?.end_date, "days") > 0 && (
-              <PrintableCertificate
-                type="seminar"
-                event={record.seminar.title}
-                name={user?.firstName + " " + user?.lastName}
-              />
-            )}
-            <Link
-              passHref
-              href={`/seminar/${record?.seminar?.slug}`}
-              target="_blank"
-            >
-              <Tooltip title="مشاهده رویداد">
-                <Button>
-                  <EyeOutlined rev={undefined} />
-                </Button>
-              </Tooltip>
-            </Link>
-          </Space>
+            </Tooltip>
+          </Link>
         ),
     },
   ];
 
-  const [getItems, { data: userEventsApi, loading }] = useLazyQuery(
-    siteGetUserEventsApi,
-    {
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: "network-only",
-    }
-  );
+  const [getItems, { data: userEventsApi, loading }] =
+    useLazyQuery(siteGetUserEventsApi);
 
-  const [getTimelines, { data: userTimelines }] = useLazyQuery(
-    siteGetTimelines,
-    {
-      fetchPolicy: "network-only",
-    }
-  );
+  const [getTimelines, { data: userTimelines }] =
+    useLazyQuery(siteGetTimelines);
 
   useEffect(() => {
     if (user) {
@@ -200,6 +155,7 @@ const Courses = () => {
         variables: {
           input: {
             skip: 0,
+            // @ts-ignore
             user: parseInt(user.uid),
           },
         },
@@ -226,7 +182,7 @@ const Courses = () => {
         <Col span={12}>
           <Statistic
             title="مجموع ساعت حضور"
-            value={userTimelines?.userTimelines?.total}
+            value={userTimelines?.timelines?.total}
             suffix={"دقیقه"}
           />
         </Col>
