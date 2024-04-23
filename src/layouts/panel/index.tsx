@@ -146,6 +146,7 @@ const PanelLayout = ({ children }: any) => {
   ];
 
   const onClick: MenuProps["onClick"] = (e) => {
+    onClose();
     if (e.key === "signout") {
       handleLogout();
       notification.success({ message: "شما از حساب کاربری خارج شدید!" });

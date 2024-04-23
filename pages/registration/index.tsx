@@ -8,6 +8,7 @@ import {
   Form,
   Image,
   Input,
+  Modal,
   Row,
   notification,
 } from "antd";
@@ -29,12 +30,14 @@ const Scanner = () => {
   const { data: siteData }: { data: Setting } = useGetSetting();
   const [showError, setShowError] = useState(false);
   const [form] = Form.useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [getUserInfo, { loading }] = useLazyQuery(siteGetUserByMobileNumber, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
     onCompleted: ({ userByMobile }) => {
       setUser(userByMobile);
+      setIsModalOpen(true);
     },
     onError: (err) => {
       setShowError(true);
@@ -56,6 +59,14 @@ const Scanner = () => {
         variables: { input: { nationalcode: values.nationalcode.toString() } },
       });
     }
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   const handleBackspaceClick = () => {
@@ -185,44 +196,56 @@ const Scanner = () => {
                 </Form.Item>
               </Form>
               {customNumberKeyboard}
-              {user && (
-                <div id="user-profile" style={{ marginTop: 12 }}>
-                  <div className="card-container" id="card">
-                    <span className="pro">
-                      {renderUsertype(user?.usertype)}
-                    </span>
-
-                    <h3 style={{ textAlign: "right", marginRight: 30 }}>
-                      {user?.firstName} {user?.lastName}
-                    </h3>
-                    <h5 style={{ textAlign: "right", marginRight: 30 }}>
-                      {user?.mobilenumber}
-                    </h5>
-                    <p style={{ textAlign: "right", marginRight: 30 }}>
-                      <b>
-                        {user?.email} <br /> عضویت:{" "}
-                      </b>
-                      {moment(user?.created)
-                        .locale("fa")
-                        .format("ddd D MMM, YYYY")}
-                    </p>
-                  </div>
-                </div>
-              )}
-              <Flex style={{ marginTop: 12 }} gap={12} justify="center">
+              <Modal
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                centered
+                footer={[
+                  <Button key={1} onClick={handleCancel}>
+                    بستن
+                  </Button>,
+                ]}
+              >
                 {user && (
-                  <PrintableCard
-                    boxes={siteData}
-                    name={`${user?.firstName} ${user?.lastName}`}
-                    event={"کارت ورود"}
-                    url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
-                    user={user}
-                    form={form}
-                    setUser={setUser}
-                  />
+                  <div id="user-profile" style={{ marginTop: 12 }}>
+                    <div className="card-container" id="card">
+                      <span className="pro">
+                        {renderUsertype(user?.usertype)}
+                      </span>
+
+                      <h3 style={{ textAlign: "right", marginRight: 30 }}>
+                        {user?.firstName} {user?.lastName}
+                      </h3>
+                      <h5 style={{ textAlign: "right", marginRight: 30 }}>
+                        {user?.mobilenumber}
+                      </h5>
+                      <p style={{ textAlign: "right", marginRight: 30 }}>
+                        <b>
+                          {user?.email} <br /> عضویت:{" "}
+                        </b>
+                        {moment(user?.created)
+                          .locale("fa")
+                          .format("ddd D MMM, YYYY")}
+                      </p>
+                    </div>
+                  </div>
                 )}
-                <p>لطفا کارت ورود را از روی پرینتر بردارید</p>
-                {/* {user && (
+
+                <Flex style={{ marginTop: 12 }} gap={12} justify="center">
+                  {user && (
+                    <PrintableCard
+                      boxes={siteData}
+                      name={`${user?.firstName} ${user?.lastName}`}
+                      event={"کارت ورود"}
+                      url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+                      user={user}
+                      form={form}
+                      setUser={setUser}
+                    />
+                  )}
+                  <p>لطفا کارت ورود را از روی پرینتر بردارید</p>
+                  {/* {user && (
                   <PrintableCertificate
                   type="workshop"
                   event={record.workshop.title}
@@ -237,7 +260,8 @@ const Scanner = () => {
                     setUser={setUser}
                   />
                 )} */}
-              </Flex>
+                </Flex>
+              </Modal>
             </Card>
           </Col>
         </Row>

@@ -197,20 +197,18 @@ const MainFooter = () => {
                 </div>
               </Col>
             </Row>
-            <Row align="middle">
-              <Col span={8}>
-                <Space size={16} className="copyright-links">
-                  <Link href={"/about"}>قوانین و مقررات سایت </Link>
-                  <Link href={"/contact"}> ثبت شکایت</Link>
-                </Space>
+            <Row align="middle" justify="space-around">
+              <Col md={4} xs={12}>
+                <Link href={"/about"}>قوانین و مقررات سایت </Link>
               </Col>
-              <Col span={16}>
-                <div className="copyright">
-                  <p>
-                    کلیه حقوق این سایت متعلق به
-                    <a href="#"> موسسه مطالعات جامع رستا </a> می باشد
-                  </p>
-                </div>
+              <Col md={4} xs={12}>
+                <Link href={"/contact"}> ثبت شکایت</Link>
+              </Col>
+              <Col md={8} xs={24}>
+                <p>
+                  کلیه حقوق این سایت متعلق به
+                  <a href="#"> موسسه مطالعات جامع رستا </a> می باشد
+                </p>
               </Col>
             </Row>
           </Col>

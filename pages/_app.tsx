@@ -67,7 +67,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               colorPrimary: "#00abb6",
               fontFamily: "peyda",
               colorBgLayout: "#fff",
-              borderRadius: 55,
+              borderRadiusLG: 24,
+              borderRadiusXS: 55,
+              borderRadiusOuter: 140,
+              borderRadiusSM: 40,
               colorTextBase: "#0f295d",
             },
           }}

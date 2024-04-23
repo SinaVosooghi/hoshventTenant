@@ -40,13 +40,13 @@ const PublicLayout = ({ children }: any) => {
 
   return (
     <Layout>
-      {router.pathname !== "/kiosk" && router.pathname !== "/scanner" && (
+      {router.pathname !== "/kiosk" && router.pathname !== "/registration" && (
         <MainHeader />
       )}
       <Content>
         <Row justify="center">{children}</Row>
       </Content>
-      {router.pathname !== "/kiosk" && router.pathname !== "/scanner" && (
+      {router.pathname !== "/kiosk" && router.pathname !== "/registration" && (
         <>
           <Footer>
             <MainFooter />

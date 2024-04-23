@@ -72,6 +72,11 @@ export default function Register() {
           notification.error({ message: "موبایل وارد شده تکراریست!" });
         } else if (errors?.response?.data.statusCode === 401) {
           notification.error({ message: "دسترسی غیر مجاز" });
+        } else if (
+          errors?.response?.data?.message ===
+          "Already exist, User with this email!"
+        ) {
+          notification.error({ message: "ایمیل وارد شده تکراریست!" });
         } else {
           notification.error({ message: "اطلاعات ورود اشتباه است" });
         }

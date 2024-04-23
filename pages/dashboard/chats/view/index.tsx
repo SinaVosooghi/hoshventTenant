@@ -70,7 +70,7 @@ const Edit = () => {
       loading={loading}
       title={`مشاهده ${data?.chatApi.subject}`}
       className="chat-body"
-      extra={moment(data?.chatApi.created).format("YYYY/M/D H:m ")}
+      extra={moment(data?.chatApi.created).locale("fa").format("YYYY/M/D H:m ")}
     >
       <section className="msger">
         <main className="msger-chat">
@@ -80,7 +80,7 @@ const Edit = () => {
               return message.user.id === parseFloat(user.uid) ? (
                 <div className="msg left-msg" key={message.id}>
                   <div className="msg-img">
-                    <UserOutlined rev={undefined}/>
+                    <UserOutlined rev={undefined} />
                   </div>
 
                   <div className="msg-bubble">
@@ -89,7 +89,7 @@ const Edit = () => {
                         {message.user?.firstName + " " + message.user?.lastName}
                       </div>
                       <div className="msg-info-time">
-                        {moment(message?.created).format("YYYY/M/D | H:m")}
+                        {moment(message?.created).locale("fa").format("YYYY/M/D | H:m")}
                       </div>
                     </div>
 
@@ -99,7 +99,7 @@ const Edit = () => {
               ) : (
                 <div className="msg right-msg" key={message.id}>
                   <div className="msg-img">
-                    <UserOutlined rev={undefined}/>
+                    <UserOutlined rev={undefined} />
                   </div>
 
                   <div className="msg-bubble">
