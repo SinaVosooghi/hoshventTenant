@@ -73,11 +73,11 @@ const Courses = () => {
             ? row?.workshop?.start_date &&
               moment(row?.workshop?.start_date ?? null)
                 .locale("fa")
-                .format("YYYY MMM D")
+                .format("l")
             : row?.seminar?.start_date &&
               moment(row?.seminar?.start_date)
                 .locale("fa")
-                .format("YYYY MMM D")}
+                .format("l")}
         </span>
       ),
     },
