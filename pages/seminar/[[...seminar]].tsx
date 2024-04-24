@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Row, Tooltip, notification } from "antd";
+import { Button, Card, Col, Row, Select, Tooltip, notification } from "antd";
 import moment from "jalali-moment";
 import { useRouter } from "next/router";
 import parse from "html-react-parser";
@@ -124,9 +124,53 @@ const PlanItem = () => {
                     <div className="event-title">
                       <h1>{seminarApi?.seminarApi?.title}</h1>
                       <p>{seminarApi?.seminarApi?.subtitle}</p>
-                      <span className="type-pill">امکانات پایه</span>
-                      {seminarApi?.seminarApi.seobody &&
-                        parse(seminarApi?.seminarApi.seobody)}
+
+                      <div className="workshop-dates">
+                        {seminarApi?.seminarApi?.start_date && (
+                          <div className="workshop-status">
+                            <div className="status-item">
+                              تاریخ شروع
+                              <span>
+                                {moment(seminarApi?.seminarApi?.start_date)
+                                  .locale("fa")
+                                  .format("D MMM YYYY")}{" "}
+                                ساعت
+                                {moment(seminarApi?.seminarApi?.start_date)
+                                  .locale("fa")
+                                  .format("H:mm")}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                        {seminarApi?.seminarApi?.end_date && (
+                          <div className="workshop-status">
+                            <div className="status-item">
+                              تاریخ پایان
+                              <span>
+                                {moment(seminarApi?.seminarApi?.end_date)
+                                  .locale("fa")
+                                  .format("D MMM YYYY")}{" "}
+                                ساعت
+                                {moment(seminarApi?.seminarApi?.end_date)
+                                  .locale("fa")
+                                  .format("H:mm")}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="workshop-services">
+                        <h4>انتخاب خدمات</h4>
+                        <Select
+                          mode="multiple"
+                          allowClear
+                          style={{ width: "100%" }}
+                          placeholder="انتخاب خدمات"
+                          onChange={handleChange}
+                          options={options}
+                        />
+                      </div>
 
                       <div className="item-button">
                         {renderButton()}
