@@ -9,6 +9,17 @@ export const siteGetUserEventsApi = gql`
         created
         updated
         status
+        service {
+          id
+          title
+          price
+          image
+          start_date
+          end_date
+          status
+          created
+          updated
+        }
         workshop {
           id
           title

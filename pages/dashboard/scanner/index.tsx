@@ -3,8 +3,10 @@ import {
   Alert,
   Button,
   Card,
+  Col,
   Form,
   Radio,
+  Row,
   Select,
   Spin,
   notification,
@@ -55,7 +57,7 @@ const Scanner = () => {
       if (err.message === "Already checkin") {
         notification.warning({ message: "قبلا ورود ثبت شده است" });
       } else if (err.message === "Not checked in") {
-        notification.warning({ message: "وارد نشده است" });
+        notification.warning({ message: "کاربر وارد نشده است!" });
       } else if (err.message === "Already checked out") {
         notification.warning({ message: "قبلا  خروج ثبت شده است" });
       } else {
@@ -87,6 +89,7 @@ const Scanner = () => {
 
   useEffect(() => {
     setShowError(false);
+
     if (data) {
       getUserInfo({
         variables: {
@@ -157,6 +160,10 @@ const Scanner = () => {
     }
   };
 
+  const onReset = () => {
+    form.resetFields();
+  };
+
   return (
     <Card>
       <div className="scanner-alert">
@@ -174,34 +181,6 @@ const Scanner = () => {
         )} */}
         <div className="select-items">
           <Form form={form} name="control-hooks" style={{ maxWidth: 600 }}>
-            <Form.Item label="نوع" name="type">
-              <Radio.Group defaultValue="checkin">
-                <Radio.Button
-                  value="checkin"
-                  onChange={() => {
-                    handleRescan();
-                    setIsCheckin(true);
-                    form.setFieldsValue({
-                      type: "checkin",
-                    });
-                  }}
-                >
-                  ورود
-                </Radio.Button>
-                <Radio.Button
-                  value="checkout"
-                  onChange={() => {
-                    handleRescan();
-                    setIsCheckin(false);
-                    form.setFieldsValue({
-                      type: "checkout",
-                    });
-                  }}
-                >
-                  خروج
-                </Radio.Button>
-              </Radio.Group>
-            </Form.Item>
             {user?.user?.workshops?.length ? (
               <Form.Item name="workshop" label="انتخاب ورکشاپ">
                 <Select
@@ -294,6 +273,48 @@ const Scanner = () => {
             ) : (
               ""
             )}
+
+            <Row
+              justify="space-between"
+              align="middle"
+              style={{ marginBottom: 15 }}
+            >
+              <Col>
+                <Form.Item label="نوع" name="type" style={{ margin: 0 }}>
+                  <Radio.Group defaultValue="checkin">
+                    <Radio.Button
+                      value="checkin"
+                      onChange={() => {
+                        handleRescan();
+                        setIsCheckin(true);
+                        form.setFieldsValue({
+                          type: "checkin",
+                        });
+                      }}
+                    >
+                      ورود
+                    </Radio.Button>
+                    <Radio.Button
+                      value="checkout"
+                      onChange={() => {
+                        handleRescan();
+                        setIsCheckin(false);
+                        form.setFieldsValue({
+                          type: "checkout",
+                        });
+                      }}
+                    >
+                      خروج
+                    </Radio.Button>
+                  </Radio.Group>
+                </Form.Item>
+              </Col>
+              <Col>
+                <Button htmlType="button" onClick={onReset} danger size="small">
+                  حذف اطلاعات
+                </Button>
+              </Col>
+            </Row>
           </Form>
           {/* <Button
             type="primary"

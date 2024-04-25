@@ -32,8 +32,6 @@ const Service = () => {
   const { service } = router.query;
   const dispatch = useDispatch<Dispatch>();
   const [user, setUser] = useState<User | null>(null);
-  const [options, setOptions] = useState<any>([]);
-  const [selectedOptions, setSelectedOptions] = useState<any>([]);
 
   const { data: serviceApi } = useQuery(siteGetService, {
     notifyOnNetworkStatusChange: true,
