@@ -11,22 +11,25 @@ const ProductCheckoutInfo = ({ product }: { product: Product | null }) => {
   return (
     <div className="product-checkout-info">
       <div className="product-image">
-        <Image
-          src={
-            product?.image
-              ? process.env.NEXT_PUBLIC_SITE_URL + "/" + product?.image
-              : "https://fakeimg.pl/600x400?text=رویداد"
-          }
-          style={{ borderRadius: 20 }}
-          alt="rasta"
-          width={240}
-          preview={false}
-        />
+        {product?.image && (
+          <Image
+            src={
+              product?.image
+                ? process.env.NEXT_PUBLIC_SITE_URL + "/" + product?.image
+                : "https://fakeimg.pl/600x400?text=رویداد"
+            }
+            style={{ borderRadius: 20 }}
+            alt="rasta"
+            width={240}
+            preview={false}
+          />
+        )}
       </div>
       <div className="product-detail">
         <div className="product-checkout-title">
           <h1>{product?.title ?? product?.label}</h1>
-          {product?.type === "Service" && <Tag>خدمات </Tag>}
+          {product?.type ||
+            (product?.__typename === "Service" && <Tag>خدمات </Tag>)}
           {product?.type === "Seminar" && <Tag>{"رویداد جانبی"} </Tag>}
           {product?.type === "Workshop" && <Tag> ورکشاپ</Tag>}
         </div>
