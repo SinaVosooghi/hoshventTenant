@@ -58,6 +58,8 @@ const Scanner = () => {
         notification.warning({ message: "قبلا ورود ثبت شده است" });
       } else if (err.message === "Not checked in") {
         notification.warning({ message: "کاربر وارد نشده است!" });
+      } else if (err.message === "Over limit") {
+        notification.warning({ message: "محدودیت به پایان رسیده است!" });
       } else if (err.message === "Already checked out") {
         notification.warning({ message: "قبلا  خروج ثبت شده است" });
       } else {
