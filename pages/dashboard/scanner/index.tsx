@@ -162,6 +162,7 @@ const Scanner = () => {
 
   const onReset = () => {
     form.resetFields();
+    setSelectedService(null);
   };
 
   return (
@@ -292,20 +293,22 @@ const Scanner = () => {
                         });
                       }}
                     >
-                      ورود
+                      {selectedService ? "ثبت" : "ورود"}
                     </Radio.Button>
-                    <Radio.Button
-                      value="checkout"
-                      onChange={() => {
-                        handleRescan();
-                        setIsCheckin(false);
-                        form.setFieldsValue({
-                          type: "checkout",
-                        });
-                      }}
-                    >
-                      خروج
-                    </Radio.Button>
+                    {!selectedService && (
+                      <Radio.Button
+                        value="checkout"
+                        onChange={() => {
+                          handleRescan();
+                          setIsCheckin(false);
+                          form.setFieldsValue({
+                            type: "checkout",
+                          });
+                        }}
+                      >
+                        خروج
+                      </Radio.Button>
+                    )}
                   </Radio.Group>
                 </Form.Item>
               </Col>
