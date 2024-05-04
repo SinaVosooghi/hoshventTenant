@@ -1,22 +1,18 @@
 import {
-  ClockCircleOutlined,
   FacebookOutlined,
   InstagramOutlined,
   LinkedinOutlined,
-  PhoneOutlined,
   TwitterOutlined,
-  UpOutlined,
   WhatsAppOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
-import { getCookie, setCookie } from "cookies-next";
-import { Button, Col, Input, Row, Space } from "antd";
+import { setCookie } from "cookies-next";
+import { Col, Row, Space } from "antd";
 import Link from "next/link";
 import useGetSetting from "../../hooks/useGetSetting";
 // @ts-ignore
-import { Fade, Slide } from "react-reveal";
+import { Slide } from "react-reveal";
 import { useEffect } from "react";
-import parse from "html-react-parser";
 
 require("./style.less");
 
@@ -49,7 +45,7 @@ const MainFooter = () => {
                         src={`${
                           process.env.NEXT_PUBLIC_SITE_URL + "/" + data?.logo
                         }`}
-                        width={120}
+                        height={70}
                       />
                       <img
                         src="/assets/up.png"

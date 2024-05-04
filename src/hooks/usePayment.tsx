@@ -69,9 +69,10 @@ function usePayment({
           products: items?.map((product) => {
             return {
               id: product.id,
-              title: product.title,
+              title: product.title ?? product.label,
               qty: product.qty,
               type: product.__typename,
+              services: product?.selectedOptions,
             };
           }),
           coupon: discount?.id,

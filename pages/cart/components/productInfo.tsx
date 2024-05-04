@@ -1,7 +1,5 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Badge, Button, Image, Tag, Tooltip } from "antd";
+import { Button, Image, Tag } from "antd";
 import { percentCalculate } from "../../../src/util/utils";
-import parse from "html-react-parser";
 import Product from "../../../src/datamodel/Product";
 import { Dispatch } from "../../../src/shared/store";
 import { useDispatch } from "react-redux";
@@ -9,21 +7,31 @@ import currencyType from "../../../src/components/currency";
 
 const ProductCheckoutInfo = ({ product }: { product: Product | null }) => {
   const dispatch = useDispatch<Dispatch>();
-  console.log(product);
 
   return (
     <div className="product-checkout-info">
       <div className="product-image">
-        <Image
-          src={process.env.NEXT_PUBLIC_SITE_URL + "/" + product?.image}
-          alt="rasta"
-          width={240}
-          preview={false}
-        />
+        {product?.image && (
+          <Image
+            src={
+              product?.image
+                ? process.env.NEXT_PUBLIC_SITE_URL + "/" + product?.image
+                : "https://fakeimg.pl/600x400?text=رویداد"
+            }
+            style={{ borderRadius: 20 }}
+            alt="rasta"
+            width={240}
+            preview={false}
+          />
+        )}
       </div>
       <div className="product-detail">
         <div className="product-checkout-title">
-          <h1>{product?.title}</h1>
+          <h1>{product?.title ?? product?.label}</h1>
+          {product?.type ||
+            (product?.__typename === "Service" && <Tag>خدمات </Tag>)}
+          {product?.type === "Seminar" && <Tag>{"رویداد جانبی"} </Tag>}
+          {product?.type === "Workshop" && <Tag> ورکشاپ</Tag>}
         </div>
         <div className="product-divider"></div>
 

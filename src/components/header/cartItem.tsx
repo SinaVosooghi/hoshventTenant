@@ -41,11 +41,16 @@ const CartItem = ({ event }: { event: Event }) => {
       </span>
 
       <Image
-        src={process.env.NEXT_PUBLIC_SITE_URL + "/" + event?.image}
+        src={
+          event?.image
+            ? process.env.NEXT_PUBLIC_SITE_URL + "/" + event?.image
+            : "https://fakeimg.pl/600x400?text=رویداد"
+        }
         alt="rasta"
         width={110}
         preview={false}
       />
+
       <div className="cart-item-content">
         <p className="event-title">{event.title}</p>
 

@@ -31,8 +31,24 @@ const cartModel = createModel<RootState>()({
     addItem(state, action) {
       let data = [...state.items];
 
-      data = [...state.items, { ...action, qty: 1 }];
+      if (action.selectedOptions?.length > 0) {
+        const options = [];
+        action.selectedOptions?.map((op) =>
+          options?.push({
+            title: op.label,
+            id: op.value,
+            __typename: "Service",
+            qty: 1,
+            price: op.price ?? 0,
+          })
+        );
 
+        data = [...state.items, ...options];
+      }
+
+      data = [...data, { ...action, qty: 1 }];
+
+      console.log(data);
       return {
         ...state,
         items: data,

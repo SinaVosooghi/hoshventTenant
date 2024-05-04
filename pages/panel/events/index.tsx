@@ -49,20 +49,41 @@ const Courses = () => {
     {
       title: "عنوان رویداد",
       key: "title",
-      render: (row) =>
-        row.workshop?.title ? (
+      render: (row) => {
+        if (row.service)
+          return (
+            row.workshop?.title ?? row.seminar?.title ?? row.service?.title
+          );
+
+        return row.workshop?.title ? (
           <Link
             passHref
             href={`/workshop/${row.workshop?.slug}`}
             target="_blank"
           >
-            {row.workshop?.title ?? row.workshop?.title}
+            {row.workshop?.title ?? row.seminar?.title ?? row.service?.title}
           </Link>
         ) : (
           <Link passHref href={`/seminar/${row.seminar?.slug}`} target="_blank">
-            {row.seminar?.title ?? row.seminar?.title}
+            {row.workshop?.title ?? row.seminar?.title ?? row.service?.title}
           </Link>
-        ),
+        );
+      },
+    },
+    {
+      title: "نوع",
+      key: "tyep",
+      render: (row) => {
+        if (row.workshop) {
+          return "ورکشاپ";
+        }
+        if (row.seminar) {
+          return "رویداد جانبی";
+        }
+        if (row.service) {
+          return "خدمات";
+        }
+      },
     },
     {
       title: "تاریخ شروع",
@@ -75,9 +96,7 @@ const Courses = () => {
                 .locale("fa")
                 .format("l")
             : row?.seminar?.start_date &&
-              moment(row?.seminar?.start_date)
-                .locale("fa")
-                .format("l")}
+              moment(row?.seminar?.start_date).locale("fa").format("l")}
         </span>
       ),
     },
@@ -118,8 +137,9 @@ const Courses = () => {
       title: "اکشن",
       key: "action",
       width: 50,
-      render: (_, record: any) =>
-        record.workshop?.title ? (
+      render: (_, record: any) => {
+        if (record.service) return <></>;
+        return record.workshop?.title ? (
           <Link
             passHref
             href={`/workshop/${record?.workshop?.slug}`}
@@ -139,7 +159,8 @@ const Courses = () => {
               <Button>جزییات رویداد</Button>
             </Tooltip>
           </Link>
-        ),
+        );
+      },
     },
   ];
 
