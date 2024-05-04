@@ -21,6 +21,7 @@ import Setting from "../../../src/datamodel/Setting";
 import useGetSetting from "../../../src/hooks/useGetSetting";
 import PrintableCard from "../../../src/components/printCard";
 import { debounce } from "lodash";
+import useScanDetection from "use-scan-detection";
 
 require("./style.less");
 
@@ -39,6 +40,13 @@ const Scanner = () => {
   const [isCheckin, setIsCheckin] = useState(true);
   const { data: siteData }: { data: Setting } = useGetSetting();
   const [showError, setShowError] = useState(false);
+
+  useScanDetection({
+    onComplete: (code) => {
+      const url = code.replaceAll("Shift", "");
+      setData(url);
+    },
+  });
 
   const [getUserInfo] = useLazyQuery(siteGetTimeline, {
     notifyOnNetworkStatusChange: true,

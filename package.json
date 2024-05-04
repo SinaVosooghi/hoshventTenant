@@ -12,6 +12,7 @@
     "@ant-design/icons": "^5.0.1",
     "@apollo/client": "^3.7.4",
     "@devmehq/react-qr-code": "^1.0.9",
+    "@ericblade/quagga2": "^1.8.4",
     "@fullcalendar/core": "^6.1.8",
     "@fullcalendar/daygrid": "^6.1.8",
     "@fullcalendar/react": "^6.1.8",
@@ -50,7 +51,8 @@
     "redux-thunk": "^2.4.2",
     "sharp": "^0.31.3",
     "slugify-persian": "^1.0.1",
-    "swiper": "^9.1.0"
+    "swiper": "^9.1.0",
+    "use-scan-detection": "^0.2.3"
   },
   "devDependencies": {
     "@types/node": "18.11.8",
