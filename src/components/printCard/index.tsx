@@ -22,7 +22,6 @@ const PrintableCard = ({
   event,
   url,
   user,
-  setUser,
   showCard = false,
   showThumbnail,
 }: any) => {
@@ -53,13 +52,17 @@ const PrintableCard = ({
             content={() => componentRef.current}
           />
         </Flex>
+
         <div
           style={{
             display: showCard ? "block" : "none",
             transform: showCard ? "scale(0.6)" : "",
           }}
         >
-          <div style={styles} ref={componentRef}>
+          <div
+            style={{ ...styles, transform: "rotate(90deg)" }}
+            ref={componentRef}
+          >
             {elements &&
               Object.keys(elements).map((key) => {
                 const { left, top, title, type } = elements[key];
@@ -103,19 +106,20 @@ const PrintableCard = ({
                 } else if (type === "nameen") {
                   return (
                     <Title key={key} id={key} left={left} top={top}>
-                      {data?.user?.firstNameen} {data?.user?.lastNameen}
+                      {data?.user?.firstNameen || user?.firstNameen}{" "}
+                      {data?.user?.lastNameen || user?.lastNameen}
                     </Title>
                   );
                 } else if (type === "categoryen") {
                   return (
                     <Title key={key} id={key} left={left} top={top}>
-                      {data?.user?.category?.titleen}
+                      {data?.user?.category?.titleen || user?.category?.titleen}
                     </Title>
                   );
                 } else if (type === "category") {
                   return (
                     <Title key={key} id={key} left={left} top={top}>
-                      {data?.user?.category?.title}
+                      {data?.user?.category?.title || user?.category?.title}
                     </Title>
                   );
                 } else if (type === "logo") {
@@ -141,7 +145,7 @@ const PrintableCard = ({
             width: 1004,
             height: 531,
             position: "relative",
-            transform: "scale(0.8)",
+            transform: "scale(0.7)",
           }}
           className="printCard"
         >

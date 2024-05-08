@@ -19,9 +19,7 @@ import useGetSetting from "../../src/hooks/useGetSetting";
 import Setting from "../../src/datamodel/Setting";
 import { User } from "../../src/datamodel";
 import { NextSeo } from "next-seo";
-import { ReactQrCode } from "@devmehq/react-qr-code";
 import moment from "jalali-moment";
-import PrintableCertificate from "../../src/components/printCertificate";
 
 require("./style.less");
 
@@ -216,6 +214,10 @@ const Scanner = () => {
 
                       <h3 style={{ textAlign: "right", marginRight: 30 }}>
                         {user?.firstName} {user?.lastName}
+                      </h3>
+
+                      <h3 style={{ textAlign: "right", marginRight: 30 }}>
+                        {user?.firstNameen} {user?.lastNameen}
                       </h3>
                       <h5 style={{ textAlign: "right", marginRight: 30 }}>
                         {user?.mobilenumber}
