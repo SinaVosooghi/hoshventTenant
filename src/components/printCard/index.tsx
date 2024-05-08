@@ -24,6 +24,7 @@ const PrintableCard = ({
   user,
   showCard = false,
   showThumbnail,
+  handleCancel,
 }: any) => {
   const componentRef = useRef();
 
@@ -39,7 +40,7 @@ const PrintableCard = ({
   return (
     <>
       <div>
-        <Flex>
+        <Flex onClick={() => handleCancel()}>
           <ReactToPrint
             onAfterPrint={() => {
               form?.resetFields();

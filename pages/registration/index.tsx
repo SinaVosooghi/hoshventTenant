@@ -244,6 +244,7 @@ const Scanner = () => {
                       user={user}
                       form={form}
                       setUser={setUser}
+                      handleCancel={handleCancel}
                     />
                   )}
                   <p>لطفا کارت ورود را از روی پرینتر بردارید</p>
