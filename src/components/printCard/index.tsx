@@ -103,7 +103,13 @@ const PrintableCard = ({
                   );
                 } else if (type === "nameen") {
                   return (
-                    <Title key={key} id={key} left={left} top={top}>
+                    <Title
+                      key={key}
+                      id={key}
+                      left={left}
+                      top={top}
+                      style={{ fontWeight: "bold" }}
+                    >
                       {data?.user?.firstNameen ?? user?.firstNameen}{" "}
                       {data?.user?.lastNameen ?? user?.lastNameen}
                     </Title>
