@@ -6,7 +6,11 @@ const style = {
 };
 export const Name = ({ id, left, top, children }) => {
   return (
-    <div className="box" style={{ ...style, left, top }} data-testid="name">
+    <div
+      className="box"
+      style={{ ...style, left, top, textAlign: "center" }}
+      data-testid="name"
+    >
       {children}
     </div>
   );

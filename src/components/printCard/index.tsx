@@ -112,7 +112,6 @@ const PrintableCard = ({
                     </Title>
                   );
                 } else if (type === "categoryen") {
-                  console.log(data, user);
                   return (
                     <Title key={key} id={key} left={left} top={top}>
                       {data?.user?.category?.titleen ?? user?.category?.titleen}
