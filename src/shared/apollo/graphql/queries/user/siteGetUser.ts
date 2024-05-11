@@ -8,6 +8,7 @@ export const siteGetUser = gql`
       email
       address
       username
+      title
       firstName
       lastName
       mobilenumber

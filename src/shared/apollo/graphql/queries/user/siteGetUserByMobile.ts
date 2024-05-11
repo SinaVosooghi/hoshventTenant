@@ -13,6 +13,7 @@ export const siteGetUserByMobileNumber = gql`
       mobilenumber
       phonenumber
       firstNameen
+      title
       lastNameen
       category {
         title

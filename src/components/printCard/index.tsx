@@ -120,6 +120,12 @@ const PrintableCard = ({
                       {data?.user?.category?.titleen ?? user?.category?.titleen}
                     </Title>
                   );
+                } else if (type === "usertitle") {
+                  return (
+                    <Title key={key} id={key} left={left} top={top}>
+                      {data?.user?.title ?? user?.title}
+                    </Title>
+                  );
                 } else if (type === "category") {
                   return (
                     <Title key={key} id={key} left={left} top={top}>
