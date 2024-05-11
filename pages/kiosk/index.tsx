@@ -155,20 +155,13 @@ export default function Register() {
                       </Flex>
 
                       <Flex gap={16}>
-                        <Form.Item
-                          label="نام (انگلیسی)"
-                          name="firstNameen"
-                          hasFeedback
-                          rules={[{ required: true }]}
-                        >
+                        <Form.Item label="نام (انگلیسی)" name="firstNameen">
                           <Input size="large" />
                         </Form.Item>
 
                         <Form.Item
                           label="نام خانوادگی (انگلیسی)"
                           name="lastNameen"
-                          hasFeedback
-                          rules={[{ required: true }]}
                         >
                           <Input size="large" />
                         </Form.Item>
