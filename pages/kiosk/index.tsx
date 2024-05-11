@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   Col,
+  Flex,
   Form,
   Image,
   Input,
@@ -39,6 +40,8 @@ export default function Register() {
     firstName,
     lastName,
     nationalcode,
+    lastNameen,
+    firstNameen,
   }: any) => {
     axios
       .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/register", {
@@ -49,6 +52,8 @@ export default function Register() {
         lastName,
         firstName,
         nationalcode,
+        lastNameen,
+        firstNameen,
         // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       })
@@ -125,26 +130,42 @@ export default function Register() {
                       initialValues={{ remember: true }}
                       onFinish={onFinish}
                       autoComplete="off"
+                      layout="vertical"
                       size="large"
                       validateMessages={validateMessages}
                     >
-                      <Form.Item
-                        label="نام"
-                        name="firstName"
-                        hasFeedback
-                        rules={[{ required: true }]}
-                      >
-                        <Input size="large" />
-                      </Form.Item>
+                      <Flex gap={16}>
+                        <Form.Item
+                          label="نام"
+                          name="firstName"
+                          hasFeedback
+                          rules={[{ required: true }]}
+                        >
+                          <Input size="large" style={{ width: "100%" }} />
+                        </Form.Item>
 
-                      <Form.Item
-                        label="نام خانوادگی"
-                        name="lastName"
-                        hasFeedback
-                        rules={[{ required: true }]}
-                      >
-                        <Input size="large" />
-                      </Form.Item>
+                        <Form.Item
+                          label="نام خانوادگی"
+                          name="lastName"
+                          hasFeedback
+                          rules={[{ required: true }]}
+                        >
+                          <Input size="large" style={{ width: "100%" }} />
+                        </Form.Item>
+                      </Flex>
+
+                      <Flex gap={16}>
+                        <Form.Item label="نام (انگلیسی)" name="firstNameen">
+                          <Input size="large" />
+                        </Form.Item>
+
+                        <Form.Item
+                          label="نام خانوادگی (انگلیسی)"
+                          name="lastNameen"
+                        >
+                          <Input size="large" />
+                        </Form.Item>
+                      </Flex>
                       <Form.Item
                         label="ایمیل"
                         name="email"

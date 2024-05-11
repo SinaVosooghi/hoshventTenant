@@ -60,10 +60,7 @@ const PrintableCard = ({
             transform: showCard ? "scale(0.6)" : "",
           }}
         >
-          <div
-            style={{ ...styles, transform: "rotate(90deg)" }}
-            ref={componentRef}
-          >
+          <div style={{ ...styles }} ref={componentRef}>
             {elements &&
               Object.keys(elements).map((key) => {
                 const { left, top, title, type } = elements[key];
@@ -106,7 +103,13 @@ const PrintableCard = ({
                   );
                 } else if (type === "nameen") {
                   return (
-                    <Title key={key} id={key} left={left} top={top}>
+                    <Title
+                      key={key}
+                      id={key}
+                      left={left}
+                      top={top}
+                      style={{ fontWeight: "bold" }}
+                    >
                       {data?.user?.firstNameen ?? user?.firstNameen}{" "}
                       {data?.user?.lastNameen ?? user?.lastNameen}
                     </Title>

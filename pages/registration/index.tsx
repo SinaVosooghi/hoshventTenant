@@ -212,7 +212,13 @@ const Scanner = () => {
                         {renderUsertype(user?.usertype)}
                       </span>
 
-                      <h3 style={{ textAlign: "right", marginRight: 30 }}>
+                      <h3
+                        style={{
+                          textAlign: "right",
+                          marginRight: 30,
+                          fontWeight: "bold",
+                        }}
+                      >
                         {user?.firstName} {user?.lastName}
                       </h3>
 
