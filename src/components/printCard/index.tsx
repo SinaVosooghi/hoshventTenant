@@ -107,14 +107,15 @@ const PrintableCard = ({
                 } else if (type === "nameen") {
                   return (
                     <Title key={key} id={key} left={left} top={top}>
-                      {data?.user?.firstNameen || user?.firstNameen}{" "}
-                      {data?.user?.lastNameen || user?.lastNameen}
+                      {data?.user?.firstNameen ?? user?.firstNameen}{" "}
+                      {data?.user?.lastNameen ?? user?.lastNameen}
                     </Title>
                   );
                 } else if (type === "categoryen") {
+                  console.log(data, user);
                   return (
                     <Title key={key} id={key} left={left} top={top}>
-                      {data?.user?.category?.titleen || user?.category?.titleen}
+                      {data?.user?.category?.titleen ?? user?.category?.titleen}
                     </Title>
                   );
                 } else if (type === "category") {
