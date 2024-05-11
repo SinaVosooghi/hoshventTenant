@@ -60,10 +60,7 @@ const PrintableCard = ({
             transform: showCard ? "scale(0.6)" : "",
           }}
         >
-          <div
-            style={{ ...styles, transform: "rotate(90deg)" }}
-            ref={componentRef}
-          >
+          <div style={{ ...styles }} ref={componentRef}>
             {elements &&
               Object.keys(elements).map((key) => {
                 const { left, top, title, type } = elements[key];
