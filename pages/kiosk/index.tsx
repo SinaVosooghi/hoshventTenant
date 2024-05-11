@@ -145,6 +145,24 @@ export default function Register() {
                       >
                         <Input size="large" />
                       </Form.Item>
+
+                      <Form.Item
+                        label="نام (انگلیسی)"
+                        name="firstNameen"
+                        hasFeedback
+                        rules={[{ required: true }]}
+                      >
+                        <Input size="large" />
+                      </Form.Item>
+
+                      <Form.Item
+                        label="نام خانوادگی (انگلیسی)"
+                        name="lastNameen"
+                        hasFeedback
+                        rules={[{ required: true }]}
+                      >
+                        <Input size="large" />
+                      </Form.Item>
                       <Form.Item
                         label="ایمیل"
                         name="email"
