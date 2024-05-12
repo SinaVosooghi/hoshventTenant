@@ -18,7 +18,11 @@ import { Dispatch } from "../../src/shared/store";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { checkLogin, getUserFromCookie, handleLogin } from "../../src/util/utils";
+import {
+  checkLogin,
+  getUserFromCookie,
+  handleLogin,
+} from "../../src/util/utils";
 import CategoriesSlider from "../../src/components/categoriesSlider";
 import MainBreadCrumb from "../../src/components/breadcrumb";
 import Link from "next/link";
@@ -168,6 +172,18 @@ export default function Register() {
                       hasFeedback
                       rules={[{ required: true }]}
                     >
+                      <Input size="large" />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="عنوان (English)"
+                      name="titleen"
+                      hasFeedback
+                    >
+                      <Input size="large" />
+                    </Form.Item>
+
+                    <Form.Item label="عنوان" name="title" hasFeedback>
                       <Input size="large" />
                     </Form.Item>
 
