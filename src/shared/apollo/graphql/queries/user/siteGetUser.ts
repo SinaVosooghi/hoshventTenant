@@ -9,6 +9,7 @@ export const siteGetUser = gql`
       address
       username
       title
+      titleen
       firstName
       lastName
       mobilenumber
@@ -22,6 +23,9 @@ export const siteGetUser = gql`
       category {
         title
         titleen
+        category {
+          title
+        }
       }
       seminars {
         id

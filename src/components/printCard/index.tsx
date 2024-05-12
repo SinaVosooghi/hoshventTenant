@@ -101,6 +101,18 @@ const PrintableCard = ({
                       {event}
                     </Title>
                   );
+                } else if (type === "usertitle") {
+                  return (
+                    <Title key={key} id={key} left={left} top={top}>
+                      {data?.user?.title ?? user?.title}
+                    </Title>
+                  );
+                } else if (type === "titleen") {
+                  return (
+                    <Title key={key} id={key} left={left} top={top}>
+                      {data?.user?.titleen ?? user?.titleen}
+                    </Title>
+                  );
                 } else if (type === "nameen") {
                   return (
                     <Title
@@ -120,16 +132,18 @@ const PrintableCard = ({
                       {data?.user?.category?.titleen ?? user?.category?.titleen}
                     </Title>
                   );
-                } else if (type === "usertitle") {
-                  return (
-                    <Title key={key} id={key} left={left} top={top}>
-                      {data?.user?.title ?? user?.title}
-                    </Title>
-                  );
                 } else if (type === "category") {
                   return (
                     <Title key={key} id={key} left={left} top={top}>
                       {data?.user?.category?.title || user?.category?.title}
+                    </Title>
+                  );
+                } else if (type === "parent") {
+                  console.log(data?.user?.category, user?.category);
+                  return (
+                    <Title key={key} id={key} left={left} top={top}>
+                      {data?.user?.category?.category?.title ||
+                        user?.category?.category?.title}
                     </Title>
                   );
                 } else if (type === "logo") {
