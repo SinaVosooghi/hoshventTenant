@@ -10,8 +10,8 @@ import { useQuery } from "@apollo/client";
 import { siteGetUser } from "../../shared/apollo/graphql/queries/user/siteGetUser";
 
 const styles = {
-  width: 1004,
-  height: 531,
+  width: "7in",
+  height: "9.25in",
   position: "relative",
 };
 
