@@ -14,10 +14,14 @@ export const siteGetUserByMobileNumber = gql`
       phonenumber
       firstNameen
       title
+      titleen
       lastNameen
       category {
         title
         titleen
+        category {
+          title
+        }
       }
       usertype
       status
