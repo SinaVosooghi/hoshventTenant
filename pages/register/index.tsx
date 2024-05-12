@@ -49,6 +49,9 @@ export default function Register() {
       gender,
       lastNameen,
       firstNameen,
+      title,
+      titleen,
+      nationalcode,
     } = data;
 
     axios
@@ -65,6 +68,9 @@ export default function Register() {
         firstNameen,
         // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
+        title,
+        titleen,
+        nationalcode,
       })
       .then(({ data }) => {
         setLoading(false);
@@ -176,18 +182,6 @@ export default function Register() {
                     </Form.Item>
 
                     <Form.Item
-                      label="عنوان (English)"
-                      name="titleen"
-                      hasFeedback
-                    >
-                      <Input size="large" />
-                    </Form.Item>
-
-                    <Form.Item label="عنوان" name="title" hasFeedback>
-                      <Input size="large" />
-                    </Form.Item>
-
-                    <Form.Item
                       label="نام (English)"
                       name="firstNameen"
                       hasFeedback
@@ -202,6 +196,19 @@ export default function Register() {
                     >
                       <Input size="large" />
                     </Form.Item>
+
+                    <Form.Item
+                      label="عنوان (English)"
+                      name="titleen"
+                      hasFeedback
+                    >
+                      <Input size="large" />
+                    </Form.Item>
+
+                    <Form.Item label="عنوان" name="title" hasFeedback>
+                      <Input size="large" />
+                    </Form.Item>
+
                     <Form.Item
                       label="ایمیل"
                       name="email"

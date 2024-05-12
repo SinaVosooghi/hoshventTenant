@@ -39,9 +39,11 @@ export default function Register() {
     mobilenumber,
     firstName,
     lastName,
-    nationalcode,
     lastNameen,
     firstNameen,
+    title,
+    titleen,
+    nationalcode,
   }: any) => {
     axios
       .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/register", {
@@ -54,6 +56,8 @@ export default function Register() {
         nationalcode,
         lastNameen,
         firstNameen,
+        title,
+        titleen,
         // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       })
@@ -166,6 +170,17 @@ export default function Register() {
                           <Input size="large" />
                         </Form.Item>
                       </Flex>
+
+                      <Flex gap={16}>
+                        <Form.Item label="عنوان (انگلیسی)" name="title">
+                          <Input size="large" />
+                        </Form.Item>
+
+                        <Form.Item label="عنوان" name="titleen">
+                          <Input size="large" />
+                        </Form.Item>
+                      </Flex>
+
                       <Form.Item
                         label="ایمیل"
                         name="email"
