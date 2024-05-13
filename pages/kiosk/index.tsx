@@ -13,6 +13,7 @@ import {
   notification,
   Result,
   Row,
+  Select,
   Space,
 } from "antd";
 
@@ -23,6 +24,9 @@ import { validateMessages } from "../../src/util/messageValidators";
 import { NextSeo } from "next-seo";
 import useGetSetting from "../../src/hooks/useGetSetting";
 import Setting from "../../src/datamodel/Setting";
+import Category from "../../src/datamodel/Category";
+import { siteGetCategories } from "../../src/shared/apollo/graphql/queries/category/siteGetCategories";
+import { useQuery } from "@apollo/client";
 
 require("./style.less");
 
@@ -31,6 +35,15 @@ export default function Register() {
   const [created, setCreated] = useState(false);
   const router = useRouter();
   const { data: siteData }: { data: Setting } = useGetSetting();
+
+  const { data, loading: categoryLoading } = useQuery(siteGetCategories, {
+    fetchPolicy: "network-only",
+    variables: {
+      input: {
+        skip: 0,
+      },
+    },
+  });
 
   const onFinish = ({
     password,
@@ -44,6 +57,7 @@ export default function Register() {
     title,
     titleen,
     nationalcode,
+    category,
   }: any) => {
     axios
       .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/register", {
@@ -58,6 +72,8 @@ export default function Register() {
         firstNameen,
         title,
         titleen,
+        ...(category && { category: category }),
+
         // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       })
@@ -120,7 +136,7 @@ export default function Register() {
               ]}
             />
           ) : (
-            <Col md={8}>
+            <Col md={14}>
               <div id="login-card">
                 <h1>ثبت نام در رویداد</h1>
                 <p>
@@ -128,7 +144,7 @@ export default function Register() {
                   سرویس های سایت و قوانین حریم خصوصی آن را می‌پذیرید
                 </p>
                 <Row justify="center" id="login-form" gutter={[8, 16]}>
-                  <Col md={20} xs={22}>
+                  <Col md={23} xs={22}>
                     <Form
                       name="basic"
                       initialValues={{ remember: true }}
@@ -138,133 +154,170 @@ export default function Register() {
                       size="large"
                       validateMessages={validateMessages}
                     >
-                      <Flex gap={16}>
-                        <Form.Item
-                          label="نام"
-                          name="firstName"
-                          hasFeedback
-                          rules={[{ required: true }]}
-                        >
-                          <Input size="large" style={{ width: "100%" }} />
-                        </Form.Item>
+                      <Row gutter={[16, 16]}>
+                        <Col md={6}>
+                          <Form.Item
+                            label="نام"
+                            name="firstName"
+                            hasFeedback
+                            rules={[{ required: true }]}
+                          >
+                            <Input size="large" style={{ width: "100%" }} />
+                          </Form.Item>
+                        </Col>
+                        <Col md={6}>
+                          <Form.Item
+                            label="نام خانوادگی"
+                            name="lastName"
+                            hasFeedback
+                            rules={[{ required: true }]}
+                          >
+                            <Input size="large" style={{ width: "100%" }} />
+                          </Form.Item>
+                        </Col>
+                        <Col md={6}>
+                          <Form.Item label="نام (انگلیسی)" name="firstNameen">
+                            <Input size="large" />
+                          </Form.Item>
+                        </Col>
+                        <Col md={6}>
+                          <Form.Item
+                            label="نام خانوادگی (انگلیسی)"
+                            name="lastNameen"
+                          >
+                            <Input size="large" />
+                          </Form.Item>
+                        </Col>
+                      </Row>
 
-                        <Form.Item
-                          label="نام خانوادگی"
-                          name="lastName"
-                          hasFeedback
-                          rules={[{ required: true }]}
-                        >
-                          <Input size="large" style={{ width: "100%" }} />
-                        </Form.Item>
-                      </Flex>
+                      <Row gutter={[16, 16]}>
+                        <Col md={6}>
+                          <Form.Item label="عنوان (انگلیسی)" name="title">
+                            <Input size="large" />
+                          </Form.Item>
+                        </Col>
+                        <Col md={6}>
+                          <Form.Item label="عنوان" name="titleen">
+                            <Input size="large" />
+                          </Form.Item>
+                        </Col>
 
-                      <Flex gap={16}>
-                        <Form.Item label="نام (انگلیسی)" name="firstNameen">
-                          <Input size="large" />
-                        </Form.Item>
-
-                        <Form.Item
-                          label="نام خانوادگی (انگلیسی)"
-                          name="lastNameen"
-                        >
-                          <Input size="large" />
-                        </Form.Item>
-                      </Flex>
-
-                      <Flex gap={16}>
-                        <Form.Item label="عنوان (انگلیسی)" name="title">
-                          <Input size="large" />
-                        </Form.Item>
-
-                        <Form.Item label="عنوان" name="titleen">
-                          <Input size="large" />
-                        </Form.Item>
-                      </Flex>
-
-                      <Form.Item
-                        label="ایمیل"
-                        name="email"
-                        hasFeedback
-                        rules={[{ required: true, type: "email" }]}
-                      >
-                        <Input size="large" placeholder="john@doe.com" />
-                      </Form.Item>
-
-                      <Form.Item
-                        label="کدملی"
-                        name="nationalcode"
-                        hasFeedback
-                        rules={[{ required: true }]}
-                      >
-                        <InputNumber
-                          size="large"
-                          placeholder="12345568"
-                          style={{ width: "100%" }}
-                        />
-                      </Form.Item>
-
-                      <Form.Item
-                        label="شماره موبایل"
-                        name="mobilenumber"
-                        hasFeedback
-                        rules={[
-                          {
-                            required: true,
-                            type: "number",
-                          },
-                        ]}
-                      >
-                        <InputNumber
-                          style={{ width: "100%" }}
-                          size="large"
-                          maxLength={11}
-                          placeholder="09121232323"
-                        />
-                      </Form.Item>
-
-                      <Form.Item
-                        label="رمزعبور"
-                        name="password"
-                        hasFeedback
-                        rules={[
-                          {
-                            required: true,
-                            min: 6,
-                          },
-                        ]}
-                      >
-                        <Input.Password size="large" />
-                      </Form.Item>
-
-                      <Form.Item
-                        name="confirm"
-                        label="تایید رمزعبور"
-                        dependencies={["password"]}
-                        hasFeedback
-                        rules={[
-                          {
-                            required: true,
-                            message: "لطفا رمز عبور خود را تایید کنید!",
-                          },
-                          ({ getFieldValue }) => ({
-                            validator(_, value) {
-                              if (
-                                !value ||
-                                getFieldValue("password") === value
-                              ) {
-                                return Promise.resolve();
-                              }
-                              return Promise.reject(
-                                new Error(
-                                  "رمز جدیدی که وارد کردید مطابقت ندارد!"
+                        <Col md={6}>
+                          <Form.Item
+                            label="ایمیل"
+                            name="email"
+                            hasFeedback
+                            rules={[{ required: true, type: "email" }]}
+                          >
+                            <Input size="large" placeholder="john@doe.com" />
+                          </Form.Item>
+                        </Col>
+                        <Col md={6}>
+                          <Form.Item label="دسته بندی" name="category">
+                            <Select
+                              placeholder="انتخاب دسته بندی"
+                              loading={categoryLoading}
+                            >
+                              {data?.categoriesApi?.categories?.map(
+                                (category: Category) => (
+                                  <Select.Option
+                                    value={category.id}
+                                    key={category.id}
+                                  >
+                                    {category.title}
+                                    {" - "} {category.titleen}{" "}
+                                  </Select.Option>
                                 )
-                              );
-                            },
-                          }),
-                        ]}
-                      >
-                        <Input.Password />
-                      </Form.Item>
+                              )}
+                            </Select>
+                          </Form.Item>
+                        </Col>
+                      </Row>
+
+                      <Row gutter={[16, 16]}>
+                        <Col md={6}>
+                          <Form.Item
+                            label="کدملی"
+                            name="nationalcode"
+                            hasFeedback
+                            rules={[{ required: true }]}
+                          >
+                            <InputNumber
+                              size="large"
+                              placeholder="12345568"
+                              style={{ width: "100%" }}
+                            />
+                          </Form.Item>
+                        </Col>
+
+                        <Col md={6}>
+                          <Form.Item
+                            label="شماره موبایل"
+                            name="mobilenumber"
+                            hasFeedback
+                            rules={[
+                              {
+                                required: true,
+                                type: "number",
+                              },
+                            ]}
+                          >
+                            <InputNumber
+                              style={{ width: "100%" }}
+                              size="large"
+                              maxLength={11}
+                              placeholder="09121232323"
+                            />
+                          </Form.Item>
+                        </Col>
+
+                        <Col md={6}>
+                          <Form.Item
+                            label="رمزعبور"
+                            name="password"
+                            hasFeedback
+                            rules={[
+                              {
+                                required: true,
+                                min: 6,
+                              },
+                            ]}
+                          >
+                            <Input.Password size="large" />
+                          </Form.Item>
+                        </Col>
+                        <Col md={6}>
+                          <Form.Item
+                            name="confirm"
+                            label="تایید رمزعبور"
+                            dependencies={["password"]}
+                            hasFeedback
+                            rules={[
+                              {
+                                required: true,
+                                message: "لطفا رمز عبور خود را تایید کنید!",
+                              },
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (
+                                    !value ||
+                                    getFieldValue("password") === value
+                                  ) {
+                                    return Promise.resolve();
+                                  }
+                                  return Promise.reject(
+                                    new Error(
+                                      "رمز جدیدی که وارد کردید مطابقت ندارد!"
+                                    )
+                                  );
+                                },
+                              }),
+                            ]}
+                          >
+                            <Input.Password />
+                          </Form.Item>
+                        </Col>
+                      </Row>
 
                       <Form.Item name="remember" valuePropName="checked">
                         <Checkbox>به خاطر سپاری</Checkbox>

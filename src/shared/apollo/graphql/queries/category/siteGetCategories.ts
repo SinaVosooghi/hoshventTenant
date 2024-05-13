@@ -7,6 +7,7 @@ export const siteGetCategories = gql`
       categories {
         id
         title
+        titleen
         type
         image
         slug
