@@ -250,12 +250,13 @@ const Scanner = () => {
                 )}
 
                 <Flex style={{ marginTop: 12 }} gap={12} justify="center">
+                  {console.log(user)}
                   {user && (
                     <PrintableCard
                       boxes={siteData}
                       name={`${user?.firstName} ${user?.lastName}`}
                       event={"کارت ورود"}
-                      url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+                      url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.id}`}
                       user={user}
                       form={form}
                       setUser={setUser}
