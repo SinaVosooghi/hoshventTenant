@@ -43,6 +43,7 @@ export default function Register() {
         skip: 0,
         featured: true,
         status: true,
+        type: "user",
         // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       },
@@ -231,7 +232,8 @@ export default function Register() {
                                     key={category.id}
                                   >
                                     {category.title}
-                                    {" - "} {category.titleen}{" "}
+                                    {category.titleen &&
+                                      `${" - "} ${category.titleen}`}
                                   </Select.Option>
                                 )
                               )}
