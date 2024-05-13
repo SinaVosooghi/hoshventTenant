@@ -155,7 +155,7 @@ const Scanner = () => {
         <QrReader
           ref={qrRef}
           style={{ width: "100%" }}
-          constraints={{ facingMode: "environment" }}
+          constraints={{ aspectRatio: 1, facingMode: { ideal: "environment" } }}
           onResult={(result, error) => {
             if (!!result) {
               setData(result?.text);
