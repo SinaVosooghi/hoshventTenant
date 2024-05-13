@@ -41,6 +41,8 @@ export default function Register() {
     variables: {
       input: {
         skip: 0,
+        featured: true,
+        status: true,
       },
     },
   });
