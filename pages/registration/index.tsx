@@ -250,7 +250,6 @@ const Scanner = () => {
                 )}
 
                 <Flex style={{ marginTop: 12 }} gap={12} justify="center">
-                  {console.log(user)}
                   {user && (
                     <PrintableCard
                       boxes={siteData}
