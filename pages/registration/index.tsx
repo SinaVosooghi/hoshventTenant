@@ -72,19 +72,28 @@ const Scanner = () => {
       form.getFieldValue("nationalcode") ||
       form.getFieldValue("mobileNumber") ||
       "";
-    form.setFieldsValue({ mobileNumber: currentInput.slice(0, -1) });
+
+    {
+      siteData?.isNationalCode === "ncode"
+        ? form.setFieldsValue({ nationalcode: currentInput.slice(0, -1) })
+        : form.setFieldsValue({ mobileNumber: currentInput.slice(0, -1) });
+    }
   };
 
   const handleKeyboardClick = (value) => {
     if (value === "Clear") {
       form.setFieldValue("mobileNumber", "");
+      form.setFieldValue("nationalcode", "");
+
       return;
     }
     const currentInput =
       form.getFieldValue("nationalcode") ||
       form.getFieldValue("mobileNumber") ||
       "";
+
     form.setFieldValue("mobileNumber", currentInput + value);
+    form.setFieldValue("nationalcode", currentInput + value);
   };
 
   const customNumberKeyboard = (
@@ -165,7 +174,7 @@ const Scanner = () => {
                       },
                     ]}
                   >
-                    <Input size="large" type="number" readOnly />
+                    <Input size="large" />
                   </Form.Item>
                 ) : (
                   <Form.Item
