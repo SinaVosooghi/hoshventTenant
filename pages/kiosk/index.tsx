@@ -217,6 +217,8 @@ export default function Register() {
                             <Select
                               placeholder="انتخاب دسته بندی"
                               loading={categoryLoading}
+                              allowClear
+                              showSearch
                             >
                               {data?.categoriesApi?.categories?.map(
                                 (category: Category) => (
