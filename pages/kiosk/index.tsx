@@ -43,6 +43,8 @@ export default function Register() {
         skip: 0,
         featured: true,
         status: true,
+        // @ts-ignore
+        siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       },
     },
   });
