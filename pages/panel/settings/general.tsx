@@ -44,6 +44,7 @@ const GeneralSetting = () => {
   const qlRef = useRef(null);
   const [form] = Form.useForm();
   const [image, setImage] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
 
   const [getUser, { data: user, loading }] = useLazyQuery(siteGetUser, {
     notifyOnNetworkStatusChange: true,
@@ -61,20 +62,20 @@ const GeneralSetting = () => {
     },
   });
 
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-
-    let fileNames = e.fileList.map(
-      (file: { response: { filename: any }[] }) => {
-        if (file.response) {
-          return file.response[0].filename;
-        }
-      }
-    );
-    return fileNames;
-  };
+  const [update] = useMutation(siteUpdateUser, {
+    context: {
+      headers: {
+        "apollo-require-preflight": true,
+      },
+    },
+    onCompleted: () => {
+      notification.success({ message: "اطلاعات با موفقیت به روز شد" });
+      router.push(`/panel/`);
+    },
+    onError: (error) => {
+      notification.error({ message: "خطا در به روز رسانی اطلاعات" });
+    },
+  });
 
   useEffect(() => {
     let userCookie: User | null = null;
@@ -91,21 +92,8 @@ const GeneralSetting = () => {
     });
   }, []);
 
-  const [update] = useMutation(siteUpdateUser, {
-    onCompleted: () => {
-      notification.success({ message: "اطلاعات با موفقیت به روز شد" });
-      router.push(`/panel/`);
-    },
-    onError: (error) => {
-      notification.error({ message: "خطا در به روز رسانی اطلاعات" });
-    },
-  });
-
   const onFinish = (values: any) => {
-    let images = image;
-    if (values.image) images = values.image[0];
-    delete values.image;
-
+    delete values.avatar;
     let userCookie: User | null = null;
     if (getCookie("user")) {
       // @ts-ignore
@@ -117,11 +105,15 @@ const GeneralSetting = () => {
         input: {
           ...values,
           id: parseInt(userCookie?.uid),
-          avatar: images,
+          ...(typeof avatarFile !== "string" && { avatar:avatarFile }),
           about,
         },
       },
     });
+  };
+
+  const handleAvatarChange = (e) => {
+    setAvatarFile(e.target.files[0]);
   };
 
   return (
@@ -163,7 +155,42 @@ const GeneralSetting = () => {
             <Input />
           </Form.Item>
         </Col>
-
+        <Col md={24}>
+          <Form.Item label="تصویر ">
+            <Row gutter={[16, 16]}>
+              <Col md={image ? 18 : 24}>
+                <Form.Item name="avatar" valuePropName="fileList" noStyle>
+                  <Input
+                    type="file"
+                    accept="image/png, image/gif, image/jpeg"
+                    onChange={handleAvatarChange}
+                  />
+                </Form.Item>
+              </Col>
+              {image && (
+                <Col>
+                  <Space direction="vertical">
+                    <Image
+                      width={200}
+                      alt="image"
+                      src={process.env.NEXT_PUBLIC_SITE_URL + "/" + image}
+                    />
+                    <Button
+                      type="primary"
+                      size="small"
+                      block
+                      danger
+                      onClick={() => setImage(null)}
+                      icon={<CloseCircleOutlined rev={undefined} />}
+                    >
+                      حذف
+                    </Button>
+                  </Space>
+                </Col>
+              )}
+            </Row>
+          </Form.Item>
+        </Col>
         <Col md={24}>
           <Form.Item label="درباره من" rules={[{ required: true }]}>
             <ReactQuill

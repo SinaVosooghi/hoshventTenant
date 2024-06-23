@@ -13,6 +13,7 @@ export const Title = ({ id, left, top, children, styles }) => {
         textAlign: "center",
         ...styles,
         whiteSpace: "nowrap",
+        width: 0,
       }}
       data-testid="title"
     >

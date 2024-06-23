@@ -185,11 +185,18 @@ const MainFooter = () => {
               <Col md={16} xs={24}>
                 <span className="divider"></span>
                 <div className="awards">
-                  <img
-                    src="/assets/footer/awards.png"
-                    height={108}
-                    width={647}
-                  />
+                  <a
+                    referrerpolicy="origin"
+                    target="_blank"
+                    href="https://trustseal.enamad.ir/?id=460181&Code=dhZALgdBDDabU64P3rsRcSujOcg84lIT"
+                  >
+                    <img
+                      referrerpolicy="origin"
+                      src="https://trustseal.enamad.ir/logo.aspx?id=460181&Code=dhZALgdBDDabU64P3rsRcSujOcg84lIT"
+                      alt=""
+                      Code="dhZALgdBDDabU64P3rsRcSujOcg84lIT"
+                    />
+                  </a>
                 </div>
               </Col>
             </Row>

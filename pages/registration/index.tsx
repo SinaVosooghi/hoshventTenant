@@ -99,7 +99,11 @@ const Scanner = () => {
   const customNumberKeyboard = (
     <div className="custom-keyboard">
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, "Clear", 0].map((number) => (
-        <Button key={number} onClick={() => handleKeyboardClick(number)}>
+        <Button
+          key={number}
+          onClick={() => handleKeyboardClick(number)}
+          className="numpad-buttons"
+        >
           {number}
         </Button>
       ))}
@@ -135,7 +139,10 @@ const Scanner = () => {
   return (
     <>
       <NextSeo nofollow noindex title="پرینت کارت" />
-      <div id="scanner" style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        id="scanner"
+        style={{ display: "flex", flexDirection: "column", paddingBottom: 120 }}
+      >
         <Image
           src={process.env.NEXT_PUBLIC_SITE_URL + "/" + siteData?.banner}
           alt="rasta"

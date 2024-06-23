@@ -56,7 +56,8 @@ const PrintableCard = ({
 
         <div
           style={{
-            display: showCard ? "block" : "none",
+            display:"block",
+            // display: showCard ? "block" : "none",
             transform: showCard ? "scale(0.6)" : "",
           }}
         >

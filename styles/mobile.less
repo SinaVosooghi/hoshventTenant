@@ -6,8 +6,6 @@
     overflow: hidden;
   }
 
-
-
   .printCard {
     width: 400px !important;
     height: 331px !important;
@@ -198,7 +196,6 @@
   #account {
     position: relative;
     z-index: 10;
-    margin-top: 12px;
     margin-left: 0;
     button {
       height: 40px;
@@ -247,12 +244,31 @@
     }
   }
 
+  .events-filter-sort {
+    gap: 12px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px;
+    label {
+      margin-top: 5px;
+      width: 150px;
+    }
+  }
+
   #header {
     display: none;
   }
 
   #nav-drawer {
     position: absolute;
+    overflow: hidden;
     z-index: 10;
     top: 0;
     right: 16px;
@@ -260,14 +276,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    align-items: center;
     &.dark-navbar {
       span {
         color: #0f295d;
       }
     }
     span {
-      padding-top: 16px;
-      padding-right: 8px;
       font-size: 26px;
     }
   }

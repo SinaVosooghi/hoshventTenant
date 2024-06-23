@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-undef */
-import { Button, Col, Drawer, Dropdown, Empty, Row } from "antd";
+import { Button, Col, Drawer, Dropdown, Empty, Flex, Row } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -178,6 +178,17 @@ const MainHeader = () => {
         className={router.asPath !== "/" ? "dark-navbar" : ""}
       >
         <MenuOutlined onClick={showDrawer} rev={undefined} />
+
+        <Link href={"/"}>
+          <div id="logo">
+            <img
+              src={`${process.env.NEXT_PUBLIC_SITE_URL + "/" + data?.logo}`}
+              className="compare-thumbnail"
+              height={55}
+              alt={"Logo"}
+            />
+          </div>
+        </Link>
 
         <div id="account">
           {user?.type === "user" && <StudentDropdown user={user} />}

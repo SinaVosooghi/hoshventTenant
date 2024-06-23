@@ -148,6 +148,7 @@ const Courses = () => {
                         onChange={onChange}
                         value={value}
                         size="large"
+                        className="category-filters"
                       >
                         <Radio value={"latest"}>جدیدترین </Radio>
                         <Radio value={"oldest"}>قدیمی ترین </Radio>
