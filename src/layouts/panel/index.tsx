@@ -163,7 +163,7 @@ const PanelLayout = ({ children }: any) => {
           <NextSeo title="پنل کاربری" noindex />
           <MainHeader />
           <MainBreadCrumb />
-          {user?.type === "user" ? (
+          {user?.type.trim() === "user" ? (
             <Content>
               <Drawer
                 placement="right"
