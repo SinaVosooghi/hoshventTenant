@@ -5,29 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "../../shared/store";
-import {
-  ArrowLeftOutlined,
-  BookTwoTone,
-  HomeTwoTone,
-  MenuOutlined,
-  PhoneTwoTone,
-  ShoppingTwoTone,
-  VideoCameraTwoTone,
-} from "@ant-design/icons";
+import { ArrowLeftOutlined, MenuOutlined } from "@ant-design/icons";
 import CartItem from "./cartItem";
 import currencyType from "../currency";
-import {
-  JSXElementConstructor,
-  Key,
-  ReactElement,
-  ReactFragment,
-  ReactPortal,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Key, memo, useEffect, useState } from "react";
 import { User } from "../../datamodel";
 import { getUserFromCookie } from "../../util/utils";
 import StudentDropdown from "../breadcrumb/studentDropdown";
@@ -54,7 +35,7 @@ const MainHeader = () => {
   const router = useRouter();
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
-  const { data: menus, loading } = useQuery(siteGetMenus, {
+  const { data: menus } = useQuery(siteGetMenus, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
     variables: {
@@ -246,8 +227,10 @@ const MainHeader = () => {
                     />
                   </div>
 
-                  {user?.type === "user" && <StudentDropdown user={user} />}
-                  {user?.type === "instructor" && (
+                  {user?.type.trim() === "user" && (
+                    <StudentDropdown user={user} />
+                  )}
+                  {user?.type.trim() === "instructor" && (
                     <TeacherDropdown user={user} />
                   )}
 

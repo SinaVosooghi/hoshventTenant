@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Alert,
   Button,
-  Checkbox,
   Col,
-  Flex,
   Form,
-  Image,
   Input,
   InputNumber,
-  message,
-  notification,
-  Result,
   Row,
   Select,
-  Space,
+  Image,
+  notification,
+  Result,
+  Checkbox,
 } from "antd";
-
 import { useRouter } from "next/router";
 import axios from "axios";
 import Link from "next/link";
@@ -27,12 +22,14 @@ import Setting from "../../src/datamodel/Setting";
 import Category from "../../src/datamodel/Category";
 import { siteGetCategories } from "../../src/shared/apollo/graphql/queries/category/siteGetCategories";
 import { useQuery } from "@apollo/client";
+import Webcam from "react-webcam";
 
 require("./style.less");
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
   const [created, setCreated] = useState(false);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
   const router = useRouter();
   const { data: siteData }: { data: Setting } = useGetSetting();
 
@@ -50,43 +47,26 @@ export default function Register() {
     },
   });
 
-  const onFinish = ({
-    password,
-    email,
-    remember,
-    mobilenumber,
-    firstName,
-    lastName,
-    lastNameen,
-    firstNameen,
-    title,
-    titleen,
-    nationalcode,
-    category,
-  }: any) => {
+  const webcamRef = React.useRef<Webcam>(null);
+
+  const capture = React.useCallback(() => {
+    if (webcamRef.current) {
+      const imageSrc = webcamRef.current.getScreenshot();
+      setImageSrc(imageSrc);
+    }
+  }, [webcamRef]);
+
+  const onFinish = (values: any) => {
     axios
       .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/register", {
-        email,
-        password,
-        remember,
-        mobilenumber,
-        lastName,
-        firstName,
-        nationalcode,
-        lastNameen,
-        firstNameen,
-        title,
-        titleen,
-        ...(category && { category: category }),
-
+        ...values,
+        ...(imageSrc && { image: imageSrc }),
         // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       })
       .then(({ data }) => {
         setLoading(false);
-
         const { firstName, lastName } = data;
-
         setCreated(true);
         notification.success({
           message: firstName + " " + lastName,
@@ -160,6 +140,7 @@ export default function Register() {
                       validateMessages={validateMessages}
                     >
                       <Row gutter={[16, 16]}>
+                        {/* Form Items */}
                         <Col md={6}>
                           <Form.Item
                             label="نام"
@@ -263,12 +244,7 @@ export default function Register() {
                             label="شماره موبایل"
                             name="mobilenumber"
                             hasFeedback
-                            rules={[
-                              {
-                                required: true,
-                                type: "number",
-                              },
-                            ]}
+                            rules={[{ required: true, type: "number" }]}
                           >
                             <InputNumber
                               style={{ width: "100%" }}
@@ -284,12 +260,7 @@ export default function Register() {
                             label="رمزعبور"
                             name="password"
                             hasFeedback
-                            rules={[
-                              {
-                                required: true,
-                                min: 6,
-                              },
-                            ]}
+                            rules={[{ required: true, min: 6 }]}
                           >
                             <Input.Password size="large" />
                           </Form.Item>
@@ -323,6 +294,37 @@ export default function Register() {
                             ]}
                           >
                             <Input.Password />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+
+                      <Row gutter={[16, 16]}>
+                        <Col span={24}>
+                          <Form.Item label="تصویر از وبکم">
+                            <div style={{ textAlign: "center" }}>
+                              <Webcam
+                                audio={false}
+                                ref={webcamRef}
+                                screenshotFormat="image/jpeg"
+                                width={320}
+                                height={240}
+                              />
+                              <Button
+                                onClick={capture}
+                                style={{ marginTop: 10 }}
+                              >
+                                گرفتن عکس
+                              </Button>
+                              {imageSrc && (
+                                <div style={{ marginTop: 10 }}>
+                                  <Image
+                                    src={imageSrc}
+                                    alt="Captured"
+                                    width={320}
+                                  />
+                                </div>
+                              )}
+                            </div>
                           </Form.Item>
                         </Col>
                       </Row>
