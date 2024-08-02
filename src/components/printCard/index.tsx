@@ -6,8 +6,9 @@ import { Title } from "./Title";
 import ReactToPrint from "react-to-print";
 import { Button, Card, Flex } from "antd";
 import { useRef } from "react";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { siteGetUser } from "../../shared/apollo/graphql/queries/user/siteGetUser";
+import { siteCreatePrint } from "../../shared/apollo/graphql/mutations/print/create";
 
 const styles = {
   width: "7in",
@@ -37,6 +38,29 @@ const PrintableCard = ({
     },
   });
 
+  const [createPrint] = useMutation(siteCreatePrint);
+
+  // const [triggerMutation] = useMutation(someMutation, {
+  //   variables: {
+  //     id: parseInt(user.uid),
+  //     // Add other necessary variables here
+  //   },
+  //   onCompleted: () => {
+  //     console.log("Mutation completed");
+  //   },
+  // });
+
+  const handlePrintClick = () => {
+    createPrint({
+      variables: {
+        input: {
+          user: parseInt(user.id),
+          site: parseInt(process.env.NEXT_PUBLIC_SITE),
+        },
+      },
+    });
+  };
+
   return (
     <>
       <div>
@@ -45,8 +69,13 @@ const PrintableCard = ({
             onAfterPrint={() => {
               form?.resetFields();
             }}
+            onBeforePrint={handlePrintClick}
             trigger={() => (
-              <Button type="primary" loading={loading}>
+              <Button
+                type="primary"
+                loading={loading}
+                onClick={handlePrintClick}
+              >
                 پرینت کارت ورود
               </Button>
             )}
@@ -56,7 +85,7 @@ const PrintableCard = ({
 
         <div
           style={{
-            display:"block",
+            display: "block",
             // display: showCard ? "block" : "none",
             transform: showCard ? "scale(0.6)" : "",
           }}
