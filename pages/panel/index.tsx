@@ -1,23 +1,23 @@
-import { useQuery } from "@apollo/client";
 import { Button, Card, Col, Row, Space, Statistic, Typography } from "antd";
 import { FC, useEffect, useMemo, useState } from "react";
-import Lesson from "../../src/datamodel/Lesson";
-import moment from "moment";
-import dynamic from "next/dynamic";
+
+import Calendar from "./components/calendar";
+import Events from "./events";
 import { IJitsiMeetingProps } from "@jitsi/react-sdk/lib/types";
+import Lesson from "../../src/datamodel/Lesson";
+import Link from "next/link";
+import PrintableCard from "../../src/components/printCard";
+import { ReactQrCode } from "@devmehq/react-qr-code";
+import Setting from "../../src/datamodel/Setting";
+import { User } from "../../src/datamodel";
+import dynamic from "next/dynamic";
+import { getUserFromCookie } from "../../src/util/utils";
+import moment from "moment";
+import reactSvgToImage from "react-svg-to-image";
 import { siteGetToken } from "../../src/shared/apollo/graphql/queries/jitsi/siteGetToken";
 import { siteGetUserEventsApi } from "../../src/shared/apollo/graphql/queries/event/siteGetUserEventsApi";
-import Events from "./events";
-import Calendar from "./components/calendar";
-import Link from "next/link";
-
-import { ReactQrCode } from "@devmehq/react-qr-code";
-import reactSvgToImage from "react-svg-to-image";
-import { getUserFromCookie } from "../../src/util/utils";
-import PrintableCard from "../../src/components/printCard";
-import { User } from "../../src/datamodel";
 import useGetSetting from "../../src/hooks/useGetSetting";
-import Setting from "../../src/datamodel/Setting";
+import { useQuery } from "@apollo/client";
 
 const { Text, Paragraph } = Typography;
 

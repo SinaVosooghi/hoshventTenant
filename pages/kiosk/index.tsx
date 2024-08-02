@@ -1,28 +1,31 @@
-import React, { useState } from "react";
 import {
   Button,
+  Checkbox,
   Col,
   Form,
+  Image,
   Input,
   InputNumber,
+  Result,
   Row,
   Select,
-  Image,
+  message,
   notification,
-  Result,
-  Checkbox,
 } from "antd";
-import { useRouter } from "next/router";
-import axios from "axios";
-import Link from "next/link";
-import { validateMessages } from "../../src/util/messageValidators";
-import { NextSeo } from "next-seo";
-import useGetSetting from "../../src/hooks/useGetSetting";
-import Setting from "../../src/datamodel/Setting";
+import React, { useCallback, useRef, useState } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+
 import Category from "../../src/datamodel/Category";
-import { siteGetCategories } from "../../src/shared/apollo/graphql/queries/category/siteGetCategories";
-import { useQuery } from "@apollo/client";
+import { CloseOutlined } from "@ant-design/icons";
+import Link from "next/link";
+import { NextSeo } from "next-seo";
 import Webcam from "react-webcam";
+import axios from "axios";
+import { siteGetCategories } from "../../src/shared/apollo/graphql/queries/category/siteGetCategories";
+import { siteUploadImage } from "../../src/shared/apollo/graphql/mutations/upload/upload";
+import useGetSetting from "../../src/hooks/useGetSetting";
+import { useRouter } from "next/router";
+import { validateMessages } from "../../src/util/messageValidators";
 
 require("./style.less");
 
@@ -30,7 +33,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [created, setCreated] = useState(false);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const router = useRouter();
+  const [imageUrl, setImageUrl] = useState(null);
   const { data: siteData }: { data: Setting } = useGetSetting();
 
   const { data, loading: categoryLoading } = useQuery(siteGetCategories, {
@@ -41,56 +44,171 @@ export default function Register() {
         featured: true,
         status: true,
         type: "user",
-        // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       },
     },
   });
 
-  const webcamRef = React.useRef<Webcam>(null);
+  const webcamRef = useRef<Webcam>(null);
 
-  const capture = React.useCallback(() => {
+  const capture = useCallback(() => {
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
       setImageSrc(imageSrc);
     }
   }, [webcamRef]);
 
-  const onFinish = (values: any) => {
-    axios
-      .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/register", {
-        ...values,
-        ...(imageSrc && { image: imageSrc }),
-        // @ts-ignore
-        siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
-      })
-      .then(({ data }) => {
-        setLoading(false);
-        const { firstName, lastName } = data;
-        setCreated(true);
-        notification.success({
-          message: firstName + " " + lastName,
-          description: "حساب کاربری شما ایجاد شد",
-        });
-      })
-      .catch((errors) => {
-        setLoading(false);
-        if (
-          errors?.response?.data?.message ===
-          "Already exist, User with this mobile!"
-        ) {
-          notification.error({ message: "موبایل وارد شده تکراریست!" });
-        } else if (errors?.response?.data.statusCode === 401) {
-          notification.error({ message: "دسترسی غیر مجاز" });
-        } else if (
-          errors?.response?.data?.message ===
-          "Already exist, User with this email!"
-        ) {
-          notification.error({ message: "ایمیل وارد شده تکراریست!" });
-        } else {
-          notification.error({ message: "اطلاعات ورود اشتباه است" });
-        }
+  const [uploadImageMutation] = useMutation(siteUploadImage, {
+    context: {
+      headers: {
+        "apollo-require-preflight": true,
+      },
+    },
+    onCompleted: ({ uploadImage }) => {
+      setImageUrl(uploadImage);
+    },
+  });
+
+  const uploadImage = async (imageData: File | Blob | string) => {
+    try {
+      let file;
+      if (typeof imageData === "string") {
+        const response = await fetch(imageData);
+        const blob = await response.blob();
+        // Generate a random filename
+        const timestamp = Date.now();
+        const randomString = Math.random().toString(36).substring(2, 15);
+        const filename = `kiosk-${randomString}-${timestamp}.jpg`;
+        file = new File([blob], filename, { type: blob.type });
+      } else {
+        // If imageData is a File or Blob, use a random filename
+        const timestamp = Date.now();
+        const randomString = Math.random().toString(36).substring(2, 15);
+        const filename = `kiosk-${randomString}-${timestamp}.jpg`;
+        file = new File([imageData], filename, { type: imageData.type });
+      }
+      const { data } = await uploadImageMutation({
+        variables: {
+          input: {
+            image: file,
+          },
+        },
       });
+
+      return data.uploadImage;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      notification.error({
+        message: "بارگذاری تصویر با خطا مواجه شد",
+        description:
+          "در بارگذاری تصویر شما مشکلی پیش آمده است. لطفاً دوباره تلاش کنید.",
+      });
+      throw error;
+    }
+  };
+
+  const onFinish = async (values: any) => {
+    setLoading(true);
+    try {
+      if (imageSrc) {
+        await uploadImage(imageSrc).then(async (e) => {
+          if (e) {
+            await axios
+              .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/register", {
+                ...values,
+                // @ts-ignore
+                ...(e && { avatar: e }),
+                // @ts-ignore
+                siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
+              })
+              .then((response) => {
+                setImageSrc(null);
+                setImageUrl(null);
+                const { firstName, lastName } = response.data;
+                setCreated(true);
+                notification.success({
+                  message: `${firstName} ${lastName}`,
+                  description: "حساب کاربری شما با موفقیت ایجاد شد.",
+                });
+              })
+              .catch((e) => {
+                if (
+                  e?.response?.data?.message ===
+                  "Already exist, User with this mobile!"
+                ) {
+                  notification.error({ message: "موبایل وارد شده تکراریست!" });
+                } else if (e?.response?.data.statusCode === 401) {
+                  notification.error({ message: "دسترسی غیر مجاز" });
+                } else if (
+                  e?.response?.data?.message ===
+                  "Already exist, User with this email!"
+                ) {
+                  notification.error({ message: "ایمیل وارد شده تکراریست!" });
+                } else {
+                  notification.error({ message: "اطلاعات ورود اشتباه است" });
+                }
+              });
+
+            setLoading(false);
+          }
+        });
+        setLoading(false);
+      } else {
+        await axios
+          .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/register", {
+            ...values,
+            // @ts-ignore
+            ...(imageUrl && { avatar: imageUrl }),
+            // @ts-ignore
+            siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
+          })
+          .then((response) => {
+            return false;
+            setImageSrc(null);
+            setImageUrl(null);
+            const { firstName, lastName } = response.data;
+            setCreated(true);
+            notification.success({
+              message: `${firstName} ${lastName}`,
+              description: "حساب کاربری شما با موفقیت ایجاد شد.",
+            });
+          })
+          .catch((e) => {
+            if (
+              e?.response?.data?.message ===
+              "Already exist, User with this mobile!"
+            ) {
+              notification.error({ message: "موبایل وارد شده تکراریست!" });
+            } else if (e?.response?.data.statusCode === 401) {
+              notification.error({ message: "دسترسی غیر مجاز" });
+            } else if (
+              e?.response?.data?.message ===
+              "Already exist, User with this email!"
+            ) {
+              notification.error({ message: "ایمیل وارد شده تکراریست!" });
+            } else {
+              notification.error({ message: "اطلاعات ورود اشتباه است" });
+            }
+          });
+
+        setLoading(false);
+      }
+    } catch (errors) {
+      setLoading(false);
+      if (
+        errors?.response?.data?.message ===
+        "Already exist, User with this mobile!"
+      ) {
+        notification.error({ message: "موبایل وارد شده تکراریست!" });
+      } else if (errors?.response?.data.statusCode === 401) {
+        notification.error({ message: "دسترسی غیر مجاز" });
+      } else if (
+        errors?.response?.data?.message ===
+        "Already exist, User with this email!"
+      ) {
+        notification.error({ message: "ایمیل وارد شده تکراریست!" });
+      }
+    }
   };
 
   return (
@@ -301,27 +419,75 @@ export default function Register() {
                       <Row gutter={[16, 16]}>
                         <Col span={24}>
                           <Form.Item label="تصویر از وبکم">
-                            <div style={{ textAlign: "center" }}>
-                              <Webcam
-                                audio={false}
-                                ref={webcamRef}
-                                screenshotFormat="image/jpeg"
-                                width={320}
-                                height={240}
-                              />
-                              <Button
-                                onClick={capture}
-                                style={{ marginTop: 10 }}
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "flex-start",
+                                columnGap: 10,
+                              }}
+                            >
+                              <div
+                                style={{
+                                  display: "inline-flex",
+                                  flexDirection: "column",
+                                  textAlign: "center",
+                                }}
                               >
-                                گرفتن عکس
-                              </Button>
+                                <div
+                                  style={{
+                                    borderRadius: 20,
+                                    overflow: "hidden",
+                                    width: 320,
+                                    height: 240,
+                                  }}
+                                >
+                                  <Webcam
+                                    audio={false}
+                                    ref={webcamRef}
+                                    screenshotFormat="image/jpeg"
+                                    width={320}
+                                    height={240}
+                                  />
+                                </div>
+                                <Button
+                                  onClick={capture}
+                                  style={{ marginTop: 10 }}
+                                >
+                                  گرفتن عکس
+                                </Button>
+                              </div>
                               {imageSrc && (
-                                <div style={{ marginTop: 10 }}>
+                                <div
+                                  style={{
+                                    display: "inline-flex",
+                                    flexDirection: "column",
+                                    gap: 10,
+                                  }}
+                                >
                                   <Image
+                                    style={{
+                                      borderRadius: 320,
+                                      overflow: "hidden",
+                                      border: "4px dashed #ccc",
+                                      objectFit: "cover",
+                                    }}
                                     src={imageSrc}
                                     alt="Captured"
-                                    width={320}
+                                    width={240}
+                                    height={240}
                                   />
+                                  <Button
+                                    type="primary"
+                                    danger
+                                    onClick={() => {
+                                      setImageSrc(null);
+                                      setImageUrl(null);
+                                    }}
+                                    icon={<CloseOutlined rev={undefined} />}
+                                  >
+                                    حذف عکس
+                                  </Button>
                                 </div>
                               )}
                             </div>
