@@ -194,7 +194,7 @@ const Contact = () => {
                 </div>
               </Col>
             </Row>
-            <div id="contact-form">
+            {/* <div id="contact-form">
               <h1>فرم تماس با ما</h1>
               <Form form={form} style={{ maxWidth: 600 }} onFinish={onFinish}>
                 <Row gutter={[8, 0]} justify="center">
@@ -240,7 +240,7 @@ const Contact = () => {
                   </Button>
                 </Form.Item>
               </Form>
-            </div>
+            </div> */}
           </Col>
         </Row>
       </div>

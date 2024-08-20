@@ -19,6 +19,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import currencyType from "../../../src/components/currency";
 import { siteGetWorkshops } from "../../../src/shared/apollo/graphql/queries/workshop/siteGetWorkshops";
+import { User } from "../../../src/datamodel";
+import { getUserFromCookie } from "../../../src/util/utils";
+import PrintableCertificate from "../../../src/components/printCertificate";
+import useGetSetting from "../../../src/hooks/useGetSetting";
+import Setting from "../../../src/datamodel/Setting";
 
 const { Text } = Typography;
 
@@ -28,6 +33,14 @@ const Courses = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [value, setValue] = useState("");
   const [statusValue, setStatusValue] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
+  const { data: siteData }: { data: Setting } = useGetSetting();
+
+  useEffect(() => {
+    if (getUserFromCookie()) {
+      setUser(getUserFromCookie());
+    }
+  }, []);
 
   interface DataType {
     key: string;
@@ -117,6 +130,19 @@ const Courses = () => {
           <Link passHref href={`/dashboard/attendees/?w=${record?.id}`}>
             <Button>لیست مراجعین</Button>
           </Link>
+          {user && (
+            <PrintableCertificate
+              type="workshop"
+              event={record.title}
+              name={user?.firstName + " " + user?.lastName}
+              boxes={siteData}
+              name={`${user?.firstName} ${user?.lastName}`}
+              event={"کارت ورود"}
+              url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+              user={user}
+              setUser={setUser}
+            />
+          )}
           <Link passHref href={`/workshop/${record?.slug}`} target="_blank">
             <Tooltip title="مشاهده رویداد">
               <Button>

@@ -219,12 +219,14 @@ const MainHeader = () => {
                       </div>
                     )}
 
-                    <Image
-                      src="/assets/icons/phone-call.png"
-                      height={20}
-                      width={20}
-                      alt="search"
-                    />
+                    <Link href={"/contact"}>
+                      <Image
+                        src="/assets/icons/phone-call.png"
+                        height={20}
+                        width={20}
+                        alt="search"
+                      />
+                    </Link>
                   </div>
 
                   {user?.type.trim() === "user" && (

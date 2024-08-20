@@ -60,7 +60,7 @@ export default function Register() {
     axios
       .post(process.env.NEXT_PUBLIC_SITE_URL + "/auth/register", {
         ...values,
-        ...(imageSrc && { image: imageSrc }),
+        ...(imageSrc && { image: imageSrc }), 
         // @ts-ignore
         siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
       })

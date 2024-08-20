@@ -139,6 +139,7 @@ const Courses = () => {
       width: 50,
       render: (_, record: any) => {
         if (record.service) return <></>;
+
         return record.workshop?.title ? (
           <Link
             passHref

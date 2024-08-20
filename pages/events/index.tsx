@@ -138,6 +138,7 @@ const Courses = () => {
                           src="/assets/icons/search-light.png"
                           height={20}
                           width={20}
+                          preview={false}
                           alt="search"
                         />
                       }

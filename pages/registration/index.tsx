@@ -20,6 +20,7 @@ import Setting from "../../src/datamodel/Setting";
 import { User } from "../../src/datamodel";
 import { NextSeo } from "next-seo";
 import moment from "jalali-moment";
+import PrintableCertificate from "../../src/components/printCertificate";
 
 require("./style.less");
 
@@ -39,7 +40,7 @@ const Scanner = () => {
     },
     onError: (err) => {
       setShowError(true);
-      notification.warning({ message: "موردی یافت نشد!" });
+      notification.warning({ message: "مجاز نیست!" });
     },
   });
 
@@ -214,6 +215,7 @@ const Scanner = () => {
                 open={isModalOpen}
                 onOk={handleOk}
                 onCancel={handleCancel}
+                width={900}
                 centered
                 footer={[
                   <Button key={1} onClick={handleCancel}>
@@ -271,20 +273,19 @@ const Scanner = () => {
                   )}
                   <p>لطفا کارت ورود را از روی پرینتر بردارید</p>
                   {/* {user && (
-                  <PrintableCertificate
-                  type="workshop"
-                  event={record.workshop.title}
-                  name={user?.firstName + " " + user?.lastName}
-
-                    boxes={siteData}
-                    name={`${user?.firstName} ${user?.lastName}`}
-                    event={"کارت ورود"}
-                    url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
-                    user={user}
-                    form={form}
-                    setUser={setUser}
-                  />
-                )} */}
+                    <PrintableCertificate
+                      type="workshop"
+                      event={record.workshop.title}
+                      name={user?.firstName + " " + user?.lastName}
+                      boxes={siteData}
+                      name={`${user?.firstName} ${user?.lastName}`}
+                      event={"کارت ورود"}
+                      url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+                      user={user}
+                      form={form}
+                      setUser={setUser}
+                    />
+                  )} */}
                 </Flex>
               </Modal>
             </Card>
