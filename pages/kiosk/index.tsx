@@ -26,6 +26,7 @@ import { siteUploadImage } from "../../src/shared/apollo/graphql/mutations/uploa
 import useGetSetting from "../../src/hooks/useGetSetting";
 import { useRouter } from "next/router";
 import { validateMessages } from "../../src/util/messageValidators";
+import Setting from "../../src/datamodel/Setting";
 
 require("./style.less");
 
@@ -97,7 +98,6 @@ export default function Register() {
 
       return data.uploadImage;
     } catch (error) {
-      console.error("Error uploading image:", error);
       notification.error({
         message: "بارگذاری تصویر با خطا مواجه شد",
         description:
