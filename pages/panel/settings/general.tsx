@@ -1,35 +1,36 @@
+import "react-quill/dist/quill.snow.css";
+
 import {
   Button,
   Col,
   Form,
+  Image,
+  Input,
   Row,
   Select,
-  Upload,
-  Input,
-  Image,
   Space,
+  Upload,
   notification,
 } from "antd";
-
-import { useRouter } from "next/router";
-
 import {
   CloseCircleOutlined,
   InboxOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import { siteGetUser } from "../../../src/shared/apollo/graphql/queries/user/siteGetUser";
-import { useLazyQuery, useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { getCookie } from "cookies-next";
+import { useLazyQuery, useMutation } from "@apollo/client";
+
 import { User } from "../../../src/datamodel";
 import dynamic from "next/dynamic";
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import "react-quill/dist/quill.snow.css";
-import { useRef } from "react";
-import { siteUpdateUser } from "../../../src/shared/apollo/graphql/mutations/user/updateUser";
+import { getCookie } from "cookies-next";
 import { quillModules } from "../../../src/util/utils";
+import { siteGetUser } from "../../../src/shared/apollo/graphql/queries/user/siteGetUser";
+import { siteUpdateUser } from "../../../src/shared/apollo/graphql/mutations/user/updateUser";
+import { useRef } from "react";
+import { useRouter } from "next/router";
 import { validateMessages } from "../../../src/util/messageValidators";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const { Option } = Select;
 
@@ -105,7 +106,7 @@ const GeneralSetting = () => {
         input: {
           ...values,
           id: parseInt(userCookie?.uid),
-          ...(typeof avatarFile !== "string" && { avatar:avatarFile }),
+          ...(typeof avatarFile !== "string" && { avatar: avatarFile }),
           about,
         },
       },
@@ -171,6 +172,12 @@ const GeneralSetting = () => {
                 <Col>
                   <Space direction="vertical">
                     <Image
+                      style={{
+                        borderRadius: 200,
+                        height: 200,
+                        width: 200,
+                        objectFit: "cover",
+                      }}
                       width={200}
                       alt="image"
                       src={process.env.NEXT_PUBLIC_SITE_URL + "/" + image}
