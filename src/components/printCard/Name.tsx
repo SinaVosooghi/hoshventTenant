@@ -14,7 +14,6 @@ export const Name = ({ id, left, top, children }) => {
         textAlign: "center",
         whiteSpace: "nowrap",
         color: "#000",
-        width: 0,
       }}
       data-testid="name"
     >
