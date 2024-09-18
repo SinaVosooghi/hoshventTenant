@@ -64,7 +64,7 @@ const PrintableCard = ({
   return (
     <>
       <div>
-        <Flex onClick={() => handleCancel()}>
+        <Flex onClick={() => handleCancel && handleCancel()}>
           <ReactToPrint
             onAfterPrint={() => {
               form?.resetFields();

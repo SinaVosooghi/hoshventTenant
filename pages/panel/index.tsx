@@ -17,7 +17,9 @@ import reactSvgToImage from "react-svg-to-image";
 import { siteGetToken } from "../../src/shared/apollo/graphql/queries/jitsi/siteGetToken";
 import { siteGetUserEventsApi } from "../../src/shared/apollo/graphql/queries/event/siteGetUserEventsApi";
 import useGetSetting from "../../src/hooks/useGetSetting";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
+import { siteGetUser } from "../../src/shared/apollo/graphql/queries/user/siteGetUser";
+import { getCookie } from "cookies-next";
 
 const { Text, Paragraph } = Typography;
 
@@ -39,6 +41,30 @@ const TeachersDashboard = () => {
       },
     }
   );
+
+  const [getUser, { data: userData }] = useLazyQuery(siteGetUser, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "network-only",
+    variables: {
+      // @ts-ignore
+      id: parseInt(user?.id),
+    },
+  });
+
+  useEffect(() => {
+    let userCookie: User | null = null;
+    if (getCookie("user")) {
+      // @ts-ignore
+      userCookie = JSON.parse(getCookie("user"));
+    }
+
+    getUser({
+      variables: {
+        // @ts-ignore
+        id: parseInt(userCookie?.uid),
+      },
+    });
+  }, []);
 
   useEffect(() => {
     if (getUserFromCookie()) {
@@ -124,10 +150,10 @@ const TeachersDashboard = () => {
           <PrintableCard
             showCard={false}
             boxes={siteData}
-            name={`${user?.firstName} ${user?.lastName}`}
+            name={`${userData?.user?.firstName} ${userData?.user?.lastName}`}
             event={"کارت ورود"}
-            url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
-            user={user}
+            url={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${userData?.user?.id}`}
+            user={userData?.user}
             setUser={setUser}
             showThumbnail
           />
