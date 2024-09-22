@@ -96,7 +96,7 @@ const TeachersDashboard = () => {
               {user && (
                 <div className="qrcode">
                   <ReactQrCode
-                    value={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${user.uid}`}
+                    value={`${process.env.NEXT_PUBLIC_SITE_URL}/scan&u=${userData?.user?.id}`}
                     size={160}
                     viewBox={`0 0 185 185`}
                     style={{

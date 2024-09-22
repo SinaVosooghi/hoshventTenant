@@ -34,7 +34,7 @@ const PrintableCard = ({
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
     variables: {
-      id: parseInt(user.uid),
+      id: parseInt(user?.id),
     },
   });
 
