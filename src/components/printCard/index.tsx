@@ -95,7 +95,7 @@ const PrintableCard = ({
                   <QrCode key={key} id={key} left={left} top={top}>
                     <div
                       style={{
-                        width: 180,
+                        width: 170,
                         textAlign: "center",
                         margin: "0 auto",
                       }}
