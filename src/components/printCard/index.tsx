@@ -95,15 +95,15 @@ const PrintableCard = ({
                   <QrCode key={key} id={key} left={left} top={top}>
                     <div
                       style={{
-                        width: 170,
+                        width: 130,
                         textAlign: "center",
                         margin: "0 auto",
                       }}
                     >
                       <ReactQrCode
                         value={url}
-                        size={100}
-                        viewBox={`0 0 100 100`}
+                        size={130}
+                        viewBox={`0 0 130 130`}
                         style={{
                           width: "100%",
                           height: "100%",
