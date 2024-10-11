@@ -163,7 +163,6 @@ export default function Register() {
             siteid: parseInt(process.env.NEXT_PUBLIC_SITE),
           })
           .then((response) => {
-            return false;
             setImageSrc(null);
             setImageUrl(null);
             const { firstName, lastName } = response.data;
