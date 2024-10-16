@@ -12,7 +12,7 @@ import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 const URL =
-  process.env.NEXT_PUBLIC_BASE_API || "https://api.rastaavan.net/graphql";
+  process.env.NEXT_PUBLIC_BASE_API || "https://api.hoshvent.com/graphql";
 
 // const httpLink = createUploadLink({
 //   uri: URL,
