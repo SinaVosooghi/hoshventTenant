@@ -137,6 +137,11 @@ export default function Register() {
                   "Already exist, User with this mobile!"
                 ) {
                   notification.error({ message: "موبایل وارد شده تکراریست!" });
+                } else if (
+                  e?.response?.data?.message ===
+                  "Already exist, User with this nationalcode!"
+                ) {
+                  notification.error({ message: "کد ملی وارد شده تکراریست" });
                 } else if (e?.response?.data.statusCode === 401) {
                   notification.error({ message: "دسترسی غیر مجاز" });
                 } else if (
