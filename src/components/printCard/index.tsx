@@ -9,6 +9,7 @@ import { useRef } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { siteGetUser } from "../../shared/apollo/graphql/queries/user/siteGetUser";
 import { siteCreatePrint } from "../../shared/apollo/graphql/mutations/print/create";
+import useDownloadCardPdf from "../../hooks/useDownloadCardPdf";
 
 const styles = {
   width: "7in",
@@ -40,6 +41,8 @@ const PrintableCard = ({
 
   const [createPrint] = useMutation(siteCreatePrint);
 
+  const { downloadBatchCardPdf } = useDownloadCardPdf();
+
   // const [triggerMutation] = useMutation(someMutation, {
   //   variables: {
   //     id: parseInt(user.uid),
@@ -55,32 +58,36 @@ const PrintableCard = ({
       variables: {
         input: {
           user: parseInt(user.id),
-          site: parseInt(process.env.NEXT_PUBLIC_SITE),
+          site: parseInt(process.env.NEXT_PUBLIC_SITE || ""),
         },
       },
     });
+  };
+
+  const users = [
+    {
+      firstName: user.firstName ?? "",
+      lastName: user.lastName ?? "",
+      title: user.category?.title ?? "",
+      qrUrl: `${process.env.NEXT_PUBLIC_BASE_API + "/graphql"}/scan&u=${
+        user.id
+      }`,
+      header: ``,
+    },
+  ];
+
+  const savePrintCards = () => {
+    downloadBatchCardPdf(users);
+    form?.resetFields();
   };
 
   return (
     <>
       <div>
         <Flex onClick={() => handleCancel && handleCancel()}>
-          <ReactToPrint
-            onAfterPrint={() => {
-              form?.resetFields();
-            }}
-            onBeforePrint={handlePrintClick}
-            trigger={() => (
-              <Button
-                type="primary"
-                loading={loading}
-                onClick={handlePrintClick}
-              >
-                پرینت کارت ورود
-              </Button>
-            )}
-            content={() => componentRef.current}
-          />
+          <Button type="primary" loading={loading} onClick={savePrintCards}>
+            پرینت کارت ورود
+          </Button>
         </Flex>
 
         <div
