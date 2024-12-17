@@ -9,12 +9,30 @@ const DOWNLOAD_CARDS_PDF = gql`
 
 const useDownloadCardPdf = () => {
   const [fetchPdf, { loading, error }] = useLazyQuery(DOWNLOAD_CARDS_PDF, {
-    onCompleted: (data) => {
+    onCompleted: async (data) => {
       if (data?.generateBatchCardPdf) {
-        const link = document.createElement("a");
-        link.href = data.generateBatchCardPdf; // URL returned from backend
-        link.download = "cards.pdf"; // File name
-        link.click();
+        const pdfUrl = data.generateBatchCardPdf; // URL returned from backend
+
+        // Fetch the PDF as a Blob
+        const response = await fetch(pdfUrl);
+        const blob = await response.blob();
+
+        // Create a URL for the Blob
+        const blobUrl = URL.createObjectURL(blob);
+
+        // Create an iframe for printing
+        const iframe = document.createElement("iframe");
+        iframe.style.display = "none"; // Hidden iframe
+        iframe.src = blobUrl; // Set the Blob URL as the source
+        document.body.appendChild(iframe);
+
+        // Wait for the iframe to load, then trigger the print dialog
+        iframe.onload = () => {
+          iframe.contentWindow?.focus(); // Focus on iframe content
+          iframe.contentWindow?.print(); // Open print dialog
+
+          // Clean up the Blob URL and remove iframe after printing
+        };
       }
     },
   });
