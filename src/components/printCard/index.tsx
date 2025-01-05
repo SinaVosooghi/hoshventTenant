@@ -69,6 +69,7 @@ const PrintableCard = ({
       firstName: user.firstName ?? "",
       lastName: user.lastName ?? "",
       title: user.title ?? "",
+      enTitle: user.titleen ?? "",
       qrUrl: `${process.env.NEXT_PUBLIC_BASE_API + "/graphql"}/scan&u=${
         user.id
       }`,
